@@ -1,11 +1,9 @@
 // set up ======================================================================
-// get all the tools we need
 var express = require('express');
 var app = express();
 var port = process.env.PORT || 8080;
 var passport = require('passport');
 var flash = require('connect-flash');
-
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -15,7 +13,6 @@ var db = require('../config/database.js');
 
 // configuration ===============================================================
 db.connect(); // connect to our database
-
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
@@ -36,4 +33,22 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 
 // launch ======================================================================
 app.listen(port);
-console.log('The magic happens on port ' + port);
+console.log('Listening on localhost/' + port);
+var request = require("request");
+var PropertiesReader = require('properties-reader');
+var properties = PropertiesReader(__dirname + "/../config/wufoo_properties.ini");
+wufooApiTest();
+
+function wufooApiTest() {
+    request({
+        uri: properties.get('uri'),
+        method: properties.get('method'),
+        auth: {
+            'username': properties.get('username'),
+            'password': properties.get('password'),
+            'sendImmediately': false
+        }
+    }, function (error, response, body) {
+        console.log(body);
+    });
+}

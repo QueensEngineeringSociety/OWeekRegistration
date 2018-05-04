@@ -1,5 +1,5 @@
-var wufoo = require("./wufoo.js");
-var query=wufoo.queries;
+var wufoo = require("../server/wufoo/wufooApi.js");
+var query = wufoo.queries;
 
 module.exports = function (app, passport) {
 
@@ -64,8 +64,8 @@ module.exports = function (app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/allergies', isLoggedIn, function(req,res){
-        wufoo.filterEntries(query.allergy,function (body){
+    app.get('/allergies', isLoggedIn, function (req, res) {
+        wufoo.filterEntries(query.allergy, function (body) {
             res.render('filter.ejs', {
                 wufoo: body
             });

@@ -13,7 +13,7 @@ var con = mysql.createConnection({
 exports.connect = function () {
     con.connect(function (err) {
         if (err) throw err;
-        console.log("Connected!");
+        console.log("Database connected!");
     });
 };
 

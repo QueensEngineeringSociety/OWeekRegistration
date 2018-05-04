@@ -1,9 +1,18 @@
 var request = require("request");
 var PropertiesReader = require('properties-reader');
-var properties = PropertiesReader(__dirname + "/../config/wufoo_properties.ini");
+var con = require("./wufooConstants.js");
+var query = require("./wufooQueryBuilder.js");
+
+var properties = PropertiesReader(__dirname + "/../../config/wufoo_properties.ini");
+
+var fields = con.fields;
+var group = con.grouping;
+
+var allergyArr = [query.buildNotNull(fields.allergies), query.buildNotEqual(fields.allergies, "none")];
+console.log("ARR: " + allergyArr);
 
 exports.queries = {
-    allergy: "Filter1=Field6+Is_not_NULL&Filter2=Field6+Is_not_equal_to+none&match=AND"
+    allergy: query.buildQuery(allergyArr, group.and)//"Filter1=Field6+Is_not_NULL&Filter2=Field6+Is_not_equal_to+none&match=AND"
 };
 
 exports.allEntries = function (callback) {

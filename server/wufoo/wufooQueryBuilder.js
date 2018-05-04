@@ -25,7 +25,7 @@ exports.buildOneQuery = function (partialQuery) {
 
 //helper for all partial builder queries - sets format and checks field and operator correctness
 function buildPartialQuery(field, value, operator) {
-    if (inObject(field, con.fields) && inObject(operator, con.operators)) {
+    if (inObject(con.fields, field) && inObject(con.operators, operator)) {
         return field + '+' + operator + '+' + value;
     }
     return "";
@@ -88,7 +88,8 @@ exports.buildNotNull = function (field) {
 //ensure a field said to be in an object is actually in the object
 function inObject(obj, field) {
     for (var eachField in obj) {
-        if (eachField === field)
+        console.log("field:" + eachField + "val: " + obj[eachField]);
+        if (obj[eachField] === field)
             return true;
     }
     return false;

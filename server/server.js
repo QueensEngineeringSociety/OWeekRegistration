@@ -34,21 +34,3 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 // launch ======================================================================
 app.listen(port);
 console.log('Listening on localhost/' + port);
-var request = require("request");
-var PropertiesReader = require('properties-reader');
-var properties = PropertiesReader(__dirname + "/../config/wufoo_properties.ini");
-wufooApiTest();
-
-function wufooApiTest() {
-    request({
-        uri: properties.get('uri'),
-        method: properties.get('method'),
-        auth: {
-            'username': properties.get('username'),
-            'password': properties.get('password'),
-            'sendImmediately': false
-        }
-    }, function (error, response, body) {
-        console.log(body);
-    });
-}

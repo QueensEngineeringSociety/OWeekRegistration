@@ -1,9 +1,13 @@
-module.exports = function(app, passport) {
+var request = require("request");
+var PropertiesReader = require('properties-reader');
+var properties = PropertiesReader(__dirname + "/../config/wufoo_properties.ini");
+
+module.exports = function (app, passport) {
 
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
-    app.get('/', function(req, res) {
+    app.get('/', function (req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });
 
@@ -11,35 +15,35 @@ module.exports = function(app, passport) {
     // LOGIN ===============================
     // =====================================
     // show the login form
-    app.get('/login', function(req, res) {
+    app.get('/login', function (req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') });
+        res.render('login.ejs', {message: req.flash('loginMessage')});
     });
 
     // process the login form
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/login', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
+        successRedirect: '/profile', // redirect to the secure profile section
+        failureRedirect: '/login', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
     }));
 
     // =====================================
     // SIGN-UP ==============================
     // =====================================
     // show the sign-up form
-    app.get('/signup', function(req, res) {
+    app.get('/signup', function (req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', {message: req.flash('signupMessage')});
     });
 
     // process the sign-up form
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the sign-up page if there is an error
-        failureFlash : true // allow flash messages
+        successRedirect: '/profile', // redirect to the secure profile section
+        failureRedirect: '/signup', // redirect back to the sign-up page if there is an error
+        failureFlash: true // allow flash messages
     }));
 
 
@@ -48,16 +52,28 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
+    app.get('/profile', isLoggedIn, function (req, res) {
+        request({
+            uri: properties.get('uri'),
+            method: properties.get('method'),
+            auth: {
+                'username': properties.get('username'),
+                'password': properties.get('password'),
+                'sendImmediately': false
+            }
+        }, function (error, response, body) {
+            console.log(body);
+            res.render('profile.ejs', {
+                user: req.user, // get the user out of session and pass to template
+                wufoo: body
+            });
         });
     });
 
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.get('/logout', function(req, res) {
+    app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');
     });

@@ -24,3 +24,8 @@ exports.grouping = {
     and: '&match=AND',
     or: '&match=OR'
 };
+
+exports.sort = {
+    asc: 'ASC',
+    desc: 'DESC'
+};

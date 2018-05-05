@@ -1,26 +1,23 @@
 var con = require("./wufooConstants");
 
 //takes array of built partial queries and combines them
+//grouping is optional - if undefined it is ignored.
 exports.buildQuery = function (partialQueries, grouping) {
+    if (typeof partialQueries === "undefined") {
+        return ""; //no data passed in, so just take all entries
+    }
     var queryString = "?";
     var length = partialQueries.length;
     for (var i = 0; i < length; i++) {
-        console.log("PARTIAL: " + partialQueries[i]);
         if (i > 0) {
             //add & if on second or further filter
             queryString += "&";
         }
         queryString += "Filter" + (i + 1) + '=' + partialQueries[i];
     }
-    if (inObject(con.grouping, grouping))
+    if (typeof grouping !== "undefined" && inObject(con.grouping, grouping))
         queryString += grouping;
-    console.log("QUERY: " + queryString);
     return queryString;
-};
-
-//takes one partial query and adds FilterID to it - no grouping because only 1 filter
-exports.buildOneQuery = function (partialQuery) {
-    return "?Filter1=" + partialQuery;
 };
 
 //helper for all partial builder queries - sets format and checks field and operator correctness
@@ -85,11 +82,10 @@ exports.buildNotNull = function (field) {
     return "";
 };
 
-//ensure a field said to be in an object is actually in the object
-function inObject(obj, field) {
-    for (var eachField in obj) {
-        console.log("field:" + eachField + "val: " + obj[eachField]);
-        if (obj[eachField] === field)
+//ensure a value said to be in an object is actually in the object
+function inObject(obj, value) {
+    for (var eachKey in obj) {
+        if (obj.hasOwnProperty(eachKey) && obj[eachKey] === value)
             return true;
     }
     return false;

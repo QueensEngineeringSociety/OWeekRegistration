@@ -20,6 +20,24 @@ exports.buildQuery = function (partialQueries, grouping) {
     return queryString;
 };
 
+//for the form where user chooses the query
+//the form has the key names as those are the english ones
+//this checks for that key actually being in the containing object, then puts the value in the query
+exports.customQuery = function (field, operator, value) {
+    var f, op;
+    for (var fKey in con.fields) {
+        if (con.fields.hasOwnProperty(fKey) && field === fKey) {
+            f = con.fields[fKey];
+        }
+    }
+    for (var opKey in con.operators) {
+        if (con.operators.hasOwnProperty(opKey) && operator === opKey) {
+            op = con.operators[opKey];
+        }
+    }
+    return exports.buildQuery([buildPartialQuery(f, value, op)]);
+};
+
 //helper for all partial builder queries - sets format and checks field and operator correctness
 function buildPartialQuery(field, value, operator) {
     if (inObject(con.fields, field) && inObject(con.operators, operator)) {
@@ -71,7 +89,7 @@ exports.buildNotEqual = function (field, value) {
 };
 
 exports.buildEquals = function (field, value) {
-    return buildPartialQuery(field, value, con.operators.equal);
+    return buildPartialQuery(field, value, con.operators.equals);
 };
 
 //special case, no value, so don't use buildPartialQuery helper

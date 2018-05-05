@@ -24,23 +24,6 @@
         <strong>Entries</strong>: <%= wufoo %><br>
     </p>
 
-    <form action="/search" method="get">
-        <select name="field">
-            <!-- use the key as the value - key is english, value is wufoo API query version-->
-            <% for (var fieldKey in queryConstants.fields){ %>
-            <option value="<%= fieldKey %>"><%= fieldKey %></option>
-            <% } %>
-        </select>
-        <select name="operator">
-            <!-- use the key as the value - key is english, value is wufoo API query version-->
-            <% for (var opKey in queryConstants.operators){ %>
-            <option value="<%= opKey %>"><%= opKey %></option>
-            <% } %>
-        </select>
-        <input id="value" type="text" name="value">
-        <input type="submit" value="OK">
-    </form>
-
 </div>
 </body>
 </html>

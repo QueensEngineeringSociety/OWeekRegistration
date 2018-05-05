@@ -9,7 +9,7 @@ exports.operators = {
     before: 'Is_before',
     after: 'Is_after',
     notEqual: 'Is_not_equal_to',
-    equal: 'Is_equal_to',
+    equals: 'Is_equal_to',
     notNull: 'Is_not_NULL'
 };
 

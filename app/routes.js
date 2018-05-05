@@ -1,4 +1,6 @@
 var wufoo = require("../server/wufoo/wufooApi.js");
+var builder = require("../server/wufoo/wufooQueryBuilder");
+var con = require("../server/wufoo/wufooConstants");
 var query = wufoo.queries;
 
 module.exports = function (app, passport) {
@@ -54,7 +56,8 @@ module.exports = function (app, passport) {
     app.get('/filter', isLoggedIn, function (req, res) {
         wufoo.makeQuery(query.all, function (body) {
             res.render('filter.ejs', {
-                wufoo: body
+                wufoo: body,
+                queryConstants: con
             });
         });
     });
@@ -70,6 +73,22 @@ module.exports = function (app, passport) {
                 wufoo: body
             });
         });
+    });
+
+    // =====================================
+    // SEARCH ===========================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+
+    app.get('/search', isLoggedIn, function (req, res) {
+        if (req.query['field'] && req.query['operator'] && req.query['value']) {
+            wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
+                res.render('search.ejs', {
+                    wufoo: body
+                });
+            });
+        }
     });
 
     // =====================================

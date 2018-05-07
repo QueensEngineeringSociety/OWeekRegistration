@@ -5,6 +5,7 @@
     <title>Orientation Week Registration</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/table.css" type="text/css">
     <style>
         body {
             padding-top: 80px;
@@ -20,20 +21,28 @@
         <a href="/allergies" class="btn btn-default btn-sm">Allergies</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
-    <table>
-            <%var wufooJson = JSON.parse(wufoo);%>
-            <%var entries = wufooJson['Entries'];%>
-            <tr>
+    <table id="entryTable">
+        <% var wufooJson = JSON.parse(wufoo); %>
+        <% var entries = wufooJson['Entries']; %>
+        <tr>
             <% for (var key in entries[0]){ %>
-            <th><%= key %></th>
+            <% var output = key; %>
+            <% for (var eachKey in queryConstants.fields){ %>
+            <% if (queryConstants.fields.hasOwnProperty(eachKey) && queryConstants.fields[eachKey] === key){ %>
+            <% output = eachKey %>queryConstants.fields.hasOwnProperty(eachKey)
             <% } %>
-            </tr>
-            <% for (var entry in entries){%>
-                <%var obj=entries[entry]%>
-                <% for (var valKey in obj){%>
-                    <td><%=obj[valKey]%></td>
-                <%}%>
-            <% }%>
+            <% } %>
+            <th><%= output %></th>
+            <% } %>
+        </tr>
+        <tr>
+            <% for (var entry in entries){ %>
+            <% var obj = entries[entry] %>
+            <% for (var valKey in obj){ %>
+            <td><%= obj[valKey] %></td>
+            <% } %>
+            <% } %>
+        </tr>
     </table>
 
     <form action="/search" method="get">

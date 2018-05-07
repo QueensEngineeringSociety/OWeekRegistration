@@ -5,6 +5,7 @@
     <title>Orientation Week Registration</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link href="/css/table.css" rel="stylesheet" type="text/css">
     <style>
         body {
             padding-top: 80px;
@@ -20,20 +21,22 @@
         <a href="/allergies" class="btn btn-default btn-sm">Allergies</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
-    <table>
-        <%var wufooJson = JSON.parse(wufoo);%>
-        <%var entries = wufooJson['Entries'];%>
+    <table id="entryTable">
+        <% var wufooJson = JSON.parse(wufoo); %>
+        <% var entries = wufooJson['Entries']; %>
         <tr>
             <% for (var key in entries[0]){ %>
             <th><%= key %></th>
             <% } %>
         </tr>
-        <% for (var entry in entries){%>
-        <%var obj=entries[entry]%>
-        <% for (var valKey in obj){%>
-        <td><%=obj[valKey]%></td>
-        <%}%>
-        <% }%>
+        <tr>
+            <% for (var entry in entries){ %>
+            <% var obj = entries[entry] %>
+                <% for (var valKey in obj){ %>
+                    <td><%= obj[valKey] %></td>
+                <% } %>
+            <% } %>
+        </tr>
     </table>
 
 </div>

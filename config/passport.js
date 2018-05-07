@@ -51,12 +51,13 @@ module.exports = function (passport) {
                         return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
                     } else {
                         // if there is no user with that username, then create that user
-                        var newUser = new User(req.body.first_name, req.body.last_name, email, password);
-                        var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created) values (?,?,?,?,?);";
-                        connection.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created],
-                            function (err, rows) { //TODO check if error on query
+                        var newUser = new User(req.body.first_name, req.body.last_name, email, password, req.body.is_admin === "admin");
+                        var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,admin) values (?,?,?,?,?,?);";
+                        console.log(JSON.stringify(req.body));
+                        connection.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
+                            function (err, rows) {
                                 if (err)
-                                    console.log("ERROR: "+err);
+                                    console.log("ERROR: " + err);
                                 newUser.id = rows.insertId;
                                 return done(null, newUser);
                             });

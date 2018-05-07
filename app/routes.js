@@ -47,7 +47,6 @@ module.exports = function (app, passport) {
         failureFlash: true // allow flash messages
     }));
 
-
     // =====================================
     // FILTER SECTION =====================
     // =====================================
@@ -93,6 +92,13 @@ module.exports = function (app, passport) {
     });
 
     // =====================================
+    // NOT AUTHORIZED ======================
+    // =====================================
+    app.get('/noprivilege', function (req, res) {
+        res.render('noprivilege.ejs');
+    });
+
+    // =====================================
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function (req, res) {
@@ -118,6 +124,6 @@ function requireAdmin(req, res, next) {
     } else if (req.user && req.user.is_admin) {
         return next();
     } else {
-        res.send(401); //TODO make a not authorized view
+        res.redirect('/noprivilege'); //TODO make a not authorized view
     }
 }

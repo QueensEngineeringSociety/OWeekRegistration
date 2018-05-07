@@ -20,9 +20,21 @@
         <a href="/allergies" class="btn btn-default btn-sm">Allergies</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
-    <p>
-        <strong>Entries</strong>: <%= wufoo %><br>
-    </p>
+    <table>
+        <%var wufooJson = JSON.parse(wufoo);%>
+        <%var entries = wufooJson['Entries'];%>
+        <tr>
+            <% for (var key in entries[0]){ %>
+            <th><%= key %></th>
+            <% } %>
+        </tr>
+        <% for (var entry in entries){%>
+        <%var obj=entries[entry]%>
+        <% for (var valKey in obj){%>
+        <td><%=obj[valKey]%></td>
+        <%}%>
+        <% }%>
+    </table>
 
 </div>
 </body>

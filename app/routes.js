@@ -70,7 +70,8 @@ module.exports = function (app, passport) {
     app.get('/allergies', isLoggedIn, function (req, res) {
         wufoo.makeQuery(query.allergy, function (body) {
             res.render('filter.ejs', {
-                wufoo: body
+                wufoo: body,
+                queryConstants: con
             });
         });
     });

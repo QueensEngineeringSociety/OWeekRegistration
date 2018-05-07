@@ -1,7 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy;
-
-var connection = require('./database.js');
 var bcrypt = require("bcrypt-nodejs");
+
+var dbConn = require('./database.js');
 var User = require("../app/models/user");
 
 module.exports = function (passport) {
@@ -19,7 +19,7 @@ module.exports = function (passport) {
 
     // used to deserialize the user
     passport.deserializeUser(function (id, done) {
-        connection.query("select * from users where id = ?", [id], function (err, rows) {
+        dbConn.query("select * from users where id = ?", [id], function (err, rows) {
             done(err, rows[0]);
         });
     });
@@ -42,7 +42,7 @@ module.exports = function (passport) {
             function (req, email, password, done) {
                 // find a user whose email is the same as the forms email
                 // we are checking to see if the user trying to login already exists
-                connection.query("SELECT * FROM users WHERE email = ?", [email], function (err, rows) {
+                dbConn.query("SELECT * FROM users WHERE email = ?", [email], function (err, rows) {
                     if (err) {
                         console.log("ERROR: " + err);
                         return done(err);
@@ -54,7 +54,7 @@ module.exports = function (passport) {
                         var newUser = new User(req.body.first_name, req.body.last_name, email, password, req.body.is_admin === "admin");
                         var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,admin) values (?,?,?,?,?,?);";
                         console.log(JSON.stringify(req.body));
-                        connection.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
+                        dbConn.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
                             function (err, rows) {
                                 if (err)
                                     console.log("ERROR: " + err);
@@ -81,7 +81,7 @@ module.exports = function (passport) {
                 passReqToCallback: true // allows us to pass back the entire request to the callback
             },
             function (req, email, password, done) { // callback with email and password from our form
-                connection.query("SELECT * FROM users WHERE email = ?", [email], function (err, rows) {
+                dbConn.query("SELECT * FROM users WHERE email = ?", [email], function (err, rows) {
                     if (err)
                         return done(err);
                     //wrong email or password

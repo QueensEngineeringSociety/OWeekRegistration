@@ -25,48 +25,48 @@
         <% var wufooJson = JSON.parse(wufoo); %>
         <% var entries = wufooJson['Entries']; %>
         <tr>
-            <% for (var key in entries[0]){ %>
-            <% if (entries[0].hasOwnProperty(key)){ %>
-            <% var output = key; %>
-            <% for (var eachKey in queryConstants.fields){ %>
-            <% if (queryConstants.fields.hasOwnProperty(eachKey) && queryConstants.fields[eachKey] === key){ %>
-            <% output = eachKey %>
-            <% } %>
-            <% } %>
-            <th><%= output %></th>
-            <% } %>
-            <% } %>
+            <%// for (var key in entries[0]){ %>
+            <% //if (entries[0].hasOwnProperty(key)){ %>
+            <% //var output = key; %>
+            <% //for (var eachKey in queryConstants.fields){ %>
+            <% //if (queryConstants.fields.hasOwnProperty(eachKey) && queryConstants.fields[eachKey] === key){ %>
+            <%// output = eachKey %>
+            <%// } %>
+            <% //} %>
+            <th><%//= output %></th>
+            <% //} %>
+            <% //} %>
         </tr>
         <tr>
-            <% for (var entry in entries){ %>
-            <% if (entries.hasOwnProperty(entry)){ %>
-            <% var obj = entries[entry] %>
-            <% for (var valKey in obj){ %>
-            <% if (obj.hasOwnProperty(valKey)){ %>
-            <td><%= obj[valKey] %></td>
-            <% } %>
-            <% } %>
-            <% } %>
-            <% } %>
+            <% //for (var entry in entries){ %>
+            <% //if (entries.hasOwnProperty(entry)){ %>
+            <%// var obj = entries[entry] %>
+            <%// for (var valKey in obj){ %>
+            <% //if (obj.hasOwnProperty(valKey)){ %>
+            <td><%= //obj[valKey] %></td>
+            <%// } %>
+            <%// } %>
+            <%// } %>
+            <% //} %>
         </tr>
     </table>
 
     <form action="/search" method="get">
         <select name="field">
             <!-- use the key as the value - key is english, value is wufoo API query version-->
-            <% for (var fieldKey in queryConstants.fields){ %>
-            <% if (queryConstants.fields.hasOwnProperty(fieldKey)){ %>
-            <option value="<%= fieldKey %>"><%= fieldKey %></option>
-            <% } %>
-            <% } %>
+            <%// for (var fieldKey in queryConstants.fields){ %>
+            <% //if (queryConstants.fields.hasOwnProperty(fieldKey)){ %>
+            <option value="<%= //fieldKey %>"><%= //fieldKey %></option>
+            <% //} %>
+            <% //} %>
         </select>
         <select name="operator">
             <!-- use the key as the value - key is english, value is wufoo API query version-->
-            <% for (var opKey in queryConstants.operators){ %>
-            <% if (queryConstants.operators.hasOwnProperty(opKey)){ %>
-            <option value="<%= opKey %>"><%= opKey %></option>
-            <% } %>
-            <% } %>
+            <% //for (var opKey in queryConstants.operators){ %>
+            <% //if (queryConstants.operators.hasOwnProperty(opKey)){ %>
+            <option value="<%=// opKey %>"><%=// opKey %></option>
+            <% //} %>
+            <% //} %>
         </select>
         <input id="value" type="text" name="value">
         <input type="submit" value="OK">

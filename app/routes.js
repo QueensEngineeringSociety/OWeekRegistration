@@ -67,7 +67,7 @@ module.exports = function (app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/allergies', isLoggedIn, function (req, res) {
+    app.get('/allergies', requireAdmin, function (req, res) {
         wufoo.makeQuery(query.allergy, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
@@ -110,4 +110,14 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
+}
+
+function requireAdmin(req, res, next) {
+    if (!req.isAuthenticated()) {
+        res.redirect('/');
+    } else if (req.user && req.user.is_admin) {
+        return next();
+    } else {
+        res.send(401); //TODO make a not authorized view
+    }
 }

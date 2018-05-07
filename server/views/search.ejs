@@ -26,15 +26,21 @@
         <% var entries = wufooJson['Entries']; %>
         <tr>
             <% for (var key in entries[0]){ %>
+            <% if (entries[0].hasOwnProperty(key)){ %>
             <th><%= key %></th>
+            <% } %>
             <% } %>
         </tr>
         <tr>
             <% for (var entry in entries){ %>
+            <% if (entries.hasOwnProperty(entry)){ %>
             <% var obj = entries[entry] %>
-                <% for (var valKey in obj){ %>
-                    <td><%= obj[valKey] %></td>
-                <% } %>
+            <% for (var valKey in obj){ %>
+            <% if (obj.hasOwnProperty(valKey)){ %>
+            <td><%= obj[valKey] %></td>
+            <% } %>
+            <% } %>
+            <% } %>
             <% } %>
         </tr>
     </table>

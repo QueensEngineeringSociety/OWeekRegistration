@@ -21,6 +21,27 @@
         <a href="/allergies" class="btn btn-default btn-sm">Allergies</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
+    <form action="/search" method="get">
+        <select name="field">
+            <!-- use the key as the value - key is english, value is wufoo API query version-->
+            <% for (var fieldKey in fields){ %>
+            <% if (fields.hasOwnProperty(fieldKey)){ %>
+            <option value="<%= fieldKey %>"><%= fieldKey %></option>
+            <% } %>
+            <% } %>
+        </select>
+        <select id="operator" name="operator">
+            <!-- use the key as the value - key is english, value is wufoo API query version-->
+            <% for (var opKey in operators){ %>
+            <% if (operators.hasOwnProperty(opKey)){ %>
+            <option value="<%= opKey %>"><%= opKey %></option>
+            <% } %>
+            <% } %>
+        </select>
+        <input id="value" type="text" name="value">
+        <input type="submit" value="OK">
+    </form>
+    <br>
     <table id="entryTable">
         <% var wufooJson = JSON.parse(wufoo); %>
         <% var entries = wufooJson['Entries']; %>

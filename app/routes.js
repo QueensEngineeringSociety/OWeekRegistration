@@ -54,6 +54,7 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/filter', isLoggedIn, function (req, res) {
         wufoo.makeQuery(query.all, function (body) {
+            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
                 queryConstants: con
@@ -94,7 +95,7 @@ module.exports = function (app, passport) {
     // =====================================
     // NOT AUTHORIZED ======================
     // =====================================
-    app.get('/noprivilege', function (req, res) {
+    app.get('/noprivilege', isLoggedIn, function (req, res) {
         res.render('noprivilege.ejs');
     });
 
@@ -124,6 +125,6 @@ function requireAdmin(req, res, next) {
     } else if (req.user && req.user.is_admin) {
         return next();
     } else {
-        res.redirect('/noprivilege'); //TODO make a not authorized view
+        res.redirect('/noprivilege');
     }
 }

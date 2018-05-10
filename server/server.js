@@ -9,7 +9,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var path = require('path');
+var PropertiesReader = require('properties-reader');
 
+var properties = PropertiesReader(__dirname + "/../config/passport.ini");
 var db = require('../config/database.js');
 
 // configuration ===============================================================
@@ -24,7 +26,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
-app.use(session({secret: 'ilovescotchscotchyscotchscotch'})); // session secret //TODO change and put in ini file
+app.use(session({secret: properties.get('secret')})); // session secret
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 require('../config/passport')(passport); // pass passport for configuration

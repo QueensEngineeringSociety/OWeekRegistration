@@ -14,6 +14,7 @@ exports.operators = {
 };
 
 //converts an english description of the field to the Field ID in wufoo
+//this object has all fields
 exports.fields = {
     name: 'Field1',
     allergies: 'Field6'
@@ -24,7 +25,7 @@ exports.generalFields = {
     name: 'Field1'
 };
 
-//general fields and fields only admins can see
+//general fields AND fields only admins can see
 exports.adminFields = {
     name: 'Field1',
     allergies: 'Field6'

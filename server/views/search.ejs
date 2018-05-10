@@ -27,7 +27,15 @@
         <tr>
             <% for (var key in entries[0]){ %>
             <% if (entries[0].hasOwnProperty(key)){ %>
-            <th><%= key %></th>
+            <% var output = "dont_add"; %>
+            <% for (var eachKey in fields){ %>
+            <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === key){ %>
+            <% output = eachKey %>
+            <% } %>
+            <% } %>
+            <% if (output !== "dont_add"){ %>
+            <th><%= output %></th>
+            <% } %>
             <% } %>
             <% } %>
         </tr>
@@ -37,7 +45,11 @@
             <% var obj = entries[entry] %>
             <% for (var valKey in obj){ %>
             <% if (obj.hasOwnProperty(valKey)){ %>
+            <% for (var eachField in fields){ %>
+            <% if (fields.hasOwnProperty(eachField) && valKey === fields[eachField]){ %>
             <td><%= obj[valKey] %></td>
+            <% } %>
+            <% } %>
             <% } %>
             <% } %>
             <% } %>

@@ -19,6 +19,17 @@ exports.fields = {
     allergies: 'Field6'
 };
 
+//fields that any user can see
+exports.generalFields = {
+    name: 'Field1'
+};
+
+//general fields and fields only admins can see
+exports.adminFields = {
+    name: 'Field1',
+    allergies: 'Field6'
+};
+
 //AND or OR for filters, has preamble so just tag on con.and or con.or to uri
 exports.grouping = {
     and: '&match=AND',

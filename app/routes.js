@@ -53,11 +53,15 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/filter', isLoggedIn, function (req, res) {
+        var accessFields = con.generalFields;
+        if (isAdmin(req)) {
+            accessFields = con.adminFields;
+        }
         wufoo.makeQuery(query.all, function (body) {
-            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
-                queryConstants: con
+                operators: con.operators,
+                fields: accessFields
             });
         });
     });
@@ -71,7 +75,8 @@ module.exports = function (app, passport) {
         wufoo.makeQuery(query.allergy, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
-                queryConstants: con
+                operators: con.operators,
+                fields: con.adminFields //admin page only
             });
         });
     });
@@ -84,9 +89,15 @@ module.exports = function (app, passport) {
 
     app.get('/search', isLoggedIn, function (req, res) {
         if (req.query['field'] && req.query['operator'] && req.query['value']) {
+            var accessFields = con.generalFields;
+            if (isAdmin(req)) {
+                accessFields = con.adminFields;
+            }
             wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
                 res.render('search.ejs', {
-                    wufoo: body
+                    wufoo: body,
+                    operators: con.operators,
+                    fields: accessFields
                 });
             });
         }
@@ -127,4 +138,8 @@ function requireAdmin(req, res, next) {
     } else {
         res.redirect('/noprivilege');
     }
+}
+
+function isAdmin(req) {
+    return req.user.is_admin;
 }

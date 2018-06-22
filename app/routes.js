@@ -68,6 +68,26 @@ module.exports = function (app, passport) {
     });
 
     // =====================================
+    // Age =================================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/age', isLoggedIn, function (req, res) {
+        var accessFields = con.generalFields;
+        if (isAdmin(req)) {
+            accessFields = con.allFields;
+        }
+        wufoo.makeQuery(query.age, function (body) {
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: accessFields,
+                headings: con.headings
+            });
+        });
+    });
+
+    // =====================================
     // FOOD RESTRICTIONS====================
     // =====================================
     // we will want this protected so you have to be logged in to visit

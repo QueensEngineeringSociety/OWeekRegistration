@@ -118,7 +118,7 @@ module.exports = function (app, passport) {
     });
 
     // =====================================
-    // Accessibility ==============================
+    // Accessibility =======================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
@@ -129,6 +129,68 @@ module.exports = function (app, passport) {
                 wufoo: body,
                 operators: con.operators,
                 fields: con.allFields,
+                headings: con.headings
+            });
+        });
+    });
+
+    // =====================================
+    // PayPerson ===========================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/payPerson', isLoggedIn, function (req, res) {
+        var accessFields = con.generalFields;
+        if (isAdmin(req)) {
+            accessFields = con.allFields;
+        }
+        wufoo.makeQuery(query.payInPerson, function (body) {
+            console.log(body);
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: accessFields,
+                headings: con.headings
+            });
+        });
+    });
+
+    // =====================================
+    // PayMail ===========================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/payMail', isLoggedIn, function (req, res) {
+        var accessFields = con.generalFields;
+        if (isAdmin(req)) {
+            accessFields = con.allFields;
+        }
+        wufoo.makeQuery(query.payByMail, function (body) {
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: accessFields,
+                headings: con.headings
+            });
+        });
+    });
+
+    // =====================================
+    // PayOnline ===========================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/payOnline', isLoggedIn, function (req, res) {
+        var accessFields = con.generalFields;
+        if (isAdmin(req)) {
+            accessFields = con.allFields;
+        }
+        wufoo.makeQuery(query.payOnline, function (body) {
+            console.log(body);
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: accessFields,
                 headings: con.headings
             });
         });

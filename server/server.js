@@ -39,3 +39,11 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 // launch ======================================================================
 app.listen(port);
 console.log('Listening on localhost/' + port);
+
+//To do list
+//TODO search filter have headings values (english)
+//TODO row count displayed right of search
+//TODO sort rows by most recent entry
+//TODO admin input group number on person (??? ask Del)
+//TODO take Del through it
+//TODO logout button in top right header

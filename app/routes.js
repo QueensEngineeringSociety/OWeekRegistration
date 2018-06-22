@@ -54,7 +54,8 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/filter', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
-        if (isAdmin(req)) {
+        var admin = isAdmin(req);
+        if (admin) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(query.all, function (body) {
@@ -62,7 +63,8 @@ module.exports = function (app, passport) {
                 wufoo: body,
                 operators: con.operators,
                 fields: accessFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: admin
             });
         });
     });
@@ -74,7 +76,8 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/age', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
-        if (isAdmin(req)) {
+        var admin = isAdmin(req);
+        if (admin) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(query.age, function (body) {
@@ -82,7 +85,8 @@ module.exports = function (app, passport) {
                 wufoo: body,
                 operators: con.operators,
                 fields: accessFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: admin
             });
         });
     });
@@ -98,7 +102,8 @@ module.exports = function (app, passport) {
                 wufoo: body,
                 operators: con.operators,
                 fields: con.allFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: true
             });
         });
     });
@@ -110,12 +115,12 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/primer', requireAdmin, function (req, res) {
         wufoo.makeQuery(query.wantPrimer, function (body) {
-            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
                 fields: con.allFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: true
             });
         });
     });
@@ -127,12 +132,12 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/medical', requireAdmin, function (req, res) {
         wufoo.makeQuery(query.medicalConcerns, function (body) {
-            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
                 fields: con.allFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: true
             });
         });
     });
@@ -144,12 +149,12 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/accessibility', requireAdmin, function (req, res) {
         wufoo.makeQuery(query.accessibilityConcerns, function (body) {
-            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
                 fields: con.allFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: true
             });
         });
     });
@@ -161,16 +166,17 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/payPerson', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
-        if (isAdmin(req)) {
+        var admin = isAdmin(req);
+        if (admin) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(query.payInPerson, function (body) {
-            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
                 fields: accessFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: admin
             });
         });
     });
@@ -182,7 +188,8 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/payMail', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
-        if (isAdmin(req)) {
+        var admin = isAdmin(req);
+        if (admin) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(query.payByMail, function (body) {
@@ -190,7 +197,8 @@ module.exports = function (app, passport) {
                 wufoo: body,
                 operators: con.operators,
                 fields: accessFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: admin
             });
         });
     });
@@ -202,16 +210,17 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/payOnline', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
-        if (isAdmin(req)) {
+        var admin = isAdmin(req);
+        if (admin) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(query.payOnline, function (body) {
-            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
                 fields: accessFields,
-                headings: con.headings
+                headings: con.headings,
+                isAdmin: admin
             });
         });
     });
@@ -225,14 +234,17 @@ module.exports = function (app, passport) {
     app.get('/search', isLoggedIn, function (req, res) {
         if (req.query['field'] && req.query['operator'] && req.query['value']) {
             var accessFields = con.generalFields;
-            if (isAdmin(req)) {
+            var admin = isAdmin(req);
+            if (admin) {
                 accessFields = con.allFields;
             }
             wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
                 res.render('search.ejs', {
                     wufoo: body,
                     operators: con.operators,
-                    fields: accessFields
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
                 });
             });
         }

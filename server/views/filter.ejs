@@ -49,10 +49,10 @@
         </select>
         <input id="value" type="text" name="value">
         <input type="submit" value="OK">
+        <% var wufooJson = JSON.parse(wufoo); %>
+        <% var entries = wufooJson['Entries']; %>
+        <div style="float:right">Rows: <%= entries.length %></div>
     </form>
-    <% var wufooJson = JSON.parse(wufoo); %>
-    <% var entries = wufooJson['Entries']; %>
-    Rows: <%= entries.length %>
     <br>
     <table id="entryTable">
         <tr>

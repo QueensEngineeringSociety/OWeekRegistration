@@ -87,7 +87,11 @@
             <% break; %>
             <% } %>
             <% if(fields.hasOwnProperty(eachField) && valKey === fields[eachField]){ %>
+            <% if (valKey === fields.payStatus && obj.hasOwnProperty(valKey) && obj[valKey] === null){ %>
+            <td>Unpaid</td>
+            <% } else { %>
             <td><%= obj[valKey] %></td>
+            <% } %>
             <% } %>
             <% } %>
             <% } %>

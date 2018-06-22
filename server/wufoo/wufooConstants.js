@@ -26,6 +26,7 @@ exports.allFields = {
     primer: 'Field110',
     emergName: 'Field123',
     emergNumber: 'Field124',
+    payStatus: 'Status',
     payOnline: 'Field129',
     payMail: 'Field133',
     payPerson: 'Field134'
@@ -42,6 +43,7 @@ exports.headings = {
     primer: 'Require Accessibility Primer',
     emergName: 'Emergency Contact Name',
     emergNumber: 'Emergency Contact Number',
+    payStatus: 'Payment Status',
     payment: "Payment Method"
 };
 
@@ -53,6 +55,7 @@ exports.generalFields = {
     under18: 'Field105',
     emergName: 'Field123',
     emergNumber: 'Field124',
+    payStatus: 'Status',
     payOnline: 'Field129',
     payMail: 'Field133',
     payPerson: 'Field134'

@@ -35,7 +35,7 @@
             <!-- use the key as the value - key is english, value is wufoo API query version-->
             <% for (var fieldKey in fields){ %>
             <% if (fields.hasOwnProperty(fieldKey)){ %>
-            <option value="<%= fieldKey %>"><%= fieldKey %></option>
+            <option value="<%= fieldKey %>"><%= headings[fieldKey] %></option>
             <% } %>
             <% } %>
         </select>

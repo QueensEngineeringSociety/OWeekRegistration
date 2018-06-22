@@ -231,7 +231,6 @@ module.exports = function (app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-
     app.get('/search', isLoggedIn, function (req, res) {
         if (req.query['field'] && req.query['operator'] && req.query['value']) {
             var accessFields = con.generalFields;
@@ -240,7 +239,7 @@ module.exports = function (app, passport) {
                 accessFields = con.allFields;
             }
             wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
-                res.render('search.ejs', {
+                res.render('filter.ejs', {
                     wufoo: body,
                     operators: con.operators,
                     fields: accessFields,

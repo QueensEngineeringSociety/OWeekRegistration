@@ -25,9 +25,9 @@ exports.buildQuery = function (partialQueries, grouping) {
 //this checks for that key actually being in the containing object, then puts the value in the query
 exports.customQuery = function (field, operator, value) {
     var f, op;
-    for (var fKey in con.fields) {
-        if (con.fields.hasOwnProperty(fKey) && field === fKey) {
-            f = con.fields[fKey];
+    for (var fKey in con.allFields) {
+        if (con.allFields.hasOwnProperty(fKey) && field === fKey) {
+            f = con.allFields[fKey];
         }
     }
     for (var opKey in con.operators) {
@@ -40,7 +40,7 @@ exports.customQuery = function (field, operator, value) {
 
 //helper for all partial builder queries - sets format and checks field and operator correctness
 function buildPartialQuery(field, value, operator) {
-    if (inObject(con.fields, field) && inObject(con.operators, operator)) {
+    if (inObject(con.allFields, field) && inObject(con.operators, operator)) {
         return field + '+' + operator + '+' + value;
     }
     return "";
@@ -94,7 +94,7 @@ exports.buildEquals = function (field, value) {
 
 //special case, no value, so don't use buildPartialQuery helper
 exports.buildNotNull = function (field) {
-    if (inObject(con.fields, field)) {
+    if (inObject(con.allFields, field)) {
         return field + '+' + con.operators.notNull;
     }
     return "";

@@ -55,7 +55,7 @@ module.exports = function (app, passport) {
     app.get('/filter', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         if (isAdmin(req)) {
-            accessFields = con.adminFields;
+            accessFields = con.allFields;
         }
         wufoo.makeQuery(query.all, function (body) {
             res.render('filter.ejs', {

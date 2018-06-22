@@ -15,20 +15,33 @@ exports.operators = {
 
 //converts an english description of the field to the Field ID in wufoo
 //this object has all fields
-exports.fields = {
+exports.allFields = {
     name: 'Field1',
-    allergies: 'Field6'
+    netid: 'Field3',
+    phoneNumber: 'Field4',
+    under18: 'Field105',
+    foodRestrictions: 'Field106',
+    medicalConcerns: 'Field107',
+    accessibilityConcerns: 'Field108',
+    primer: 'Field110',
+    emergName: 'Field123',
+    emergNumber: 'Field124',
+    payOnline: 'Field129',
+    payMail: 'Field133',
+    payPerson: 'Field134'
 };
 
 //fields that any user can see
 exports.generalFields = {
-    name: 'Field1'
-};
-
-//general fields AND fields only admins can see
-exports.adminFields = {
     name: 'Field1',
-    allergies: 'Field6'
+    netid: 'Field3',
+    phoneNumber: 'Field4',
+    under18: 'Field105',
+    emergName: 'Field123',
+    emergNumber: 'Field124',
+    payOnline: 'Field129',
+    payMail: 'Field133',
+    payPerson: 'Field134'
 };
 
 //AND or OR for filters, has preamble so just tag on con.and or con.or to uri

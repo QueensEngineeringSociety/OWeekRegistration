@@ -5,7 +5,7 @@ var query = require("./wufooQueryBuilder.js");
 
 var properties = PropertiesReader(__dirname + "/../../config/wufoo_properties.ini");
 
-var fields = con.fields;
+var fields = con.allFields;
 var group = con.grouping;
 
 exports.queries = {

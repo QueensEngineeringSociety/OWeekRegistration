@@ -24,8 +24,8 @@
     <form action="/search" method="get">
         <select name="field">
             <!-- use the key as the value - key is english, value is wufoo API query version-->
-            <% for (var fieldKey in fields){ %>
-            <% if (fields.hasOwnProperty(fieldKey)){ %>
+            <% for (var fieldKey in allFields){ %>
+            <% if (allFields.hasOwnProperty(fieldKey)){ %>
             <option value="<%= fieldKey %>"><%= fieldKey %></option>
             <% } %>
             <% } %>
@@ -49,8 +49,8 @@
             <% for (var key in entries[0]){ %>
             <% if (entries[0].hasOwnProperty(key)){ %>
             <% var output = "dont_add"; %>
-            <% for (var eachKey in fields){ %>
-            <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === key){ %>
+            <% for (var eachKey in allFields){ %>
+            <% if (allFields.hasOwnProperty(eachKey) && allFields[eachKey] === key){ %>
             <% output = eachKey %>
             <% } %>
             <% } %>
@@ -66,8 +66,8 @@
             <% var obj = entries[entry] %>
             <% for (var valKey in obj){ %>
             <% if (obj.hasOwnProperty(valKey)){ %>
-            <% for (var eachField in fields){ %>
-            <% if (fields.hasOwnProperty(eachField) && valKey === fields[eachField]){ %>
+            <% for (var eachField in allFields){ %>
+            <% if (allFields.hasOwnProperty(eachField) && valKey === allFields[eachField]){ %>
             <td><%= obj[valKey] %></td>
             <% } %>
             <% } %>

@@ -59,6 +59,7 @@ module.exports = function (app, passport) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(query.all, function (body) {
+            console.log(body);
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,

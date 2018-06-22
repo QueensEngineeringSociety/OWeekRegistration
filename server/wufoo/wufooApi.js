@@ -21,6 +21,7 @@ exports.queries = {
 };
 
 exports.makeQuery = function (queryString, callback) {
+    console.log("Query: " + queryString);
     request({
         uri: properties.get('uri') + queryString,
         method: properties.get('method'),

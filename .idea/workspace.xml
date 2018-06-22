@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/server/views/filter.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/server/views/filter.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,15 +18,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="wufooConstants.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/wufoo/wufooConstants.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="206">
-              <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/server.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -37,8 +30,8 @@
       <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="217" selection-start-line="217" selection-end-line="217" />
+            <state relative-caret-position="189">
+              <caret line="60" column="19" lean-forward="true" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -46,13 +39,22 @@
       <file leaf-file-name="wufooApi.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/wufoo/wufooApi.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="69" selection-start-line="19" selection-start-column="69" selection-end-line="19" selection-end-column="69" />
+            <state relative-caret-position="425">
+              <caret line="25" column="46" selection-start-line="25" selection-start-column="46" selection-end-line="25" selection-end-column="46" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="filter.ejs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="wufooQueryBuilder.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="110" selection-start-line="6" selection-start-column="110" selection-end-line="6" selection-end-column="110" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="filter.ejs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/views/filter.ejs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="272">
@@ -86,17 +88,17 @@
       <find>allFields</find>
       <find>headings: con.headings</find>
       <find>headings</find>
-      <find>heading</find>
       <find>heading:</find>
       <find>console</find>
+      <find>heading</find>
     </findStrings>
     <replaceStrings>
       <replace>entryTable</replace>
       <replace>fields</replace>
       <replace>heading: con.headings, isAdmin: admin</replace>
       <replace>heading</replace>
-      <replace>headings</replace>
       <replace>headings:</replace>
+      <replace>headings</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -133,17 +135,17 @@
         <option value="$PROJECT_DIR$/config/passport.ini" />
         <option value="$PROJECT_DIR$/public/css/table.css" />
         <option value="$PROJECT_DIR$/server/views/index.ejs" />
-        <option value="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" />
         <option value="$PROJECT_DIR$/server/views/login.ejs" />
         <option value="$PROJECT_DIR$/server/views/noprivilege.ejs" />
         <option value="$PROJECT_DIR$/server/views/signup.ejs" />
         <option value="$PROJECT_DIR$/server/views/search.ejs" />
         <option value="$PROJECT_DIR$/config/wufoo_properties.ini" />
         <option value="$PROJECT_DIR$/server/wufoo/wufooConstants.js" />
-        <option value="$PROJECT_DIR$/server/wufoo/wufooApi.js" />
         <option value="$PROJECT_DIR$/server/server.js" />
-        <option value="$PROJECT_DIR$/app/routes.js" />
         <option value="$PROJECT_DIR$/server/views/filter.ejs" />
+        <option value="$PROJECT_DIR$/app/routes.js" />
+        <option value="$PROJECT_DIR$/server/wufoo/wufooApi.js" />
+        <option value="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" />
       </list>
     </option>
   </component>
@@ -297,12 +299,12 @@
       <workItem from="1527795259213" duration="1092000" />
       <workItem from="1527797385695" duration="693000" />
       <workItem from="1528205242814" duration="16000" />
-      <workItem from="1529683214231" duration="9451000" />
+      <workItem from="1529683214231" duration="11005000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="69886000" />
+    <option name="totallyTimeSpent" value="71440000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-5" width="1936" height="1056" extended-state="6" />
@@ -529,24 +531,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/wufoo_properties.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="21" lean-forward="true" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/express/lib/response.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
           <caret line="959" column="6" selection-start-line="959" selection-start-column="6" selection-end-line="959" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
@@ -564,17 +552,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/wufoo/wufooApi.js">
+    <entry file="file://$PROJECT_DIR$/config/wufoo_properties.ini">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="69" selection-start-line="19" selection-start-column="69" selection-end-line="19" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="217" selection-start-line="217" selection-end-line="217" />
+        <state relative-caret-position="51">
+          <caret line="3" column="21" lean-forward="true" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -585,6 +566,27 @@
           <folding>
             <element signature="n#style#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="60" column="19" lean-forward="true" selection-start-line="60" selection-start-column="19" selection-end-line="60" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/wufoo/wufooApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="46" selection-start-line="25" selection-start-column="46" selection-end-line="25" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="110" selection-start-line="6" selection-start-column="110" selection-end-line="6" selection-end-column="110" />
         </state>
       </provider>
     </entry>

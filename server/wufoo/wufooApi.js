@@ -17,7 +17,8 @@ exports.queries = {
     payOnline: query.buildQuery([query.buildEquals(fields.payOnline, "yes")]),
     payInPerson: query.buildQuery([query.buildEquals(fields.payPerson, "yes")]),
     payByMail: query.buildQuery([query.buildEquals(fields.payMail, "yes")]),
-    age: query.buildQuery([query.buildEquals(fields.under18, "yes")])
+    age: query.buildQuery([query.buildEquals(fields.under18, "yes")]),
+    unpaid: query.buildQuery([query.buildNotEqual(fields.payStatus, "paid")])
 };
 
 exports.makeQuery = function (queryString, callback) {

@@ -51,7 +51,10 @@
             <% if (entries[0].hasOwnProperty(key)){ %>
             <% var output = "dont_add"; %>
             <% for (var eachKey in fields){ %>
-            <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === key){ %>
+            <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === fields.payOnline) { %>
+            <% break; %>
+            <% } %>
+            <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === key) { %>
             <% output = eachKey %>
             <% } %>
             <% } %>
@@ -60,20 +63,33 @@
             <% } %>
             <% } %>
             <% } %>
+            <th> Payment Method</th>
         </tr>
         <% for (var entry in entries){ %>
         <% if (entries.hasOwnProperty(entry)){ %>
         <% var obj = entries[entry] %>
         <tr>
-        <% for (var valKey in obj){ %>
-        <% if (obj.hasOwnProperty(valKey)){ %>
+            <% for (var valKey in obj){ %>
+            <% if (obj.hasOwnProperty(valKey)){ %>
             <% for (var eachField in fields){ %>
-            <% if (fields.hasOwnProperty(eachField) && valKey === fields[eachField]){ %>
+            <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
+            <% break; %>
+            <% } %>
+            <% if(fields.hasOwnProperty(eachField) && valKey === fields[eachField]){ %>
             <td><%= obj[valKey] %></td>
             <% } %>
-        <% } %>
-        <% } %>
-        <% } %>
+            <% } %>
+            <% } %>
+            <% if (valKey === fields.payPerson && obj.hasOwnProperty(valKey) && obj[valKey] === "Yes"){ %>
+            <td>In person</td>
+            <% } %>
+            <% if (valKey === fields.payMail && obj.hasOwnProperty(valKey) && obj[valKey] === "Yes"){ %>
+            <td>By mail</td>
+            <% } %>
+            <% if (valKey === fields.payOnline && obj.hasOwnProperty(valKey) && obj[valKey] === "Yes"){ %>
+            <td>Online</td>
+            <% } %>
+            <% } %>
         </tr>
         <% } %>
         <% } %>

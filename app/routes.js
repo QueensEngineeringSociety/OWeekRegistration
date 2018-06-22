@@ -61,7 +61,8 @@ module.exports = function (app, passport) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
-                fields: accessFields
+                fields: accessFields,
+                headings: con.headings
             });
         });
     });
@@ -76,7 +77,7 @@ module.exports = function (app, passport) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
-                fields: con.adminFields //admin page only
+                fields: con.allFields //admin page only
             });
         });
     });

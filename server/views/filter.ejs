@@ -55,7 +55,7 @@
             <% break; %>
             <% } %>
             <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === key) { %>
-            <% output = eachKey %>
+            <% output = headings[eachKey] %>
             <% } %>
             <% } %>
             <% if (output !== "dont_add"){ %>
@@ -63,7 +63,7 @@
             <% } %>
             <% } %>
             <% } %>
-            <th> Payment Method</th>
+            <th><%= headings.payment %></th>
         </tr>
         <% for (var entry in entries){ %>
         <% if (entries.hasOwnProperty(entry)){ %>

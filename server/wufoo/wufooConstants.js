@@ -31,6 +31,20 @@ exports.allFields = {
     payPerson: 'Field134'
 };
 
+exports.headings = {
+    name: 'Name',
+    netid: 'NetID',
+    phoneNumber: 'Phone Number',
+    under18: 'Under 18?',
+    foodRestrictions: 'Food Restrictions',
+    medicalConcerns: 'Medical Issues',
+    accessibilityConcerns: 'Accessibility Issues',
+    primer: 'Require Accessibility Primer',
+    emergName: 'Emergency Contact Name',
+    emergNumber: 'Emergency Contact Number',
+    payment: "Payment Method"
+};
+
 //fields that any user can see
 exports.generalFields = {
     name: 'Field1',

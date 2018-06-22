@@ -68,16 +68,68 @@ module.exports = function (app, passport) {
     });
 
     // =====================================
-    // ALLERGIES ===========================
+    // FOOD RESTRICTIONS====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/allergies', requireAdmin, function (req, res) {
-        wufoo.makeQuery(query.allergy, function (body) {
+    app.get('/food_restrictions', requireAdmin, function (req, res) {
+        wufoo.makeQuery(query.foodRestrictions, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
-                fields: con.allFields //admin page only
+                fields: con.allFields,
+                headings: con.headings
+            });
+        });
+    });
+
+    // =====================================
+    // Primer ==============================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/primer', requireAdmin, function (req, res) {
+        wufoo.makeQuery(query.wantPrimer, function (body) {
+            console.log(body);
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: con.allFields,
+                headings: con.headings
+            });
+        });
+    });
+
+    // =====================================
+    // Medical ==============================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/medical', requireAdmin, function (req, res) {
+        wufoo.makeQuery(query.medicalConcerns, function (body) {
+            console.log(body);
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: con.allFields,
+                headings: con.headings
+            });
+        });
+    });
+
+    // =====================================
+    // Accessibility ==============================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/accessibility', requireAdmin, function (req, res) {
+        wufoo.makeQuery(query.accessibilityConcerns, function (body) {
+            console.log(body);
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: con.allFields,
+                headings: con.headings
             });
         });
     });
@@ -92,7 +144,7 @@ module.exports = function (app, passport) {
         if (req.query['field'] && req.query['operator'] && req.query['value']) {
             var accessFields = con.generalFields;
             if (isAdmin(req)) {
-                accessFields = con.adminFields;
+                accessFields = con.allFields;
             }
             wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
                 res.render('search.ejs', {

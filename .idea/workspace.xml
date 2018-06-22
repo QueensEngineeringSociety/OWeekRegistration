@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/views/search.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/server/views/search.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooConstants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" afterDir="false" />
-    </list>
+    <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -21,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="wufooConstants.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="wufooConstants.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/wufoo/wufooConstants.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="38" column="24" selection-start-line="38" selection-start-column="24" selection-end-line="38" selection-end-column="24" />
+            <state relative-caret-position="530">
+              <caret line="41" column="26" lean-forward="true" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -39,7 +32,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="filter.ejs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="filter.ejs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/views/filter.ejs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="788">
@@ -68,9 +61,11 @@
       <find>4.2.</find>
       <find>profile</find>
       <find>customers</find>
+      <find>allFields</find>
     </findStrings>
     <replaceStrings>
       <replace>entryTable</replace>
+      <replace>fields</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -271,15 +266,16 @@
       <workItem from="1527795259213" duration="1092000" />
       <workItem from="1527797385695" duration="693000" />
       <workItem from="1528205242814" duration="16000" />
-      <workItem from="1529683214231" duration="1891000" />
+      <workItem from="1529683214231" duration="2396000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="62326000" />
+    <option name="totallyTimeSpent" value="62831000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-5" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12012645" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -289,7 +285,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.4960212" visible="true" weight="0.27342048" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4960212" weight="0.27342048" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -538,13 +534,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/filter.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="788">
-          <caret line="70" column="75" selection-start-line="70" selection-start-column="75" selection-end-line="70" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="489">
@@ -554,8 +543,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/wufoo/wufooConstants.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="38" column="24" selection-start-line="38" selection-start-column="24" selection-end-line="38" selection-end-column="24" />
+        <state relative-caret-position="530">
+          <caret line="41" column="26" lean-forward="true" selection-start-line="41" selection-start-column="26" selection-end-line="41" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/views/filter.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="788">
+          <caret line="70" column="75" selection-start-line="70" selection-start-column="75" selection-end-line="70" selection-end-column="75" />
         </state>
       </provider>
     </entry>

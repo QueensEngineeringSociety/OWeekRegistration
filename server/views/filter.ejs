@@ -61,22 +61,22 @@
             <% } %>
             <% } %>
         </tr>
+        <% for (var entry in entries){ %>
+        <% if (entries.hasOwnProperty(entry)){ %>
+        <% var obj = entries[entry] %>
         <tr>
-            <% for (var entry in entries){ %>
-            <% if (entries.hasOwnProperty(entry)){ %>
-            <% var obj = entries[entry] %>
-            <% for (var valKey in obj){ %>
-            <% if (obj.hasOwnProperty(valKey)){ %>
+        <% for (var valKey in obj){ %>
+        <% if (obj.hasOwnProperty(valKey)){ %>
             <% for (var eachField in fields){ %>
             <% if (fields.hasOwnProperty(eachField) && valKey === fields[eachField]){ %>
             <td><%= obj[valKey] %></td>
             <% } %>
-            <% } %>
-            <% } %>
-            <% } %>
-            <% } %>
-            <% } %>
+        <% } %>
+        <% } %>
+        <% } %>
         </tr>
+        <% } %>
+        <% } %>
     </table>
 </div>
 </body>

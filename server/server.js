@@ -40,5 +40,6 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 app.listen(port);
 console.log('Listening on localhost/' + port);
 
-//TODO admin input group number on person (??? ask Del)
-//TODO take Del through it
+//payment heading and status switch
+//pronoun field
+//pull comments

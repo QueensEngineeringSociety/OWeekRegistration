@@ -31,6 +31,41 @@ exports.makeQuery = function (queryString, callback) {
             'sendImmediately': false
         }
     }, function (error, response, body) {
-        callback(body);
+        getComments().then(function (allComments) {
+            var entries = JSON.parse(body);
+            for (var i = 0; i < entries["Entries"].length; ++i) {
+                ((entries["Entries"])[i])["comment"] = getEntryComment(((entries["Entries"])[i])["EntryId"], allComments);
+            }
+            callback(JSON.stringify(entries)); //make it a string so ejs files don't need to be changed (they expect json string)
+        }).catch(function (err) {
+            console.log("Error getting comments: " + err);
+        });
     });
 };
+
+function getComments() {
+    return new Promise(function (res, rej) {
+        request({
+            uri: properties.get('comments_uri'),
+            method: properties.get('method'),
+            auth: {
+                'username': properties.get('username'),
+                'password': properties.get('password'),
+                'sendImmediately': false
+            }
+        }, function (error, response, body) {
+            return res(body);
+        });
+    });
+}
+
+function getEntryComment(entryId, allComments) {
+    var comments = (JSON.parse(allComments))['Comments'];
+    for (var comment in comments) {
+        if (comment["CommentId"] === entryId) {
+            console.log(comment["Text"]);
+            return comment["Text"];
+        }
+    }
+    return "";
+}

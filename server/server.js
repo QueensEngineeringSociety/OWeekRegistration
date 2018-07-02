@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({extended: true})); // get information from html f
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.set('view engine', 'ejs'); // set up ejs for templating
+app.set('views',path.join(__dirname,'../public/views'));
 
 // required for passport
 app.use(session({secret: properties.get('secret'), resave: true, saveUninitialized: true}));

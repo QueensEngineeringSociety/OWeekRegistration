@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/app/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/views/filter.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/server/views/filter.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooConstants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/filter.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/filter.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/index.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/index.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/noprivilege.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/noprivilege.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/views/signup.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/signup.ejs" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,20 +22,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="server.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="410">
-              <caret line="35" column="50" selection-start-line="35" selection-start-column="50" selection-end-line="35" selection-end-column="50" />
+            <state relative-caret-position="459">
+              <caret line="27" column="39" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="routes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="150" column="33" lean-forward="true" selection-start-line="150" selection-start-column="33" selection-end-line="150" selection-end-column="33" />
+            <state relative-caret-position="187">
+              <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -42,8 +43,8 @@
       <file leaf-file-name="wufooApi.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/wufoo/wufooApi.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="21" column="54" selection-start-line="21" selection-start-column="54" selection-end-line="21" selection-end-column="54" />
+            <state relative-caret-position="357">
+              <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -51,16 +52,16 @@
       <file leaf-file-name="wufooQueryBuilder.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="768">
-              <caret line="114" column="105" selection-start-line="114" selection-start-column="105" selection-end-line="114" selection-end-column="105" />
+            <state relative-caret-position="478">
+              <caret line="114" column="147" selection-start-line="114" selection-start-column="147" selection-end-line="114" selection-end-column="147" />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="filter.ejs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/views/filter.ejs">
+        <entry file="file://$PROJECT_DIR$/public/views/filter.ejs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-34">
+            <state relative-caret-position="272">
               <caret line="25" column="78" selection-start-line="25" selection-start-column="78" selection-end-line="25" selection-end-column="78" />
             </state>
           </provider>
@@ -150,12 +151,12 @@
         <option value="$PROJECT_DIR$/server/views/signup.ejs" />
         <option value="$PROJECT_DIR$/server/views/search.ejs" />
         <option value="$PROJECT_DIR$/config/wufoo_properties.ini" />
-        <option value="$PROJECT_DIR$/server/server.js" />
         <option value="$PROJECT_DIR$/server/wufoo/wufooConstants.js" />
         <option value="$PROJECT_DIR$/server/views/filter.ejs" />
         <option value="$PROJECT_DIR$/server/wufoo/wufooApi.js" />
         <option value="$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js" />
         <option value="$PROJECT_DIR$/app/routes.js" />
+        <option value="$PROJECT_DIR$/server/server.js" />
       </list>
     </option>
   </component>
@@ -194,28 +195,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="OWeekRegistration" type="b2602c69:ProjectViewProjectNode" />
               <item name="OWeekRegistration" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OWeekRegistration" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OWeekRegistration" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OWeekRegistration" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OWeekRegistration" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OWeekRegistration" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OWeekRegistration" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="OWeekRegistration" type="b2602c69:ProjectViewProjectNode" />
@@ -227,23 +213,10 @@
               <item name="OWeekRegistration" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="OWeekRegistration" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OWeekRegistration" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="OWeekRegistration" type="b2602c69:ProjectViewProjectNode" />
-              <item name="OWeekRegistration" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
-              <item name="wufoo" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -306,12 +279,13 @@
       <workItem from="1529683214231" duration="13052000" />
       <workItem from="1530116916125" duration="1467000" />
       <workItem from="1530131663251" duration="596000" />
-      <workItem from="1530536833926" duration="7719000" />
+      <workItem from="1530536833926" duration="7976000" />
+      <workItem from="1530547728943" duration="259000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83269000" />
+    <option name="totallyTimeSpent" value="83785000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="-5" width="1936" height="1056" extended-state="6" />
@@ -320,7 +294,6 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5039788" side_tool="true" weight="0.4850657" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -333,6 +306,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -368,7 +342,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/filter.ejs">
+    <entry file="file://$PROJECT_DIR$/public/views/filter.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="725">
           <caret line="29" column="55" selection-start-line="29" selection-start-column="55" selection-end-line="29" selection-end-column="55" />
@@ -461,28 +435,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/index.ejs">
+    <entry file="file://$PROJECT_DIR$/public/views/index.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="41">
           <caret line="3" column="6" lean-forward="true" selection-start-line="3" selection-start-column="6" selection-end-line="4" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/login.ejs">
+    <entry file="file://$PROJECT_DIR$/public/views/login.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/noprivilege.ejs">
+    <entry file="file://$PROJECT_DIR$/public/views/noprivilege.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/signup.ejs">
+    <entry file="file://$PROJECT_DIR$/public/views/signup.ejs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
@@ -546,27 +520,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="410">
-          <caret line="35" column="50" selection-start-line="35" selection-start-column="50" selection-end-line="35" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/views/filter.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-34">
-          <caret line="25" column="78" selection-start-line="25" selection-start-column="78" selection-end-line="25" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="768">
-          <caret line="114" column="105" selection-start-line="114" selection-start-column="105" selection-end-line="114" selection-end-column="105" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/wufoo/wufooConstants.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -576,15 +529,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/server/wufoo/wufooApi.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="21" column="54" selection-start-line="21" selection-start-column="54" selection-end-line="21" selection-end-column="54" />
+        <state relative-caret-position="357">
+          <caret line="21" column="34" selection-start-line="21" selection-start-column="34" selection-end-line="21" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/wufoo/wufooQueryBuilder.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="114" column="147" selection-start-line="114" selection-start-column="147" selection-end-line="114" selection-end-column="147" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/views/filter.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="25" column="78" selection-start-line="25" selection-start-column="78" selection-end-line="25" selection-end-column="78" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="150" column="33" lean-forward="true" selection-start-line="150" selection-start-column="33" selection-end-line="150" selection-end-column="33" />
+        <state relative-caret-position="187">
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="39" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
         </state>
       </provider>
     </entry>

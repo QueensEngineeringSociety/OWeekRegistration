@@ -18,7 +18,8 @@ exports.queries = {
     payInPerson: query.buildQuery([query.buildEquals(fields.payPerson, "yes")]),
     payByMail: query.buildQuery([query.buildEquals(fields.payMail, "yes")]),
     age: query.buildQuery([query.buildEquals(fields.under18, "yes")]),
-    unpaid: query.buildQuery([query.buildNotEqual(fields.payStatus, "paid")])
+    unpaid: query.buildQuery([query.buildNotEqual(fields.payStatus, "paid")]),
+    pronoun: query.buildPronouns()
 };
 
 exports.makeQuery = function (queryString, callback) {
@@ -44,7 +45,7 @@ exports.makeQuery = function (queryString, callback) {
 };
 
 function getComments() {
-    return new Promise(function (res, rej) {
+    return new Promise(function (res) {
         request({
             uri: properties.get('comments_uri'),
             method: properties.get('method'),
@@ -63,7 +64,6 @@ function getEntryComment(entryId, allComments) {
     var comments = (JSON.parse(allComments))['Comments'];
     for (var i = 0; i < comments.length; ++i) {
         if ((comments[i])["CommentId"] == entryId) { //entry ID comes in as string
-            console.log(comments[i]);
             return (comments[i])["Text"];
         }
     }

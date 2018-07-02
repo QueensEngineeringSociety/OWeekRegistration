@@ -142,6 +142,28 @@ module.exports = function (app, passport) {
     });
 
     // =====================================
+    // Pronouns ============================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/pronouns', requireAdmin, function (req, res) {
+        var accessFields = con.generalFields;
+        var admin = isAdmin(req);
+        if (admin) {
+            accessFields = con.allFields;
+        }
+        wufoo.makeQuery(query.pronoun, function (body) {
+            res.render('filter.ejs', {
+                wufoo: body,
+                operators: con.operators,
+                fields: accessFields,
+                headings: con.headings,
+                isAdmin: admin
+            });
+        });
+    });
+
+    // =====================================
     // Accessibility =======================
     // =====================================
     // we will want this protected so you have to be logged in to visit

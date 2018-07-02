@@ -39,7 +39,3 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 // launch ======================================================================
 app.listen(port);
 console.log('Listening on localhost/' + port);
-
-//paymentMethod heading and status switch
-//pronoun field
-//pull comments

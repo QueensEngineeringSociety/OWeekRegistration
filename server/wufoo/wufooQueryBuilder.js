@@ -17,7 +17,7 @@ exports.buildQuery = function (partialQueries, grouping) {
     }
     if (typeof grouping !== "undefined" && inObject(con.grouping, grouping))
         queryString += grouping;
-    queryString +="&sort=EntryId&sortDirection=DESC&system=true"; //for paymentMethod status and newest entries first
+    queryString += "&sort=EntryId&sortDirection=DESC&system=true"; //for paymentMethod status and newest entries first
     return queryString;
 };
 
@@ -109,3 +109,8 @@ function inObject(obj, value) {
     }
     return false;
 }
+
+exports.buildPronouns = function () {
+    return "?Filter1=" + con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "She/Her&Filter2=" +
+        con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "He/Him&Filter3=" + con.allFields.pronouns + '+' + con.operators.notNull + "&match=" + con.grouping.and;
+};

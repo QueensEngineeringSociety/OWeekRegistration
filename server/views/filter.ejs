@@ -58,24 +58,17 @@
     </form>
     <br>
     <table id="entryTable">
-        <tr>
-            <% for (var key in entries[0]){ %>
-            <% if (entries[0].hasOwnProperty(key)){ %>
-            <% var output = "dont_add"; %>
-            <% for (var eachKey in fields){ %>
-            <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === fields.payOnline) { %>
-            <% break; %>
-            <% } %>
-            <% if (fields.hasOwnProperty(eachKey) && fields[eachKey] === key) { %>
-            <% output = headings[eachKey] %>
-            <% } %>
-            <% } %>
-            <% if (output !== "dont_add"){ %>
-            <th><%= output %></th>
-            <% } %>
-            <% } %>
-            <% } %>
-            <th><%= headings.payment %></th>
+        <% for (var eachField in fields){ %>
+        <% if (headings.hasOwnProperty(eachField)){ %>
+        <% console.log(eachField) %>
+        <% if (eachField === "payStatus"){ %>
+        <th><%= headings.paymentMethod %></th>
+        <th><%= headings.payStatus %></th>
+        <% } else { %>
+        <th><%= headings[eachField] %></th>
+        <% } %>
+        <% } %>
+        <% } %>
         </tr>
         <% for (var entry in entries){ %>
         <% if (entries.hasOwnProperty(entry)){ %>

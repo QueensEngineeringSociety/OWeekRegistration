@@ -26,10 +26,11 @@ exports.allFields = {
     primer: 'Field110',
     emergName: 'Field123',
     emergNumber: 'Field124',
-    payStatus: 'Status',
     payOnline: 'Field129',
     payMail: 'Field133',
-    payPerson: 'Field134'
+    payPerson: 'Field134',
+    payStatus: 'Status',
+    comment: 'comment'
 };
 
 exports.headings = {
@@ -44,7 +45,8 @@ exports.headings = {
     emergName: 'Emergency Contact Name',
     emergNumber: 'Emergency Contact Number',
     payStatus: 'Payment Status',
-    payment: "Payment Method"
+    paymentMethod: "Payment Method",
+    comment: 'Comments'
 };
 
 //fields that any user can see
@@ -58,7 +60,8 @@ exports.generalFields = {
     payStatus: 'Status',
     payOnline: 'Field129',
     payMail: 'Field133',
-    payPerson: 'Field134'
+    payPerson: 'Field134',
+    comment: 'comment'
 };
 
 //AND or OR for filters, has preamble so just tag on con.and or con.or to uri

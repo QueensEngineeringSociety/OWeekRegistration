@@ -4,7 +4,7 @@ var con = require("./wufooConstants");
 //grouping is optional - if undefined it is ignored.
 exports.buildQuery = function (partialQueries, grouping) {
     if (typeof partialQueries === "undefined") {
-        return "?sort=EntryId&sortDirection=DESC&system=true"; //for payment status and newest entries first. No data passed in, so just take all entries
+        return "?sort=EntryId&sortDirection=DESC&system=true"; //for paymentMethod status and newest entries first. No data passed in, so just take all entries
     }
     var queryString = "?";
     var length = partialQueries.length;
@@ -17,7 +17,7 @@ exports.buildQuery = function (partialQueries, grouping) {
     }
     if (typeof grouping !== "undefined" && inObject(con.grouping, grouping))
         queryString += grouping;
-    queryString +="&sort=EntryId&sortDirection=DESC&system=true"; //for payment status and newest entries first
+    queryString +="&sort=EntryId&sortDirection=DESC&system=true"; //for paymentMethod status and newest entries first
     return queryString;
 };
 

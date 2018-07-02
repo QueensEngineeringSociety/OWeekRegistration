@@ -60,7 +60,6 @@
     <table id="entryTable">
         <% for (var eachField in fields){ %>
         <% if (headings.hasOwnProperty(eachField)){ %>
-        <% console.log(eachField) %>
         <% if (eachField === "payStatus"){ %>
         <th><%= headings.paymentMethod %></th>
         <th><%= headings.payStatus %></th>
@@ -72,31 +71,34 @@
         </tr>
         <% for (var entry in entries){ %>
         <% if (entries.hasOwnProperty(entry)){ %>
-        <% var obj = entries[entry] %>
+        <% var eachEntry = entries[entry] %>
         <tr>
-            <% for (var valKey in obj){ %>
-            <% if (obj.hasOwnProperty(valKey)){ %>
-            <% for (var eachField in fields){ %>
+            <% for (var valKey in eachEntry){ %>
+            <% if (eachEntry.hasOwnProperty(valKey)){ %>
+            <% for (var field in fields){ %>
             <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
             <% break; %>
             <% } %>
-            <% if(fields.hasOwnProperty(eachField) && valKey === fields[eachField]){ %>
-            <% if (valKey === fields.payStatus && obj.hasOwnProperty(valKey) && obj[valKey] === null){ %>
+            <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
+            <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
             <td>Unpaid</td>
             <% } else { %>
-            <td><%= obj[valKey] %></td>
+            <td><%= eachEntry[valKey] %></td>
             <% } %>
             <% } %>
             <% } %>
             <% } %>
-            <% if (valKey === fields.payPerson && obj.hasOwnProperty(valKey) && obj[valKey] === "Yes"){ %>
+            <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
             <td>In person</td>
             <% } %>
-            <% if (valKey === fields.payMail && obj.hasOwnProperty(valKey) && obj[valKey] === "Yes"){ %>
+            <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
             <td>By mail</td>
             <% } %>
-            <% if (valKey === fields.payOnline && obj.hasOwnProperty(valKey) && obj[valKey] === "Yes"){ %>
+            <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
             <td>Online</td>
+            <% } %>
+            <% if (valKey === fields.comment && eachEntry.hasOwnProperty(valKey)){ %>
+            <td><%= eachEntry[valKey] %></td>
             <% } %>
             <% } %>
         </tr>

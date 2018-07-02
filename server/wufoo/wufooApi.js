@@ -61,10 +61,10 @@ function getComments() {
 
 function getEntryComment(entryId, allComments) {
     var comments = (JSON.parse(allComments))['Comments'];
-    for (var comment in comments) {
-        if (comment["CommentId"] === entryId) {
-            console.log(comment["Text"]);
-            return comment["Text"];
+    for (var i = 0; i < comments.length; ++i) {
+        if ((comments[i])["CommentId"] == entryId) { //entry ID comes in as string
+            console.log(comments[i]);
+            return (comments[i])["Text"];
         }
     }
     return "";

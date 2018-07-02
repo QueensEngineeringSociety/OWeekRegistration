@@ -22,7 +22,6 @@ module.exports = function (app, passport) {
     });
 
     // process the login form
-    // process the login form
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/filter', // redirect to the secure profile section
         failureRedirect: '/login', // redirect back to the signup page if there is an error
@@ -30,17 +29,16 @@ module.exports = function (app, passport) {
     }));
 
     // =====================================
-    // SIGN-UP ==============================
+    //USER MGM =============================
     // =====================================
-    // show the sign-up form
-    app.get('/signup', function (req, res) {
-
+    // show the user addition form
+    app.get('/users', requireAdmin, function (req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', {message: req.flash('signupMessage')});
+        res.render('users.ejs', {message: req.flash('signupMessage')});
     });
 
     // process the sign-up form
-    app.post('/signup', passport.authenticate('local-signup', {
+    app.post('/signup', requireAdmin, passport.authenticate('local-signup', {
         successRedirect: '/filter', // redirect to the secure profile section
         failureRedirect: '/signup', // redirect back to the sign-up page if there is an error
         failureFlash: true // allow flash messages

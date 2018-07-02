@@ -48,12 +48,11 @@ module.exports = function (passport) {
                         return done(err);
                     }
                     if (rows.length) {
-                        return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
                     } else {
                         // if there is no user with that username, then create that user
                         var newUser = new User(req.body.first_name, req.body.last_name, email, password, req.body.is_admin === "admin");
-                        var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,admin) values (?,?,?,?,?,?);";
-                        console.log(JSON.stringify(req.body));
+                        var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
                         dbConn.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
                             function (err, rows) {
                                 if (err)

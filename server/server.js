@@ -39,4 +39,5 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 
 // launch ======================================================================
 app.listen(port);
-console.log('Listening on localhost/' + port);
+
+//TODO add new user signs you in as that user - take out of passport i think

@@ -18,15 +18,33 @@
 
     <div class="col-sm-6 col-sm-offset-3">
 
-        <h1><span class="fa fa-sign-in"></span> User Add</h1>
+        <h1><span class="fa fa-sign-in"></span> User Management</h1>
 
         <!-- show any messages that come back with authentication -->
         <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
         <% } %>
 
+        <!-- JS to edit action to signup/useredit depending on choice -->
+        <script>
+            function changeAction() {
+                var form = document.getElementById('user_form');
+                if (document.getElementById('new_user').checked) {
+                    form.action = "/signup";
+                } else {
+                    form.action = "/useredit";
+                }
+            }
+        </script>
+
         <!-- USER ADD FORM -->
-        <form action="/signup" method="post">
+        <form action="/signup" method="post" id="user_form">
+            <div class="form-group">
+                <input type="radio" id="new_user" name="user_mgm" value="new_user" checked>
+                <label for="new_user">New User</label>
+                <input type="radio" id="edit_user" name="user_mgm" value="edit_user">
+                <label for="edit_user">Edit Existing User</label>
+            </div>
             <div class="form-group">
                 <label>First Name</label>
                 <input type="text" class="form-control" name="first_name">
@@ -49,7 +67,7 @@
                 <input type="radio" id="admin" name="is_admin" value="admin">
                 <label for="admin">Admin</label>
             </div>
-            <button type="submit" class="btn btn-warning btn-lg">Add</button>
+            <button type="submit" class="btn btn-warning btn-lg" onclick="changeAction()">Submit</button>
         </form>
 
         <hr>

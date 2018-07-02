@@ -1,6 +1,8 @@
 var wufoo = require("../server/wufoo/wufooApi.js");
 var builder = require("../server/wufoo/wufooQueryBuilder");
+var dbConn = require("../config/database.js");
 var con = require("../server/wufoo/wufooConstants");
+var User = require("./models/user");
 var query = wufoo.queries;
 
 module.exports = function (app, passport) {
@@ -37,12 +39,34 @@ module.exports = function (app, passport) {
         res.render('users.ejs', {message: req.flash('signupMessage')});
     });
 
-    // process the sign-up form
+    // process the sign-up of new user
     app.post('/signup', requireAdmin, passport.authenticate('local-signup', {
         successRedirect: '/filter', // redirect to the secure profile section
-        failureRedirect: '/signup', // redirect back to the sign-up page if there is an error
+        failureRedirect: '/users', // redirect back to the sign-up page if there is an error
         failureFlash: true // allow flash messages
     }));
+
+    // process the edit of a user
+    app.post('/useredit', requireAdmin, function (req, res) {
+        dbConn.query("SELECT * FROM users WHERE email = ?", [req.body.email], function (err, rows) {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+            if (rows.length) {
+                var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
+                var query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
+                dbConn.query(query, [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin, rows[0].id],
+                    function (err, rows) {
+                        if (err)
+                            console.log("ERROR: " + err);
+                        replacementUser.id = rows.insertId;
+                        res.render('users.ejs', {message: req.flash('signupMessage')});
+                    });
+            } else {
+                res.render('noprivilege.ejs'); //no privilege to edit non-existent user
+            }
+        });
+    });
 
     // =====================================
     // FILTER SECTION =====================

@@ -97,9 +97,6 @@
             <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
             <td>Online</td>
             <% } %>
-            <% if (valKey === fields.comment && eachEntry.hasOwnProperty(valKey)){ %>
-            <td><%= eachEntry[valKey] %></td>
-            <% } %>
             <% } %>
         </tr>
         <% } %>

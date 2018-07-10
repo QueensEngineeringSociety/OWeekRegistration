@@ -5,6 +5,8 @@ var con = require("../server/wufoo/wufooConstants");
 var User = require("./models/user");
 var query = wufoo.queries;
 
+var strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
+
 module.exports = function (app, passport) {
 
     // =====================================
@@ -54,10 +56,12 @@ module.exports = function (app, passport) {
             if (err) {
                 console.log("ERROR: " + err);
             }
-            if (rows.length) {
+            if (rows.length || !strongPassRegex.test(req.body.password)) {
                 res.render('noprivilege.ejs'); //no privilege to edit non-existent user TODO change to user error page
             } else {
                 // if there is no user with that username, then create that user
+                console.log(strongPassRegex);
+                console.log(strongPassRegex.test(req.body.password));
                 var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, isAdmin(req));
                 var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
                 dbConn.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
@@ -77,7 +81,7 @@ module.exports = function (app, passport) {
             if (err) {
                 console.log("ERROR: " + err);
             }
-            if (rows.length) {
+            if (rows.length && strongPassRegex.test(req.body.password)) {
                 var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, isAdmin(req));
                 var query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
                 dbConn.query(query, [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin, rows[0].id],

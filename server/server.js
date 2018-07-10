@@ -41,4 +41,3 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 app.listen(port);
 
 //TODO not getting all entries
-//TODO if signed in bypass login

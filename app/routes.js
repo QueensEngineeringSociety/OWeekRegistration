@@ -11,8 +11,13 @@ module.exports = function (app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get('/', function (req, res) {
-        res.render('index.ejs'); // load the index.ejs file
-    });
+            if (req.user) {
+                res.redirect('filter');
+            } else {
+                res.render('index.ejs'); // load the index.ejs file}
+            }
+        }
+    );
 
     // =====================================
     // LOGIN ===============================
@@ -20,7 +25,11 @@ module.exports = function (app, passport) {
     // show the login form
     app.get('/login', function (req, res) {
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', {message: req.flash('loginMessage')});
+        if (req.user) {
+            res.redirect('filter');
+        } else {
+            res.render('login.ejs', {message: req.flash('loginMessage')});
+        }
     });
 
     // process the login form
@@ -348,7 +357,6 @@ module.exports = function (app, passport) {
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();

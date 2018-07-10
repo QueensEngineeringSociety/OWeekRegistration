@@ -40,11 +40,27 @@ module.exports = function (app, passport) {
     });
 
     // process the sign-up of new user
-    app.post('/signup', requireAdmin, passport.authenticate('local-signup', {
-        successRedirect: '/filter', // redirect to the secure profile section
-        failureRedirect: '/users', // redirect back to the sign-up page if there is an error
-        failureFlash: true // allow flash messages
-    }));
+    app.post('/signup', requireAdmin, function (req, res) {
+        dbConn.query("SELECT * FROM users WHERE email = ?", [req.body.email], function (err, rows) {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+            if (rows.length) {
+                res.render('noprivilege.ejs'); //no privilege to edit non-existent user TODO change to user error page
+            } else {
+                // if there is no user with that username, then create that user
+                var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, isAdmin(req));
+                var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
+                dbConn.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
+                    function (err, rows) {
+                        if (err)
+                            console.log("ERROR: " + err);
+                        newUser.id = rows.insertId;
+                        res.render('users.ejs', {message: req.flash('signupMessage')});
+                    });
+            }
+        });
+    });
 
     // process the edit of a user
     app.post('/useredit', requireAdmin, function (req, res) {
@@ -53,7 +69,7 @@ module.exports = function (app, passport) {
                 console.log("ERROR: " + err);
             }
             if (rows.length) {
-                var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
+                var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, isAdmin(req));
                 var query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
                 dbConn.query(query, [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin, rows[0].id],
                     function (err, rows) {
@@ -63,7 +79,7 @@ module.exports = function (app, passport) {
                         res.render('users.ejs', {message: req.flash('signupMessage')});
                     });
             } else {
-                res.render('noprivilege.ejs'); //no privilege to edit non-existent user
+                res.render('noprivilege.ejs'); //no privilege to edit non-existent user TODO change to user error page
             }
         });
     });

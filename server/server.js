@@ -40,4 +40,5 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 // launch ======================================================================
 app.listen(port);
 
-//TODO add new user signs you in as that user - take out of passport i think
+//TODO not getting all entries
+//TODO if signed in bypass login

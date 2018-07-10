@@ -30,7 +30,7 @@ module.exports = function (passport) {
     // =========================================================================
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
-
+/* not needed unless doing individual sign up not by admin
     passport.use(
         'local-signup',
         new LocalStrategy({
@@ -64,7 +64,7 @@ module.exports = function (passport) {
                 });
             })
     );
-
+*/
     // =========================================================================
     // LOCAL LOGIN =============================================================
     // =========================================================================

@@ -56,8 +56,10 @@ module.exports = function (app, passport) {
             if (err) {
                 console.log("ERROR: " + err);
             }
-            if (rows.length || !strongPassRegex.test(req.body.password)) {
-                res.render('noprivilege.ejs'); //no privilege to edit non-existent user TODO change to user error page
+            if (rows.length) {
+                res.render('error.ejs', {errorMessage: "That email already exists"});
+            } else if (!strongPassRegex.test(req.body.password)) {
+                res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
             } else {
                 // if there is no user with that username, then create that user
                 console.log(strongPassRegex);
@@ -81,7 +83,12 @@ module.exports = function (app, passport) {
             if (err) {
                 console.log("ERROR: " + err);
             }
-            if (rows.length && strongPassRegex.test(req.body.password)) {
+            if (!rows.length) {
+
+                res.render('error.ejs', {errorMessage: "That email doesn't exist"});
+            } else if (!strongPassRegex.test(req.body.password)) {
+                res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
+            } else {
                 var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, isAdmin(req));
                 var query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
                 dbConn.query(query, [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin, rows[0].id],
@@ -91,8 +98,6 @@ module.exports = function (app, passport) {
                         replacementUser.id = rows.insertId;
                         res.render('users.ejs', {message: req.flash('signupMessage')});
                     });
-            } else {
-                res.render('noprivilege.ejs'); //no privilege to edit non-existent user TODO change to user error page
             }
         });
     });
@@ -346,8 +351,8 @@ module.exports = function (app, passport) {
     // =====================================
     // NOT AUTHORIZED ======================
     // =====================================
-    app.get('/noprivilege', isLoggedIn, function (req, res) {
-        res.render('noprivilege.ejs');
+    app.get('/error', isLoggedIn, function (req, res) {
+        res.render('error.ejs',{errorMessage: "You don't have the privileges to see this."});
     });
 
     // =====================================
@@ -375,7 +380,7 @@ function requireAdmin(req, res, next) {
     } else if (req.user && req.user.is_admin) {
         return next();
     } else {
-        res.redirect('/noprivilege');
+        res.redirect('/error');
     }
 }
 

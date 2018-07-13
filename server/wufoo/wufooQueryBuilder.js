@@ -21,6 +21,11 @@ exports.buildQuery = function (partialQueries, grouping) {
     return queryString;
 };
 
+exports.buildIssueQuery = function (field) {
+    return exports.buildQuery([exports.buildNotNull(field), exports.buildNotEqual(field, "none"),
+        exports.buildNotEqual(field, "n/a"), exports.buildNotEqual(field, "no"), exports.buildNotEqual(field, "na")], con.grouping.and);
+};
+
 //for the form where user chooses the query
 //the form has the key names as those are the english ones
 //this checks for that key actually being in the containing object, then puts the value in the query
@@ -112,5 +117,7 @@ function inObject(obj, value) {
 
 exports.buildPronouns = function () {
     return "?Filter1=" + con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "She/Her&Filter2=" +
-        con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "He/Him&Filter3=" + con.allFields.pronouns + '+' + con.operators.notNull + "&match=" + con.grouping.and;
+        con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "He/Him&Filter3=" + con.allFields.pronouns + '+'
+        + con.operators.notEqual + '+' + "She&Filter4=" + con.allFields.pronouns + '+' + con.operators.notEqual
+        + '+' + "He&Filter5=" + con.allFields.pronouns + '+' + con.operators.notNull + "&match=" + con.grouping.and;
 };

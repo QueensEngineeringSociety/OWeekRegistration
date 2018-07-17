@@ -116,7 +116,7 @@ function inObject(obj, value) {
 }
 
 exports.buildPronouns = function () {
-    return "?Filter1=" + con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "She/Her&Filter2=" +
+    return exports.buildQuery() + "&Filter1=" + con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "She/Her&Filter2=" +
         con.allFields.pronouns + '+' + con.operators.notEqual + '+' + "He/Him&Filter3=" + con.allFields.pronouns + '+'
         + con.operators.notEqual + '+' + "She&Filter4=" + con.allFields.pronouns + '+' + con.operators.notEqual
         + '+' + "He&Filter5=" + con.allFields.pronouns + '+' + con.operators.notNull + "&match=" + con.grouping.and;

@@ -121,3 +121,7 @@ exports.buildPronouns = function () {
         + con.operators.notEqual + '+' + "She&Filter4=" + con.allFields.pronouns + '+' + con.operators.notEqual
         + '+' + "He&Filter5=" + con.allFields.pronouns + '+' + con.operators.notNull + "&match=" + con.grouping.and;
 };
+
+exports.buildNetidQuery = function (netid) {
+    return exports.buildQuery() + "&Filter1=" + con.allFields.netid + '+' + con.operators.equals + '+' + netid;
+};

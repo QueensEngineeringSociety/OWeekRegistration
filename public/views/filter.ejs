@@ -41,7 +41,7 @@
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
-    <form action="/search" method="get">
+    <form action="/search" method="get" style="display: inline;">
         <select name="field">
             <!-- use the key as the value - key is english, value is wufoo API query version-->
             <% for (var fieldKey in fields){ %>
@@ -63,51 +63,56 @@
         <% var entries = JSON.parse(wufoo) %>
         <div style="float:right">Rows: <%= entries.length %></div>
     </form>
-    <br>
-    <table id="entryTable">
-        <% for (var eachField in fields){ %>
-        <% if (headings.hasOwnProperty(eachField)){ %>
-        <% if (eachField === "payStatus"){ %>
-        <th><%= headings.paymentMethod %></th>
-        <th><%= headings.payStatus %></th>
+    <form action="/netid" style="display: inline; padding-left: 50px;">
+        <input type="search" id="netid_search" name="netid_search" placeholder="NetID">
+        <button>Search</button>
+    </form>
+</div>
+<br>
+<table id="entryTable">
+    <% for (var eachField in fields){ %>
+    <% if (headings.hasOwnProperty(eachField)){ %>
+    <% if (eachField === "payStatus"){ %>
+    <th><%= headings.paymentMethod %></th>
+    <th><%= headings.payStatus %></th>
+    <% } else { %>
+    <th><%= headings[eachField] %></th>
+    <% } %>
+    <% } %>
+    <% } %>
+    <% for (var entry in entries){ %>
+    <% if (entries.hasOwnProperty(entry)){ %>
+    <% var eachEntry = entries[entry] %>
+    <tr>
+        <% for (var valKey in eachEntry){ %>
+        <% if (eachEntry.hasOwnProperty(valKey)){ %>
+        <% for (var field in fields){ %>
+        <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
+        <% break; %>
+        <% } %>
+        <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
+        <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
+        <td>Unpaid</td>
         <% } else { %>
-        <th><%= headings[eachField] %></th>
+        <td><%= eachEntry[valKey] %></td>
         <% } %>
         <% } %>
         <% } %>
-        <% for (var entry in entries){ %>
-        <% if (entries.hasOwnProperty(entry)){ %>
-        <% var eachEntry = entries[entry] %>
-        <tr>
-            <% for (var valKey in eachEntry){ %>
-            <% if (eachEntry.hasOwnProperty(valKey)){ %>
-            <% for (var field in fields){ %>
-            <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
-            <% break; %>
-            <% } %>
-            <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
-            <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
-            <td>Unpaid</td>
-            <% } else { %>
-            <td><%= eachEntry[valKey] %></td>
-            <% } %>
-            <% } %>
-            <% } %>
-            <% } %>
-            <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-            <td>In person</td>
-            <% } %>
-            <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-            <td>By mail</td>
-            <% } %>
-            <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-            <td>Online</td>
-            <% } %>
-            <% } %>
-        </tr>
+        <% } %>
+        <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+        <td>In person</td>
+        <% } %>
+        <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+        <td>By mail</td>
+        <% } %>
+        <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+        <td>Online</td>
         <% } %>
         <% } %>
-    </table>
+    </tr>
+    <% } %>
+    <% } %>
+</table>
 </div>
 </body>
 </html>

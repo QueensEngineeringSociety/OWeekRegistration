@@ -344,6 +344,30 @@ module.exports = function (app, passport) {
     });
 
     // =====================================
+    // NetID Search ========================
+    // =====================================
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    app.get('/netid', isLoggedIn, function (req, res) {
+        if (req.query['netid_search']) {
+            var accessFields = con.generalFields;
+            var admin = isAdmin(req);
+            if (admin) {
+                accessFields = con.allFields;
+            }
+            wufoo.makeQuery(0, builder.buildNetidQuery(req.query['netid_search']), function (body) {
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    operators: con.operators,
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
+                });
+            });
+        }
+    });
+
+    // =====================================
     // NOT AUTHORIZED ======================
     // =====================================
     app.get('/error', isLoggedIn, function (req, res) {

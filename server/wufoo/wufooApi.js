@@ -21,9 +21,12 @@ exports.queries = {
     pronoun: query.buildPronouns()
 };
 
-exports.makeQuery = function (queryString, callback) {
+exports.makeQuery = function (pageStart, queryString, callback, allEntries) {
+    if (allEntries === undefined || allEntries === null) {
+        allEntries = [];
+    }
     request({
-        uri: properties.get('uri') + queryString,
+        uri: properties.get('uri') + queryString + "&pageSize=100&pageStart=" + pageStart,
         method: properties.get('method'),
         auth: {
             'username': properties.get('username'),
@@ -31,15 +34,21 @@ exports.makeQuery = function (queryString, callback) {
             'sendImmediately': false
         }
     }, function (error, response, body) {
-        getComments().then(function (allComments) {
-            var entries = JSON.parse(body);
-            for (var i = 0; i < entries["Entries"].length; ++i) {
-                ((entries["Entries"])[i])["comment"] = getEntryComment(((entries["Entries"])[i])["EntryId"], allComments);
-            }
-            callback(JSON.stringify(entries)); //make it a string so ejs files don't need to be changed (they expect json string)
-        }).catch(function (err) {
-            console.log("Error getting comments: " + err);
-        });
+        var entries = JSON.parse(body);
+        if (entries["Entries"].length) {
+            allEntries = allEntries.concat(entries["Entries"]);
+            var newPageStart = pageStart + 100;
+            exports.makeQuery(newPageStart, queryString, callback, allEntries);
+        } else {
+            getComments().then(function (allComments) {
+                for (var i = 0; i < allEntries.length; ++i) {
+                    (allEntries[i])["comment"] = getEntryComment((allEntries[i])["EntryId"], allComments);
+                }
+                callback(JSON.stringify(allEntries)); //make it a string so ejs files don't need to be changed (they expect json string)
+            }).catch(function (err) {
+                console.log("Error getting comments: " + err);
+            });
+        }
     });
 };
 
@@ -62,7 +71,7 @@ function getComments() {
 function getEntryComment(entryId, allComments) {
     var comments = (JSON.parse(allComments))['Comments'];
     for (var i = 0; i < comments.length; ++i) {
-        if ((comments[i])["CommentId"] == entryId) { //entry ID comes in as string
+        if ((comments[i])["CommentId"] == entryId) { //entry ID comes in as string, json value is int
             return (comments[i])["Text"];
         }
     }

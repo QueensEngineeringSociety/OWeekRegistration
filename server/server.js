@@ -39,5 +39,3 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 
 // launch ======================================================================
 app.listen(port);
-
-//TODO not getting all entries - paging

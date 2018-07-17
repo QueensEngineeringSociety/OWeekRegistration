@@ -113,7 +113,7 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(query.all, function (body) {
+        wufoo.makeQuery(0, query.all, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -135,7 +135,7 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(query.age, function (body) {
+        wufoo.makeQuery(0, query.age, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -152,7 +152,7 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/food_restrictions', requireAdmin, function (req, res) {
-        wufoo.makeQuery(query.foodRestrictions, function (body) {
+        wufoo.makeQuery(0, query.foodRestrictions, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -169,7 +169,7 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/primer', requireAdmin, function (req, res) {
-        wufoo.makeQuery(query.wantPrimer, function (body) {
+        wufoo.makeQuery(0, query.wantPrimer, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -186,7 +186,7 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/medical', requireAdmin, function (req, res) {
-        wufoo.makeQuery(query.medicalConcerns, function (body) {
+        wufoo.makeQuery(0, query.medicalConcerns, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -208,7 +208,7 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(query.pronoun, function (body) {
+        wufoo.makeQuery(0, query.pronoun, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -225,7 +225,7 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/accessibility', requireAdmin, function (req, res) {
-        wufoo.makeQuery(query.accessibilityConcerns, function (body) {
+        wufoo.makeQuery(0, query.accessibilityConcerns, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -247,7 +247,7 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(query.payInPerson, function (body) {
+        wufoo.makeQuery(0, query.payInPerson, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -269,7 +269,7 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(query.payByMail, function (body) {
+        wufoo.makeQuery(0, query.payByMail, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -291,7 +291,7 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(query.payOnline, function (body) {
+        wufoo.makeQuery(0, query.payOnline, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -313,7 +313,7 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(query.unpaid, function (body) {
+        wufoo.makeQuery(0, query.unpaid, function (body) {
             res.render('filter.ejs', {
                 wufoo: body,
                 operators: con.operators,
@@ -336,7 +336,7 @@ module.exports = function (app, passport) {
             if (admin) {
                 accessFields = con.allFields;
             }
-            wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
+            wufoo.makeQuery(0, builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
                 res.render('filter.ejs', {
                     wufoo: body,
                     operators: con.operators,
@@ -352,7 +352,7 @@ module.exports = function (app, passport) {
     // NOT AUTHORIZED ======================
     // =====================================
     app.get('/error', isLoggedIn, function (req, res) {
-        res.render('error.ejs',{errorMessage: "You don't have the privileges to see this."});
+        res.render('error.ejs', {errorMessage: "You don't have the privileges to see this."});
     });
 
     // =====================================

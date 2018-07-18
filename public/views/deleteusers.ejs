@@ -1,0 +1,39 @@
+<!-- views/users.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>OWeek Info</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <!-- load fontawesome -->
+    <style>
+        body {
+            padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="col-sm-6 col-sm-offset-3">
+
+        <h1><span class="fa fa-sign-in"></span> Delete Users</h1>
+
+        <!-- show any messages that come back with authentication -->
+        <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+        <% } %>
+
+        <form action="/userdelete" method="post" id="user_form">
+            <% for (var i = 0; i < users.length; ++i){ %>
+            <input type="checkbox" name="users" value="<%=users[i].email%>"><%= users[i].email %><br>
+            <% } %>
+            <input type="submit" value="Submit">
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>

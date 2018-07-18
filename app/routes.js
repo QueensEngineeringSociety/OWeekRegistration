@@ -45,7 +45,7 @@ module.exports = function (app, passport) {
     //USER MGM =============================
     // =====================================
     // show the user addition form
-    app.get('/users', requireAdmin, function (req, res) {
+    app.get('/usermanagement', requireAdmin, function (req, res) {
         // render the page and pass in any flash data if it exists
         res.render('users.ejs', {message: req.flash('signupMessage')});
     });
@@ -58,13 +58,11 @@ module.exports = function (app, passport) {
             }
             if (rows.length) {
                 res.render('error.ejs', {errorMessage: "That email already exists"});
-            } else if (!strongPassRegex.test(req.body.password)) {
+            } /*else if (!strongPassRegex.test(req.body.password)) {
                 res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
-            } else {
+            } */ else {
                 // if there is no user with that username, then create that user
-                console.log(strongPassRegex);
-                console.log(strongPassRegex.test(req.body.password));
-                var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, isAdmin(req));
+                var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin);
                 var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
                 dbConn.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
                     function (err, rows) {
@@ -84,12 +82,11 @@ module.exports = function (app, passport) {
                 console.log("ERROR: " + err);
             }
             if (!rows.length) {
-
                 res.render('error.ejs', {errorMessage: "That email doesn't exist"});
             } else if (!strongPassRegex.test(req.body.password)) {
                 res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
             } else {
-                var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, isAdmin(req));
+                var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin);
                 var query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
                 dbConn.query(query, [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin, rows[0].id],
                     function (err, rows) {
@@ -99,6 +96,46 @@ module.exports = function (app, passport) {
                         res.render('users.ejs', {message: req.flash('signupMessage')});
                     });
             }
+        });
+    });
+
+    app.get('/userdelete', requireAdmin, function (req, res) {
+        dbConn.query("SELECT * FROM users", [], function (err, rows) {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+            if (!rows.length) {
+                res.render('error.ejs', {errorMessage: "That email doesn't exist"});
+            } else {
+                res.render('deleteusers.ejs', {
+                    message: req.flash('signupMessage'),
+                    users: rows
+                });
+            }
+        });
+    });
+
+    app.post('/userdelete', requireAdmin, function (req, res) {
+        var queryString = "";
+        if (req.body.users.length > 1) {
+            queryString = "DELETE FROM users WHERE email IN('" + req.body.users.join("','") + "')";
+        } else {
+            queryString = "DELETE FROM users WHERE email IN('" + req.body.users + "')";
+        }
+        dbConn.query(queryString, [], function (topErr, topRows) {
+            dbConn.query("SELECT * FROM users", [], function (err, rows) {
+                if (err) {
+                    console.log("ERROR: " + err);
+                }
+                if (!rows.length) {
+                    res.render('error.ejs', {errorMessage: "There are no users!"});
+                } else {
+                    res.render('deleteusers.ejs', {
+                        message: req.flash('signupMessage'),
+                        users: rows
+                    });
+                }
+            });
         });
     });
 

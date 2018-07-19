@@ -117,9 +117,10 @@ module.exports = function (app, passport) {
 
     app.post('/userdelete', requireAdmin, function (req, res) {
         var queryString = "";
-        if (req.body.users.length > 1) {
+        if (typeof req.body.users.length === "object") {
             queryString = "DELETE FROM users WHERE email IN('" + req.body.users.join("','") + "')";
         } else {
+            //just one user, no join
             queryString = "DELETE FROM users WHERE email IN('" + req.body.users + "')";
         }
         dbConn.query(queryString, [], function (topErr, topRows) {

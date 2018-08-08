@@ -71,7 +71,7 @@ function getComments() {
 function getEntryComment(entryId, allComments) {
     var comments = (JSON.parse(allComments))['Comments'];
     for (var i = 0; i < comments.length; ++i) {
-        if ((comments[i])["CommentId"] == entryId) { //entry ID comes in as string, json value is int
+        if ((comments[i])["EntryId"] == entryId) { //entry ID comes in as string, json value is int
             return (comments[i])["Text"];
         }
     }

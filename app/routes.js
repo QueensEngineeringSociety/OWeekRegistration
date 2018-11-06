@@ -58,9 +58,10 @@ module.exports = function (app, passport) {
             }
             if (rows.length) {
                 res.render('error.ejs', {errorMessage: "That email already exists"});
-            } else if (!strongPassRegex.test(req.body.password)) {
-                res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
-            }  else {
+            } //else if (!strongPassRegex.test(req.body.password)) { TODO ADD BACK AFTER DONE TESTING/DEV
+              //  res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
+            //}
+            else {
                 // if there is no user with that username, then create that user
                 var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
                 var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
@@ -403,6 +404,21 @@ module.exports = function (app, passport) {
                 });
             });
         }
+    });
+
+    app.get('/allgroups',requireAdmin,function(req,res){
+        dbConn.query("SELECT * FROM groups", [], function (err, rows) {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+            if (!rows.length) {
+                res.render('error.ejs', {errorMessage: "No groups"});
+            } else {
+                res.render('groups.ejs', {
+                    groups: rows
+                });
+            }
+        });
     });
 
     // =====================================

@@ -14,29 +14,21 @@
     </style>
 </head>
 <body>
-<div id="entryTable" class="container">
+<div class="container">
     <div style="position: relative;">
         <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
                                                                             class="btn btn-default btn-sm">Logout</a>
         </div>
     </div>
     <div class="col-sm-6 col-sm-offset-3">
-        <% var counter = 0 %>
         <% for (var i in groups){ %>
-        <% if (counter == 0){ %>
-        <tr>
-            <% } %>
-            <% if (counter > 7){ %>
-        </tr>
-        <% counter = 0 %>
-        <% } else { %>
-        <% counter++ %>
-        <td>
             <form action="/onegroup" id="group_form" method="get">
-                <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">Group <%=groups[i].groupNumber%></button>
+                <h2>Group <%= groups[i].groupNumber %></h2>
+                Men: <%= groups[i].menCount %>
+                Women: <%= groups[i].womenCount %> <br>
+                <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">View</button>
             </form>
-        </td>
-        <% }} %>
+        <% } %>
     </div>
 
 </div>

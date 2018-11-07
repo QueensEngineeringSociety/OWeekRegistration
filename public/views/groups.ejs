@@ -14,6 +14,10 @@
     </style>
 </head>
 <body>
+<div class="page-header text-center">
+    <h1><span class="fa"></span>Groups</h1>
+    <a href="/assign" class="btn btn-default btn-sm">Run Auto Assign</a>
+</div>
 <div class="container">
     <div style="position: relative;">
         <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
@@ -22,12 +26,13 @@
     </div>
     <div class="col-sm-6 col-sm-offset-3">
         <% for (var i in groups){ %>
-            <form action="/onegroup" id="group_form" method="get">
-                <h2>Group <%= groups[i].groupNumber %></h2>
-                Men: <%= groups[i].menCount %>
-                Women: <%= groups[i].womenCount %> <br>
-                <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">View</button>
-            </form>
+        <form action="/onegroup" id="group_form" method="get">
+            <h2>Group <%= groups[i].groupNumber %></h2>
+            Men: <%= groups[i].menCount %>
+            Women: <%= groups[i].womenCount %>
+            Total: <%=groups[i].totalCount%><br>
+            <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">View</button>
+        </form>
         <% } %>
     </div>
 

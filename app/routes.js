@@ -6,6 +6,7 @@ var User = require("./models/user");
 var query = wufoo.queries;
 
 var strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
+var MAX_AUTO_GROUP = 3;
 
 module.exports = function (app, passport) {
 
@@ -406,7 +407,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.get('/allgroups',requireAdmin,function(req,res){
+    app.get('/allgroups', requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM groups", [], function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -420,6 +421,122 @@ module.exports = function (app, passport) {
             }
         });
     });
+
+    app.get('/assign', requireAdmin, function (req, res) {
+        //get group info
+        dbConn.query("SELECT * FROM groups", [], function (err, rows) {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+            if (!rows.length) {
+                res.render('error.ejs', {errorMessage: "No groups"});
+            } else {
+                var curGroupCount = rows[rows.length - 1].totalCount;
+                var makeNewGroup = !(curGroupCount < MAX_AUTO_GROUP); //start inserting in last group
+                var groupNum = makeNewGroup ? rows.length + 1 : rows.length;
+                curGroupCount = makeNewGroup ? 0 : curGroupCount;
+                var curGroupMenCount = makeNewGroup ? 0 : rows[rows.length - 1].menCount;
+                var curGroupWomenCount = makeNewGroup ? 0 : rows[rows.length - 1].womenCount;
+                //get frosh in a group
+                dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                    var assignedFrosh = [];
+                    if (err) {
+                        console.log("ERROR: " + err);
+                    }
+                    if (rows.length) {
+                        for (var i in rows) {
+                            assignedFrosh.push(rows[i].wufooEntryId);
+                        }
+                    }
+                    //get all frosh
+                    wufoo.makeQuery(0, query.all, function (body) {
+                        //show updated groups
+                        body = JSON.parse(body);
+                        var insertions = [];
+                        for (var i in body) {
+                            if (!inArr(assignedFrosh, body[i].EntryId)) {
+                                insertions.push({
+                                    "id": body[i].EntryId,
+                                    "genderIsMan": isMan((body[i])[con.allFields.pronouns])
+                                });
+                            }
+                        }
+                        insertAssignments(insertions, 0, curGroupCount, curGroupMenCount, curGroupWomenCount, groupNum).then(function () {
+                            dbConn.query("SELECT * FROM groups", [], function (err, rows) {
+                                if (err) {
+                                    console.log("ERROR: " + err);
+                                }
+                                if (!rows.length) {
+                                    res.render('error.ejs', {errorMessage: "No groups"});
+                                } else {
+                                    res.redirect('/allgroups');
+                                }
+                            });
+                        });
+                    });
+                });
+            }
+        });
+    });
+
+    function inArr(assignedFrosh, compareId) {
+        for (var i in assignedFrosh) {
+            if (assignedFrosh[i] == compareId) { //diff types
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function insertAssignments(insertions, idx, curGroupTotalCount, curGroupMenCount, curGroupWomenCount, groupNum) {
+        return new Promise(function (res) {
+            if (insertions.length === "undefined" || insertions.length === null || idx > insertions.length - 1) {
+                res();
+            }
+            if (curGroupTotalCount < MAX_AUTO_GROUP) {
+                curGroupTotalCount++;
+                insertions[idx].genderIsMan ? curGroupMenCount++ : curGroupWomenCount++;
+                //update
+                dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, groupNum], function (err, rows) {
+                    if (err) {
+                        console.log("ERROR INSERTING DB: " + err);
+                    }
+                    dbConn.query("UPDATE groups SET menCount=?, womenCount=?, totalCount=? WHERE groupNumber=?", [curGroupMenCount, curGroupWomenCount, curGroupTotalCount, groupNum], function (err, rows) {
+                        if (err) {
+                            console.log("ERROR INSERTING DB: " + err);
+                        }
+                        insertAssignments(insertions, idx + 1, curGroupTotalCount, curGroupMenCount, curGroupWomenCount, groupNum).then(function () {
+                            res();
+                        });
+                    });
+                });
+            } else {
+                groupNum++;
+                curGroupTotalCount = 1;
+                curGroupMenCount = insertions[idx].genderIsMan ? 1 : 0;
+                curGroupWomenCount = insertions[idx].genderIsMan ? 0 : 1;
+                //insert
+                dbConn.query("INSERT INTO groups VALUES(?,?,?,?)", [groupNum, curGroupMenCount, curGroupWomenCount, curGroupTotalCount], function (err, rows) {
+                    if (err) {
+                        console.log("ERROR INSERTING DB: " + err);
+                    }
+                    dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, groupNum], function (err, rows) {
+                        if (err) {
+                            console.log("ERROR INSERTING DB: " + err);
+                        }
+                        insertAssignments(insertions, idx + 1, curGroupTotalCount, curGroupMenCount, curGroupWomenCount, groupNum).then(function () {
+                            res();
+                        });
+                    });
+                });
+            }
+        });
+    }
+
+    function isMan(text) {
+        text = text.toLowerCase();
+        return text.indexOf("she") === -1 && text.indexOf("her") === -1;
+    }
 
     // =====================================
     // NOT AUTHORIZED ======================

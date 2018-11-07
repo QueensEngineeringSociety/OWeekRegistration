@@ -7,6 +7,7 @@ var query = wufoo.queries;
 
 var strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
 var MAX_AUTO_GROUP = 3;
+var MAX_AUTO_MEN = 2;
 
 module.exports = function (app, passport) {
 
@@ -431,12 +432,27 @@ module.exports = function (app, passport) {
             if (!rows.length) {
                 res.render('error.ejs', {errorMessage: "No groups"});
             } else {
-                var curGroupCount = rows[rows.length - 1].totalCount;
-                var makeNewGroup = !(curGroupCount < MAX_AUTO_GROUP); //start inserting in last group
-                var groupNum = makeNewGroup ? rows.length + 1 : rows.length;
-                curGroupCount = makeNewGroup ? 0 : curGroupCount;
-                var curGroupMenCount = makeNewGroup ? 0 : rows[rows.length - 1].menCount;
-                var curGroupWomenCount = makeNewGroup ? 0 : rows[rows.length - 1].womenCount;
+                var menGroupNum = -1, womenGroupNum = -1, groups = [];
+                for (var i in rows) {
+                    groups.push({
+                        "groupNumber": rows[i].groupNumber,
+                        "menCount": rows[i].menCount,
+                        "womenCount": rows[i].womenCount,
+                        "totalCount": rows[i].womenCount
+                    });
+                    if (rows[i].womenCount < MAX_AUTO_GROUP - MAX_AUTO_MEN) {
+                        womenGroupNum = i + 1;
+                    }
+                    if (rows[i].menCount < MAX_AUTO_MEN) {
+                        menGroupNum = i + 1;
+                    }
+                }
+                if (menGroupNum === -1) {
+                    menGroupNum = 1;
+                }
+                if (womenGroupNum === -1) {
+                    womenGroupNum = 1;
+                }
                 //get frosh in a group
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                     var assignedFrosh = [];
@@ -461,7 +477,7 @@ module.exports = function (app, passport) {
                                 });
                             }
                         }
-                        insertAssignments(insertions, 0, curGroupCount, curGroupMenCount, curGroupWomenCount, groupNum).then(function () {
+                        insertAssignments(insertions, 0, menGroupNum, womenGroupNum, groups).then(function () {
                             dbConn.query("SELECT * FROM groups", [], function (err, rows) {
                                 if (err) {
                                     console.log("ERROR: " + err);
@@ -488,47 +504,130 @@ module.exports = function (app, passport) {
         return false;
     }
 
-    function insertAssignments(insertions, idx, curGroupTotalCount, curGroupMenCount, curGroupWomenCount, groupNum) {
+    function insertAssignments(insertions, idx, menGroupNum, womenGroupNum, groups) {
         return new Promise(function (res) {
             if (insertions.length === "undefined" || insertions.length === null || idx > insertions.length - 1) {
                 res();
             }
-            if (curGroupTotalCount < MAX_AUTO_GROUP) {
-                curGroupTotalCount++;
-                insertions[idx].genderIsMan ? curGroupMenCount++ : curGroupWomenCount++;
-                //update
-                dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, groupNum], function (err, rows) {
-                    if (err) {
-                        console.log("ERROR INSERTING DB: " + err);
-                    }
-                    dbConn.query("UPDATE groups SET menCount=?, womenCount=?, totalCount=? WHERE groupNumber=?", [curGroupMenCount, curGroupWomenCount, curGroupTotalCount, groupNum], function (err, rows) {
+            if (insertions[idx].genderIsMan) {
+                if (groups[menGroupNum - 1].menCount < MAX_AUTO_MEN) {
+                    groups[menGroupNum - 1].menCount = groups[menGroupNum - 1].menCount + 1;
+                    groups[menGroupNum - 1].totalCount = groups[menGroupNum - 1].totalCount + 1;
+                    //update
+                    dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, menGroupNum], function (err, rows) {
                         if (err) {
                             console.log("ERROR INSERTING DB: " + err);
                         }
-                        insertAssignments(insertions, idx + 1, curGroupTotalCount, curGroupMenCount, curGroupWomenCount, groupNum).then(function () {
-                            res();
+                        dbConn.query("UPDATE groups SET menCount=?, totalCount=? WHERE groupNumber=?", [groups[menGroupNum - 1].menCount, groups[menGroupNum - 1].totalCount, menGroupNum], function (err, rows) {
+                            if (err) {
+                                console.log("ERROR UPDATING DB: " + err);
+                            }
+                            insertAssignments(insertions, idx + 1, menGroupNum, womenGroupNum, groups).then(function () {
+                                res();
+                            });
                         });
                     });
-                });
-            } else {
-                groupNum++;
-                curGroupTotalCount = 1;
-                curGroupMenCount = insertions[idx].genderIsMan ? 1 : 0;
-                curGroupWomenCount = insertions[idx].genderIsMan ? 0 : 1;
-                //insert
-                dbConn.query("INSERT INTO groups VALUES(?,?,?,?)", [groupNum, curGroupMenCount, curGroupWomenCount, curGroupTotalCount], function (err, rows) {
-                    if (err) {
-                        console.log("ERROR INSERTING DB: " + err);
+                } else {
+                    menGroupNum++;
+                    //insert
+                    if (womenGroupNum < menGroupNum) {
+                        groups.push({
+                            "groupNumber": menGroupNum,
+                            "menCount": 1,
+                            "womenCount": 0,
+                            "totalCount": 1
+                        });
+                        dbConn.query("INSERT INTO groups VALUES(?,?,?,?)", [menGroupNum, groups[menGroupNum - 1].menCount, groups[menGroupNum - 1].womenCount, groups[menGroupNum - 1].totalCount], function (err, rows) {
+                            if (err) {
+                                console.log("ERROR INSERTING DB: " + err);
+                            }
+                            dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, menGroupNum], function (err, rows) {
+                                if (err) {
+                                    console.log("ERROR INSERTING 2nd DB: " + err);
+                                }
+                                insertAssignments(insertions, idx + 1, menGroupNum, womenGroupNum, groups).then(function () {
+                                    res();
+                                });
+                            });
+                        });
+                    } else { //already made the group
+                        groups[menGroupNum-1].menCount=groups[menGroupNum-1].menCount+1;
+                        groups[menGroupNum-1].totalCount=groups[menGroupNum-1].totalCount+1;
+                        dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, menGroupNum], function (err, rows) {
+                            if (err) {
+                                console.log("ERROR INSERTING DB: " + err);
+                            }
+                            dbConn.query("UPDATE groups SET menCount=?, totalCount=? WHERE groupNumber=?", [groups[menGroupNum - 1].menCount, groups[menGroupNum - 1].totalCount, menGroupNum], function (err, rows) {
+                                if (err) {
+                                    console.log("ERROR UPDATING DB: " + err);
+                                }
+                                insertAssignments(insertions, idx + 1, menGroupNum, womenGroupNum, groups).then(function () {
+                                    res();
+                                });
+                            });
+                        });
                     }
-                    dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, groupNum], function (err, rows) {
+                }
+            }
+            else {
+                if (groups[womenGroupNum - 1].womenCount < MAX_AUTO_GROUP - MAX_AUTO_MEN) {
+                    groups[womenGroupNum - 1].womenCount = groups[womenGroupNum - 1].womenCount + 1;
+                    groups[womenGroupNum - 1].totalCount = groups[womenGroupNum - 1].totalCount + 1;
+                    //update
+                    dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, womenGroupNum], function (err, rows) {
                         if (err) {
                             console.log("ERROR INSERTING DB: " + err);
                         }
-                        insertAssignments(insertions, idx + 1, curGroupTotalCount, curGroupMenCount, curGroupWomenCount, groupNum).then(function () {
-                            res();
+                        dbConn.query("UPDATE groups SET womenCount=?, totalCount=? WHERE groupNumber=?", [groups[womenGroupNum - 1].womenCount, groups[womenGroupNum - 1].totalCount, womenGroupNum], function (err, rows) {
+                            if (err) {
+                                console.log("ERROR UPDATING DB: " + err);
+                            }
+                            insertAssignments(insertions, idx + 1, menGroupNum, womenGroupNum, groups).then(function () {
+                                res();
+                            });
                         });
                     });
-                });
+                } else {
+                    womenGroupNum++;
+                    //insert
+                    if (menGroupNum < womenGroupNum) {
+                        groups.push({
+                            "groupNumber": womenGroupNum,
+                            "menCount": 0,
+                            "womenCount": 1,
+                            "totalCount": 1
+                        });
+                        dbConn.query("INSERT INTO groups VALUES(?,?,?,?)", [womenGroupNum, groups[womenGroupNum - 1].menCount, groups[womenGroupNum - 1].womenCount, groups[womenGroupNum - 1].totalCount], function (err, rows) {
+                            if (err) {
+                                console.log("ERROR INSERTING DB: " + err);
+                            }
+                            dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, womenGroupNum], function (err, rows) {
+                                if (err) {
+                                    console.log("ERROR INSERTING SECOND DB: " + err);
+                                }
+                                insertAssignments(insertions, idx + 1, menGroupNum, womenGroupNum, groups).then(function () {
+                                    res();
+                                });
+                            });
+                        });
+                    } else {//already made group
+                        groups[womenGroupNum-1].menCount=groups[womenGroupNum-1].menCount+1;
+                        groups[womenGroupNum-1].totalCount=groups[womenGroupNum-1].totalCount+1;
+                        dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, womenGroupNum], function (err, rows) {
+                            if (err) {
+                                console.log("ERROR INSERTING DB: " + err);
+                            }
+                            dbConn.query("UPDATE groups SET womenCount=?, totalCount=? WHERE groupNumber=?", [groups[womenGroupNum - 1].womenCount, groups[womenGroupNum - 1].totalCount, womenGroupNum], function (err, rows) {
+                                if (err) {
+                                    console.log("ERROR UPDATING DB: " + err);
+                                }
+                                insertAssignments(insertions, idx + 1, menGroupNum, womenGroupNum, groups).then(function () {
+                                    res();
+                                });
+                            });
+                        });
+                    }
+                }
             }
         });
     }

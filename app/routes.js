@@ -524,7 +524,7 @@ module.exports = function (app, passport) {
                 res.render('error.ejs', {errorMessage: "No groups"});
             } else {
                 var menGroupNum = -1, womenGroupNum = -1, groups = [];
-                for (var i in rows) {
+                for (var i=rows.length-1; i>=0; i--) {
                     groups.push({
                         "groupNumber": rows[i].groupNumber,
                         "menCount": rows[i].menCount,
@@ -662,6 +662,7 @@ module.exports = function (app, passport) {
             }
             else {
                 if (groups[womenGroupNum - 1].womenCount < MAX_AUTO_GROUP - MAX_AUTO_MEN) {
+                    console.log("woman in "+womenGroupNum);
                     groups[womenGroupNum - 1].womenCount = groups[womenGroupNum - 1].womenCount + 1;
                     groups[womenGroupNum - 1].totalCount = groups[womenGroupNum - 1].totalCount + 1;
                     //update
@@ -682,6 +683,7 @@ module.exports = function (app, passport) {
                     womenGroupNum++;
                     //insert
                     if (menGroupNum < womenGroupNum) {
+                        console.log("woman new group");
                         groups.push({
                             "groupNumber": womenGroupNum,
                             "menCount": 0,
@@ -702,6 +704,7 @@ module.exports = function (app, passport) {
                             });
                         });
                     } else {//already made group
+                        console.log("woman existing group");
                         groups[womenGroupNum - 1].menCount = groups[womenGroupNum - 1].menCount + 1;
                         groups[womenGroupNum - 1].totalCount = groups[womenGroupNum - 1].totalCount + 1;
                         dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, womenGroupNum], function (err, rows) {

@@ -60,9 +60,9 @@ module.exports = function (app, passport) {
             }
             if (rows.length) {
                 res.render('error.ejs', {errorMessage: "That email already exists"});
-            } //else if (!strongPassRegex.test(req.body.password)) { TODO ADD BACK AFTER DONE TESTING/DEV
-              //  res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
-            //}
+            } else if (!strongPassRegex.test(req.body.password)) {
+                res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
+            }
             else {
                 // if there is no user with that username, then create that user
                 var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
@@ -155,12 +155,19 @@ module.exports = function (app, passport) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(0, query.all, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
+                });
             });
         });
     });
@@ -177,12 +184,19 @@ module.exports = function (app, passport) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(0, query.age, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
+                });
             });
         });
     });
@@ -194,12 +208,19 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/food_restrictions', requireAdmin, function (req, res) {
         wufoo.makeQuery(0, query.foodRestrictions, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: con.allFields,
+                    headings: con.headings,
+                    isAdmin: true
+                });
             });
         });
     });
@@ -211,12 +232,19 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/primer', requireAdmin, function (req, res) {
         wufoo.makeQuery(0, query.wantPrimer, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: con.allFields,
+                    headings: con.headings,
+                    isAdmin: true
+                });
             });
         });
     });
@@ -228,12 +256,19 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/medical', requireAdmin, function (req, res) {
         wufoo.makeQuery(0, query.medicalConcerns, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: con.allFields,
+                    headings: con.headings,
+                    isAdmin: true
+                });
             });
         });
     });
@@ -245,12 +280,19 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/pronouns', requireAdmin, function (req, res) {
         wufoo.makeQuery(0, query.pronoun, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: con.allFields,
+                    headings: con.headings,
+                    isAdmin: true
+                });
             });
         });
     });
@@ -262,12 +304,19 @@ module.exports = function (app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/accessibility', requireAdmin, function (req, res) {
         wufoo.makeQuery(0, query.accessibilityConcerns, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: con.allFields,
+                    headings: con.headings,
+                    isAdmin: true
+                });
             });
         });
     });
@@ -284,12 +333,19 @@ module.exports = function (app, passport) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(0, query.payInPerson, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
+                });
             });
         });
     });
@@ -306,12 +362,19 @@ module.exports = function (app, passport) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(0, query.payByMail, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
+                });
             });
         });
     });
@@ -328,12 +391,19 @@ module.exports = function (app, passport) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(0, query.payOnline, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
+                });
             });
         });
     });
@@ -350,12 +420,19 @@ module.exports = function (app, passport) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(0, query.unpaid, function (body) {
-            res.render('filter.ejs', {
-                wufoo: body,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin
+            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                var groupNumbers = [];
+                for (var i in rows) {
+                    groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                }
+                res.render('filter.ejs', {
+                    wufoo: body,
+                    groupNumbers: groupNumbers,
+                    operators: con.operators,
+                    fields: accessFields,
+                    headings: con.headings,
+                    isAdmin: admin
+                });
             });
         });
     });
@@ -373,12 +450,19 @@ module.exports = function (app, passport) {
                 accessFields = con.allFields;
             }
             wufoo.makeQuery(0, builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
-                res.render('filter.ejs', {
-                    wufoo: body,
-                    operators: con.operators,
-                    fields: accessFields,
-                    headings: con.headings,
-                    isAdmin: admin
+                dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                    var groupNumbers = [];
+                    for (var i in rows) {
+                        groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                    }
+                    res.render('filter.ejs', {
+                        wufoo: body,
+                        groupNumbers: groupNumbers,
+                        operators: con.operators,
+                        fields: accessFields,
+                        headings: con.headings,
+                        isAdmin: admin
+                    });
                 });
             });
         }
@@ -397,12 +481,19 @@ module.exports = function (app, passport) {
                 accessFields = con.allFields;
             }
             wufoo.makeQuery(0, builder.buildNetidQuery(req.query['netid_search']), function (body) {
-                res.render('filter.ejs', {
-                    wufoo: body,
-                    operators: con.operators,
-                    fields: accessFields,
-                    headings: con.headings,
-                    isAdmin: admin
+                dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+                    var groupNumbers = [];
+                    for (var i in rows) {
+                        groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+                    }
+                    res.render('filter.ejs', {
+                        wufoo: body,
+                        groupNumbers: groupNumbers,
+                        operators: con.operators,
+                        fields: accessFields,
+                        headings: con.headings,
+                        isAdmin: admin
+                    });
                 });
             });
         }
@@ -551,8 +642,8 @@ module.exports = function (app, passport) {
                             });
                         });
                     } else { //already made the group
-                        groups[menGroupNum-1].menCount=groups[menGroupNum-1].menCount+1;
-                        groups[menGroupNum-1].totalCount=groups[menGroupNum-1].totalCount+1;
+                        groups[menGroupNum - 1].menCount = groups[menGroupNum - 1].menCount + 1;
+                        groups[menGroupNum - 1].totalCount = groups[menGroupNum - 1].totalCount + 1;
                         dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, menGroupNum], function (err, rows) {
                             if (err) {
                                 console.log("ERROR INSERTING DB: " + err);
@@ -611,8 +702,8 @@ module.exports = function (app, passport) {
                             });
                         });
                     } else {//already made group
-                        groups[womenGroupNum-1].menCount=groups[womenGroupNum-1].menCount+1;
-                        groups[womenGroupNum-1].totalCount=groups[womenGroupNum-1].totalCount+1;
+                        groups[womenGroupNum - 1].menCount = groups[womenGroupNum - 1].menCount + 1;
+                        groups[womenGroupNum - 1].totalCount = groups[womenGroupNum - 1].totalCount + 1;
                         dbConn.query("INSERT INTO groupData VALUES(?,?)", [insertions[idx].id, womenGroupNum], function (err, rows) {
                             if (err) {
                                 console.log("ERROR INSERTING DB: " + err);

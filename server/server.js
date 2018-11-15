@@ -42,6 +42,5 @@ app.listen(port);
 
 //TODO view one group
 //TODO add/remove groups
-//TODO show group number in filter table
 //TODO manual assign group
-//TODO adjust max group number,
+//TODO adjust max group number

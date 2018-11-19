@@ -1,0 +1,49 @@
+<!-- views/users.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>OWeek Info</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/table.css" type="text/css">
+    <!-- load fontawesome -->
+    <style>
+        body {
+            padding-top: 80px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div style="position: relative;">
+        <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
+                                                                            class="btn btn-default btn-sm">Logout</a>
+        </div>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+        <h2>Group <%= groupData.groupNumber %></h2>
+        Men: <%= groupData.menCount %>
+        Women: <%= groupData.womenCount %>
+        Total: <%= groupData.totalCount %><br>
+        <table id="entryTable">
+            <% for (var eachField in fields){ %>
+                <% if (headings.hasOwnProperty(eachField)){ %>
+                    <th><%= headings[eachField] %></th>
+                <% } %>
+            <% } %>
+            <% for (var i in peopleInGroup){ %>
+            <tr>
+                <% for (var j in fields){ %>
+                <%console.log(fields[j])%>
+                <%console.log((peopleInGroup[i])[fields[j]])%>
+                <td><%= (peopleInGroup[i])[fields[j]] %></td>
+                <% } %>
+            </tr>
+            <% } %>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

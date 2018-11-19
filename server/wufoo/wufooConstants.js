@@ -34,6 +34,20 @@ exports.allFields = {
     comment: 'comment'
 };
 
+exports.groupFields = {
+    name: 'Field1',
+    netid: 'Field3',
+    phoneNumber: 'Field4',
+    under18: 'Field105',
+    foodRestrictions: 'Field106',
+    medicalConcerns: 'Field107',
+    pronouns: 'Field137',
+    accessibilityConcerns: 'Field108',
+    primer: 'Field110',
+    emergName: 'Field123',
+    emergNumber: 'Field124'
+};
+
 exports.headings = {
     name: 'Name',
     netid: 'NetID',

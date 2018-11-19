@@ -62,8 +62,7 @@ module.exports = function (app, passport) {
                 res.render('error.ejs', {errorMessage: "That email already exists"});
             } else if (!strongPassRegex.test(req.body.password)) {
                 res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
-            }
-            else {
+            } else {
                 // if there is no user with that username, then create that user
                 var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
                 var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
@@ -514,6 +513,46 @@ module.exports = function (app, passport) {
         });
     });
 
+    app.post('/onegroup', requireAdmin, function (req, res) {
+        dbConn.query("SELECT * FROM groupData WHERE groupNum = ?", [req.body.groupNumber], function (err, rows) {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+            if (!rows.length) {
+                res.render('error.ejs', {errorMessage: "No groups"});
+            } else {
+                var entryIds = [];
+                for (var i in rows) {
+                    entryIds[rows[i].wufooEntryId] = true;
+                }
+                wufoo.makeQuery(0, query.all, function (body) {
+                    var peopleInGroup = [];
+                    body = JSON.parse(body);
+                    for (var i in body) {
+                        if (typeof entryIds[Number(body[i].EntryId)] !== "undefined") {
+                            peopleInGroup.push(body[i]);
+                        }
+                    }
+                    dbConn.query("SELECT * FROM groups WHERE groupNumber = ?", [req.body.groupNumber], function (err, rows) {
+                        if (err) {
+                            console.log("ERROR: " + err);
+                        }
+                        if (!rows.length) {
+                            res.render('error.ejs', {errorMessage: "No groups"});
+                        } else {
+                            res.render('group.ejs', {
+                                groupData: rows[0], //only one group with that group number
+                                peopleInGroup: peopleInGroup,
+                                fields: con.groupFields,
+                                headings: con.headings
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+
     app.get('/assign', requireAdmin, function (req, res) {
         //get group info
         dbConn.query("SELECT * FROM groups", [], function (err, rows) {
@@ -524,7 +563,7 @@ module.exports = function (app, passport) {
                 res.render('error.ejs', {errorMessage: "No groups"});
             } else {
                 var menGroupNum = -1, womenGroupNum = -1, groups = [];
-                for (var i=rows.length-1; i>=0; i--) {
+                for (var i = rows.length - 1; i >= 0; i--) {
                     groups.push({
                         "groupNumber": rows[i].groupNumber,
                         "menCount": rows[i].menCount,
@@ -659,10 +698,9 @@ module.exports = function (app, passport) {
                         });
                     }
                 }
-            }
-            else {
+            } else {
                 if (groups[womenGroupNum - 1].womenCount < MAX_AUTO_GROUP - MAX_AUTO_MEN) {
-                    console.log("woman in "+womenGroupNum);
+                    console.log("woman in " + womenGroupNum);
                     groups[womenGroupNum - 1].womenCount = groups[womenGroupNum - 1].womenCount + 1;
                     groups[womenGroupNum - 1].totalCount = groups[womenGroupNum - 1].totalCount + 1;
                     //update
@@ -703,7 +741,7 @@ module.exports = function (app, passport) {
                                 });
                             });
                         });
-                    } else {//already made group
+                    } else { //already made group
                         console.log("woman existing group");
                         groups[womenGroupNum - 1].menCount = groups[womenGroupNum - 1].menCount + 1;
                         groups[womenGroupNum - 1].totalCount = groups[womenGroupNum - 1].totalCount + 1;

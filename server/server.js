@@ -40,7 +40,6 @@ require('../app/routes.js')(app, passport); // load our routes and pass in our a
 // launch ======================================================================
 app.listen(port);
 
-//TODO view one group
 //TODO add/remove groups
 //TODO manual assign group
 //TODO adjust max group number

@@ -43,3 +43,9 @@ app.listen(port);
 //TODO add/remove groups
 //TODO manual assign group
 //TODO adjust max group number
+//TODO improve user management
+//TODO improve visuals of /allgroups
+//TODO improve visuals of /onegroup
+//TODO pagination for filter
+//TODO everything but display have groups 0 to X, display shows 1 to X+1
+//TODO allow now groups

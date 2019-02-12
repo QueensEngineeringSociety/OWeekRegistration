@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="col-sm-6 col-sm-offset-3">
-        <h2>Group <%= groupData.groupNumber %></h2>
+        <h2>Group <%= groupData.groupNumber + 1 %></h2>
         Men: <%= groupData.menCount %>
         Women: <%= groupData.womenCount %>
         Total: <%= groupData.totalCount %><br>
@@ -33,13 +33,13 @@
                 <% } %>
             <% } %>
             <% for (var i in peopleInGroup){ %>
-            <tr>
-                <% for (var j in fields){ %>
-                <%console.log(fields[j])%>
-                <%console.log((peopleInGroup[i])[fields[j]])%>
-                <td><%= (peopleInGroup[i])[fields[j]] %></td>
-                <% } %>
-            </tr>
+                <tr>
+                    <% for (var j in fields){ %>
+                    <% console.log(fields[j]) %>
+                    <% console.log((peopleInGroup[i])[fields[j]]) %>
+                    <td><%= (peopleInGroup[i])[fields[j]] %></td>
+                    <% } %>
+                </tr>
             <% } %>
         </table>
     </div>

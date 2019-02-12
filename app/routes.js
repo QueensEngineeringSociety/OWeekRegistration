@@ -584,11 +584,15 @@ module.exports = function (app, passport) {
                                     });
                                 }
                             }
-                            assign(manGroupNum, womanGroupNum, insertions).then(function () {
-                                res.redirect("back"); //refresh
-                            }).catch(function (errMessage) {
-                                res.render('error.ejs', {errorMessage: errMessage});
-                            });
+                            if (insertions.length) {
+                                assign(manGroupNum, womanGroupNum, insertions).then(function () {
+                                    res.redirect("back"); //refresh
+                                }).catch(function (errMessage) {
+                                    res.render('error.ejs', {errorMessage: errMessage});
+                                });
+                            } else {
+                                res.redirect("back");
+                            }
                         });
                     });
                 }
@@ -655,15 +659,22 @@ module.exports = function (app, passport) {
                         dbConn.query("SELECT * FROM groups", function (err, rows) {
                             if (err) {
                                 console.log("ERROR: " + err);
-                                //TODO REJECT
+                                reject("Couldn't update group data, metadata was updated so contact DoIT.")
                             } else {
                                 if (rows.length) {
                                     //previous groups, combine new with old data
+                                    //TODO when existing groups
                                 } else {
                                     //no previous groups, just insert
                                     insertNewGroupData(0, newGroupData).then(function () {
                                         //call next thing to update
-                                        resolve();
+                                        insertFroshToGroup(0, insertions).then(function () {
+                                            resolve();
+                                        }).catch(function (m) {
+                                            reject(m);
+                                        });
+                                    }).catch(function (m) {
+                                        reject(m);
                                     });
                                 }
                             }
@@ -674,39 +685,36 @@ module.exports = function (app, passport) {
     }
 
     function insertNewGroupData(insertIdx, newGroupData) {
-        return new Promise(function (res) {
+        return new Promise(function (res, rej) {
                 if (insertIdx < newGroupData.length) {
                     var data = newGroupData[insertIdx];
                     dbConn.query("INSERT groups values(?,?,?,?)",
-                        [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err, rows) {
+                        [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err) {
                             if (err) {
                                 console.log("ERROR: " + err);
-                                //TODO reject everywhere
+                                rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.")
                             } else {
                                 insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
                                     res();
                                 });
                             }
                         });
-                } else{
+                } else {
                     res();
                 }
             }
         );
     }
 
-    // insertFroshToGroup(0, insertions, worldRes);
-
-    function insertFroshToGroup(insertIdx, insertions, worldRes) {
-        return new Promise(function (res) {
+    function insertFroshToGroup(insertIdx, insertions) {
+        return new Promise(function (res, rej) {
             if (insertIdx < insertions.length) {
                 var id = insertions[insertIdx].wufooEntryId;
                 var num = insertions[insertIdx].groupNum;
                 dbConn.query("insert groupData values(?,?)", [id, num], function (err) {
                     if (err) {
                         console.log("ERROR: " + err);
-                        worldRes.render('error.ejs', {errorMessage: "Couldn't update groups properly. Metadata was updated, contact DoIT to edit database."});
-                        //TODO reject
+                        rej("Couldn't update groups properly. Metadata was updated, contact DoIT to edit the database.");
                     } else {
                         insertFroshToGroup(insertIdx + 1, insertions).then(function () {
                             res();

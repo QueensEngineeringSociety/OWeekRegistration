@@ -630,7 +630,7 @@ module.exports = function (app, passport) {
                     } else {
                         newData.menCount = 1;
                         newData.totalCount = 1;
-                        newGroupData.splice(manGroupNum, 0, newData);
+                        newGroupData[manGroupNum] = newData;
                     }
                     manGroupNum = incGroupNum(manGroupNum);
                 } else {
@@ -643,7 +643,7 @@ module.exports = function (app, passport) {
                     } else {
                         newData.womenCount = 1;
                         newData.totalCount = 1;
-                        newGroupData.splice(womanGroupNum, 0, newData);
+                        newGroupData[womanGroupNum] = newData;
                     }
                     womanGroupNum = incGroupNum(womanGroupNum);
                 }
@@ -663,20 +663,26 @@ module.exports = function (app, passport) {
                             } else {
                                 if (rows.length) {
                                     //previous groups, combine new with old data
-                                    //TODO when existing groups
-                                } else {
-                                    //no previous groups, just insert
-                                    insertNewGroupData(0, newGroupData).then(function () {
-                                        //call next thing to update
-                                        insertFroshToGroup(0, insertions).then(function () {
-                                            resolve();
-                                        }).catch(function (m) {
-                                            reject(m);
-                                        });
+                                    for (var i = 0; i < rows.length; i++) {
+                                        var newData = newGroupData[rows[i].groupNumber];
+                                        if (newData) {
+                                            newData.totalCount += rows[i].totalCount;
+                                            newData.womenCount += rows[i].womenCount;
+                                            newData.menCount += rows[i].menCount;
+                                        }
+                                        newGroupData[rows[i].groupNumber] = newData;
+                                    }
+                                }
+                                insertNewGroupData(0, newGroupData).then(function () {
+                                    //update individual frosh
+                                    insertFroshToGroup(0, insertions).then(function () {
+                                        resolve();
                                     }).catch(function (m) {
                                         reject(m);
                                     });
-                                }
+                                }).catch(function (m) {
+                                    reject(m);
+                                });
                             }
                         });
                     }
@@ -688,17 +694,24 @@ module.exports = function (app, passport) {
         return new Promise(function (res, rej) {
                 if (insertIdx < newGroupData.length) {
                     var data = newGroupData[insertIdx];
-                    dbConn.query("INSERT groups values(?,?,?,?)",
-                        [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err) {
-                            if (err) {
-                                console.log("ERROR: " + err);
-                                rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.")
-                            } else {
-                                insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
-                                    res();
-                                });
-                            }
+                    if (data) {
+                        dbConn.query("INSERT groups VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE menCount=VALUES(menCount),womenCount=VALUES(womenCount),totalCount=VALUES(totalCount)",
+                            [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err) {
+                                if (err) {
+                                    console.log("ERROR: " + err);
+                                    rej("Couldn't update groups properly. Metadata was updated, contact DoIT to edit the database.")
+                                } else {
+                                    insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
+                                        res();
+                                    });
+                                }
+                            });
+                    } else {
+                        insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
+                            res();
                         });
+                    }
+
                 } else {
                     res();
                 }
@@ -714,7 +727,7 @@ module.exports = function (app, passport) {
                 dbConn.query("insert groupData values(?,?)", [id, num], function (err) {
                     if (err) {
                         console.log("ERROR: " + err);
-                        rej("Couldn't update groups properly. Metadata was updated, contact DoIT to edit the database.");
+                        rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.");
                     } else {
                         insertFroshToGroup(insertIdx + 1, insertions).then(function () {
                             res();

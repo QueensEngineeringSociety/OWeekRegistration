@@ -35,8 +35,6 @@
             <% for (var i in peopleInGroup){ %>
                 <tr>
                     <% for (var j in fields){ %>
-                    <% console.log(fields[j]) %>
-                    <% console.log((peopleInGroup[i])[fields[j]]) %>
                     <td><%= (peopleInGroup[i])[fields[j]] %></td>
                     <% } %>
                 </tr>

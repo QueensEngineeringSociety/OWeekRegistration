@@ -6,8 +6,7 @@ var User = require("./models/user");
 var query = wufoo.queries;
 
 var strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
-var MAX_AUTO_GROUP = 3;
-var MAX_AUTO_MEN = 2;
+var maxNumInGroup = 30;
 
 module.exports = function (app, passport) {
 
@@ -499,13 +498,21 @@ module.exports = function (app, passport) {
     });
 
     app.get('/allgroups', requireAdmin, function (req, res) {
-        dbConn.query("SELECT * FROM groups", [], function (err, rows) {
+        dbConn.query("SELECT maxNumInGroup FROM groupMetaData", function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
-                res.render('error.ejs', {errorMessage: "No groups"});
+                res.render('error.ejs', {errorMessage: "Cannot get number of groups."});
             } else {
-                res.render('groups.ejs', {
-                    groups: rows
+                maxNumInGroup=rows[0].maxNumInGroup;
+                dbConn.query("SELECT * FROM groups", [], function (err, rows) {
+                    if (err) {
+                        console.log("ERROR: " + err);
+                        res.render('error.ejs', {errorMessage: "No groups"});
+                    } else {
+                        res.render('groups.ejs', {
+                            groups: rows
+                        });
+                    }
                 });
             }
         });
@@ -766,7 +773,7 @@ module.exports = function (app, passport) {
     });
 
     function incGroupNum(num) {
-        return (num + 1) % MAX_AUTO_GROUP;
+        return (num + 1) % maxNumInGroup;
     }
 
     function isMan(text) {

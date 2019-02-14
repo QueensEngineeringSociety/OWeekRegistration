@@ -16,14 +16,16 @@
 <body>
 <div class="page-header text-center">
     <h1><span class="fa"></span>Groups</h1>
-    <a href="/assign" class="btn btn-default btn-sm">Run Auto Assign</a>
+    <form action="/assign" method="post">
+        <input type="submit" name="autoassign" value="Run Auto Assign" class="btn btn-default btn-sm"/>
+    </form>
+    <form action="/cleargroups" method="post" >
+        <input type="submit" name="clear" value="Clear Groups" class="btn btn-default btn-sm"/>
+    </form>
+    <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
+                                                                        class="btn btn-default btn-sm">Logout</a></div>
 </div>
 <div class="container">
-    <div style="position: relative;">
-        <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
-                                                                            class="btn btn-default btn-sm">Logout</a>
-        </div>
-    </div>
     <div class="col-sm-6 col-sm-offset-3">
         <% for (var i in groups){ %>
             <form action="/onegroup" id="group_form" method="post">

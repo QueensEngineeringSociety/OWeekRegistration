@@ -551,7 +551,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/assign', requireAdmin, function (req, res) {
+    app.post('/assign', requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM groupMetaData", function (err, rows) {
                 if (err) {
                     console.log("ERROR: " + err);
@@ -739,6 +739,31 @@ module.exports = function (app, passport) {
             }
         });
     }
+
+    app.post('/cleargroups', requireAdmin, function (req, res) {
+        dbConn.query("UPDATE groupMetaData set manGroupNum=0, womanGroupNum=0", function (err) {
+            if (err) {
+                console.log("ERROR: " + err);
+                res.render('error.ejs', {errorMessage: "Could not delete any group data"});
+            } else {
+                dbConn.query("DELETE FROM groupData", function (err) {
+                    if (err) {
+                        console.log("ERROR: " + err);
+                        res.render('error.ejs', {errorMessage: "Cleared metadata and groups, but couldn't delete group data. Contact DoIT."});
+                    } else {
+                        dbConn.query("DELETE FROM groups", function (err) {
+                            if (err) {
+                                console.log("ERROR: " + err);
+                                res.render('error.ejs', {errorMessage: "Cleared metadata, but couldn't delete groups. Contact DoIT."});
+                            } else {
+                                res.redirect("/allgroups");
+                            }
+                        });
+                    }
+                });
+            }
+        })
+    });
 
     function incGroupNum(num) {
         return (num + 1) % MAX_AUTO_GROUP;

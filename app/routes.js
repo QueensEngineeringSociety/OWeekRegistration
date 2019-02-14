@@ -503,14 +503,15 @@ module.exports = function (app, passport) {
                 console.log("ERROR: " + err);
                 res.render('error.ejs', {errorMessage: "Cannot get number of groups."});
             } else {
-                maxNumInGroup=rows[0].maxNumInGroup;
+                maxNumInGroup = rows[0].maxNumInGroup;
                 dbConn.query("SELECT * FROM groups", [], function (err, rows) {
                     if (err) {
                         console.log("ERROR: " + err);
                         res.render('error.ejs', {errorMessage: "No groups"});
                     } else {
                         res.render('groups.ejs', {
-                            groups: rows
+                            groups: rows,
+                            groupMax: maxNumInGroup
                         });
                     }
                 });
@@ -556,6 +557,22 @@ module.exports = function (app, passport) {
                 });
             }
         });
+    });
+
+    app.post("/updatemaxnum", requireAdmin, function (req, res) {
+        if (req.body.updatemax) {
+            dbConn.query("UPDATE groupMetaData SET maxNumInGroup=?", [req.body.updatemax], function (err) {
+                if (err) {
+                    console.log("ERROR: " + err);
+                    res.render("error.ejs", {errorMessage: "Couldn't update maximum group number."});
+                } else {
+                    res.redirect("/allgroups");
+                }
+            });
+        } else {
+            console.log("ERROR: No given maximum");
+            res.render("error.ejs", {errorMessage: "Not given a maximum group number."});
+        }
     });
 
     app.post('/assign', requireAdmin, function (req, res) {

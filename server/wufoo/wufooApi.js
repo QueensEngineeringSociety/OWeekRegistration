@@ -6,6 +6,7 @@ var query = require("./wufooQueryBuilder.js");
 var properties = PropertiesReader(__dirname + "/../../config/wufoo_properties.ini");
 
 var fields = con.allFields;
+var PAGE_SIZE = 3;
 
 exports.queries = {
     all: query.buildQuery(),
@@ -21,12 +22,10 @@ exports.queries = {
     pronoun: query.buildPronouns()
 };
 
-exports.makeQuery = function (pageStart, queryString, callback, allEntries) {
-    if (allEntries === undefined || allEntries === null) {
-        allEntries = [];
-    }
+exports.makeQuery = function (pageNum, queryString, callback) {
+    var pageStart = 1 + pageNum * PAGE_SIZE;
     request({
-        uri: properties.get('uri') + queryString + "&pageSize=100&pageStart=" + pageStart,
+        uri: properties.get('uri') + queryString + "&pageSize=" + PAGE_SIZE + "&pageStart=" + pageStart,
         method: properties.get('method'),
         auth: {
             'username': properties.get('username'),
@@ -34,21 +33,18 @@ exports.makeQuery = function (pageStart, queryString, callback, allEntries) {
             'sendImmediately': false
         }
     }, function (error, response, body) {
-        var entries = JSON.parse(body);
-        if (entries["Entries"].length) {
-            allEntries = allEntries.concat(entries["Entries"]);
-            var newPageStart = pageStart + 100;
-            exports.makeQuery(newPageStart, queryString, callback, allEntries);
-        } else {
-            getComments().then(function (allComments) {
-                for (var i = 0; i < allEntries.length; ++i) {
-                    (allEntries[i])["comment"] = getEntryComment((allEntries[i])["EntryId"], allComments);
-                }
-                callback(JSON.stringify(allEntries)); //make it a string so ejs files don't need to be changed (they expect json string)
-            }).catch(function (err) {
-                console.log("Error getting comments: " + err);
-            });
-        }
+        var entries = (JSON.parse(body))["Entries"];
+        console.log(entries);
+        getComments().then(function (allComments) {
+            for (var i = 0; i < entries.length; ++i) {
+                (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
+            }
+            var nextPageNum = entries.length < 1 ? -1 : pageNum + 1;
+            var prevPageNum = pageNum > 0 ? pageNum - 1 : -1;
+            callback(JSON.stringify(entries), nextPageNum, prevPageNum); //make it a string so ejs files don't need to be changed (they expect json string)
+        }).catch(function (err) {
+            console.log("Error getting comments: " + err);
+        });
     });
 };
 

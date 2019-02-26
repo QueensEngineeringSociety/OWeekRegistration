@@ -35,39 +35,49 @@
             <a href="/filter" class="btn btn-default btn-sm">All</a>
             <a href="/age" class="btn btn-default btn-sm">Under 18</a>
             <% if (isAdmin){ %>
-            <a href="/food_restrictions" class="btn btn-default btn-sm">Food Restrictions</a>
-            <a href="/medical" class="btn btn-default btn-sm">Medical Issues</a>
-            <a href="/pronouns" class="btn btn-default btn-sm">Non-Binary Pronouns</a>
-            <a href="/accessibility" class="btn btn-default btn-sm">Accessibility Issues</a>
-            <a href="/primer" class="btn btn-default btn-sm">Accessibility Primer</a>
+                <a href="/food_restrictions" class="btn btn-default btn-sm">Food Restrictions</a>
+                <a href="/medical" class="btn btn-default btn-sm">Medical Issues</a>
+                <a href="/pronouns" class="btn btn-default btn-sm">Non-Binary Pronouns</a>
+                <a href="/accessibility" class="btn btn-default btn-sm">Accessibility Issues</a>
+                <a href="/primer" class="btn btn-default btn-sm">Accessibility Primer</a>
             <% } %>
             <a href="/payPerson" class="btn btn-default btn-sm">Pay in Person</a>
             <a href="/payMail" class="btn btn-default btn-sm">Pay by Mail</a>
             <a href="/payOnline" class="btn btn-default btn-sm">Pay Online</a>
             <a href="/unpaid" class="btn btn-default btn-sm">Unpaid</a>
         </div>
-
+        <% if (prevPage > -1){ %>
+            <form action="<%=actionPath%>" method="get" style="float: left;">
+                <input type="submit" name="prevPage" value="<%= prevPage %>"
+                       class="btn btn-default btn-sm"/>
+            </form>
+        <% } %>
+        <% if (nextPage > 0){ %>
+            <form action="<%=actionPath%>" method="get" style="float:right;">
+                <input type="submit" name="nextPage" value="<%= nextPage %>"
+                       class="btn btn-default btn-sm"/>
+            </form>
+        <% } %>
         <form action="/search" method="get" style="display: inline;">
             <select name="field">
                 <!-- use the key as the value - key is english, value is wufoo API query version-->
                 <% for (var fieldKey in fields){ %>
-                <% if (headings.hasOwnProperty(fieldKey)){ %>
-                <option value="<%= fieldKey %>"><%= headings[fieldKey] %></option>
-                <% } %>
+                    <% if (headings.hasOwnProperty(fieldKey)){ %>
+                        <option value="<%= fieldKey %>"><%= headings[fieldKey] %></option>
+                    <% } %>
                 <% } %>
             </select>
             <select id="operator" name="operator">
                 <!-- use the key as the value - key is english, value is wufoo API query version-->
                 <% for (var opKey in operators){ %>
-                <% if (operators.hasOwnProperty(opKey)){ %>
-                <option value="<%= opKey %>"><%= opKey %></option>
-                <% } %>
+                    <% if (operators.hasOwnProperty(opKey)){ %>
+                        <option value="<%= opKey %>"><%= opKey %></option>
+                    <% } %>
                 <% } %>
             </select>
             <input id="value" type="text" name="value">
             <input type="submit" value="OK">
             <% var entries = JSON.parse(wufoo) %>
-            <div style="float:right">Rows: <%= entries.length %></div>
         </form>
         <form action="/netid" style="display: inline; padding-left: 50px;">
             <input type="search" id="netid_search" name="netid_search" placeholder="NetID">
@@ -78,47 +88,47 @@
     <table id="entryTable">
         <th>Group Number</th>
         <% for (var eachField in fields){ %>
-        <% if (headings.hasOwnProperty(eachField)){ %>
-        <% if (eachField === "payStatus"){ %>
-        <th><%= headings.paymentMethod %></th>
-        <th><%= headings.payStatus %></th>
-        <% } else { %>
-        <th><%= headings[eachField] %></th>
-        <% } %>
-        <% } %>
+            <% if (headings.hasOwnProperty(eachField)){ %>
+                <% if (eachField === "payStatus"){ %>
+                    <th><%= headings.paymentMethod %></th>
+                    <th><%= headings.payStatus %></th>
+                <% } else { %>
+                    <th><%= headings[eachField] %></th>
+                <% } %>
+            <% } %>
         <% } %>
         <% for (var i in entries){ %>
-        <% if (entries.hasOwnProperty(i)){ %>
-        <% var eachEntry = entries[i] %>
-        <tr>
-            <td><%= groupNumbers[eachEntry.EntryId]/*entry ID is key for the groupNum*/ %></td>
-            <% for (var valKey in eachEntry){ %>
-            <% if (eachEntry.hasOwnProperty(valKey)){ %>
-            <% for (var field in fields){ %>
-            <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
-            <% break; %>
+            <% if (entries.hasOwnProperty(i)){ %>
+                <% var eachEntry = entries[i] %>
+                <tr>
+                    <td><%= groupNumbers[eachEntry.EntryId]/*entry ID is key for the groupNum*/ %></td>
+                    <% for (var valKey in eachEntry){ %>
+                        <% if (eachEntry.hasOwnProperty(valKey)){ %>
+                            <% for (var field in fields){ %>
+                                <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
+                                    <% break; %>
+                                <% } %>
+                                <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
+                                    <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
+                                        <td>Unpaid</td>
+                                    <% } else { %>
+                                        <td><%= eachEntry[valKey] %></td>
+                                    <% } %>
+                                <% } %>
+                            <% } %>
+                            <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                                <td>In person</td>
+                            <% } %>
+                            <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                                <td>By mail</td>
+                            <% } %>
+                            <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                                <td>Online</td>
+                            <% } %>
+                        <% } %>
+                    <% } %>
+                </tr>
             <% } %>
-            <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
-            <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
-            <td>Unpaid</td>
-            <% } else { %>
-            <td><%= eachEntry[valKey] %></td>
-            <% } %>
-            <% } %>
-            <% } %>
-            <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-            <td>In person</td>
-            <% } %>
-            <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-            <td>By mail</td>
-            <% } %>
-            <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-            <td>Online</td>
-            <% } %>
-            <% } %>
-            <% } %>
-        </tr>
-        <% } %>
         <% } %>
     </table>
 </div>

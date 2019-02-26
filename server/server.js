@@ -43,4 +43,4 @@ app.listen(port);
 //TODO improve user management
 //TODO improve visuals of /allgroups
 //TODO improve visuals of /onegroup
-//TODO pagination for filter
+//TODO can only see one person in group

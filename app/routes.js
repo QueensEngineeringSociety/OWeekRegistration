@@ -152,7 +152,9 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(0, query.all, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.all, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -164,7 +166,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
-                    isAdmin: admin
+                    isAdmin: admin,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/filter"
                 });
             });
         });
@@ -181,7 +186,9 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(0, query.age, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.age, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -193,7 +200,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
-                    isAdmin: admin
+                    isAdmin: admin,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/age"
                 });
             });
         });
@@ -205,7 +215,9 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/food_restrictions', requireAdmin, function (req, res) {
-        wufoo.makeQuery(0, query.foodRestrictions, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.foodRestrictions, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -217,7 +229,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: con.allFields,
                     headings: con.headings,
-                    isAdmin: true
+                    isAdmin: true,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/food_restrictions"
                 });
             });
         });
@@ -229,7 +244,9 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/primer', requireAdmin, function (req, res) {
-        wufoo.makeQuery(0, query.wantPrimer, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.wantPrimer, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -241,7 +258,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: con.allFields,
                     headings: con.headings,
-                    isAdmin: true
+                    isAdmin: true,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/primer"
                 });
             });
         });
@@ -253,7 +273,9 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/medical', requireAdmin, function (req, res) {
-        wufoo.makeQuery(0, query.medicalConcerns, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.medicalConcerns, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -265,7 +287,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: con.allFields,
                     headings: con.headings,
-                    isAdmin: true
+                    isAdmin: true,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/medical"
                 });
             });
         });
@@ -277,7 +302,9 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/pronouns', requireAdmin, function (req, res) {
-        wufoo.makeQuery(0, query.pronoun, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.pronoun, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -289,7 +316,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: con.allFields,
                     headings: con.headings,
-                    isAdmin: true
+                    isAdmin: true,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/pronouns"
                 });
             });
         });
@@ -301,7 +331,9 @@ module.exports = function (app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/accessibility', requireAdmin, function (req, res) {
-        wufoo.makeQuery(0, query.accessibilityConcerns, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.accessibilityConcerns, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -313,7 +345,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: con.allFields,
                     headings: con.headings,
-                    isAdmin: true
+                    isAdmin: true,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/accessibility"
                 });
             });
         });
@@ -330,7 +365,9 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(0, query.payInPerson, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.payInPerson, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -342,7 +379,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
-                    isAdmin: admin
+                    isAdmin: admin,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/payPerson"
                 });
             });
         });
@@ -359,7 +399,9 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(0, query.payByMail, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.payByMail, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -371,7 +413,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
-                    isAdmin: admin
+                    isAdmin: admin,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/payMail"
                 });
             });
         });
@@ -388,7 +433,9 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(0, query.payOnline, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.payOnline, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -400,7 +447,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
-                    isAdmin: admin
+                    isAdmin: admin,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/payOnline"
                 });
             });
         });
@@ -417,7 +467,9 @@ module.exports = function (app, passport) {
         if (admin) {
             accessFields = con.allFields;
         }
-        wufoo.makeQuery(0, query.unpaid, function (body) {
+        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+        wufoo.makeQuery(pageNum, query.unpaid, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -429,7 +481,10 @@ module.exports = function (app, passport) {
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
-                    isAdmin: admin
+                    isAdmin: admin,
+                    nextPage: nextPageNum,
+                    prevPage: prevPageNum,
+                    actionPath: "/unpaid"
                 });
             });
         });
@@ -447,7 +502,9 @@ module.exports = function (app, passport) {
             if (admin) {
                 accessFields = con.allFields;
             }
-            wufoo.makeQuery(0, builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
+            var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+            pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+            wufoo.makeQuery(pageNum, builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body, nextPageNum, prevPageNum) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                     var groupNumbers = [];
                     for (var i in rows) {
@@ -459,7 +516,10 @@ module.exports = function (app, passport) {
                         operators: con.operators,
                         fields: accessFields,
                         headings: con.headings,
-                        isAdmin: admin
+                        isAdmin: admin,
+                        nextPage: nextPageNum,
+                        prevPage: prevPageNum,
+                        actionPath: "/search"
                     });
                 });
             });
@@ -478,7 +538,9 @@ module.exports = function (app, passport) {
             if (admin) {
                 accessFields = con.allFields;
             }
-            wufoo.makeQuery(0, builder.buildNetidQuery(req.query['netid_search']), function (body) {
+            var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+            pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+            wufoo.makeQuery(pageNum, builder.buildNetidQuery(req.query['netid_search']), function (body, nextPageNum, prevPageNum) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                     var groupNumbers = [];
                     for (var i in rows) {
@@ -490,7 +552,10 @@ module.exports = function (app, passport) {
                         operators: con.operators,
                         fields: accessFields,
                         headings: con.headings,
-                        isAdmin: admin
+                        isAdmin: admin,
+                        nextPage: nextPageNum,
+                        prevPage: prevPageNum,
+                        actionPath: "/netid"
                     });
                 });
             });

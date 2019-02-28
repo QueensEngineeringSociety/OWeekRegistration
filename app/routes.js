@@ -154,7 +154,7 @@ module.exports = function (app, passport) {
         }
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.all, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.all, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -188,7 +188,7 @@ module.exports = function (app, passport) {
         }
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.age, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.age, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -217,7 +217,7 @@ module.exports = function (app, passport) {
     app.get('/food_restrictions', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.foodRestrictions, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.foodRestrictions, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -246,7 +246,7 @@ module.exports = function (app, passport) {
     app.get('/primer', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.wantPrimer, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.wantPrimer, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -275,7 +275,7 @@ module.exports = function (app, passport) {
     app.get('/medical', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.medicalConcerns, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.medicalConcerns, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -304,7 +304,7 @@ module.exports = function (app, passport) {
     app.get('/pronouns', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.pronoun, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.pronoun, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -333,7 +333,7 @@ module.exports = function (app, passport) {
     app.get('/accessibility', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.accessibilityConcerns, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.accessibilityConcerns, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -367,7 +367,7 @@ module.exports = function (app, passport) {
         }
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.payInPerson, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.payInPerson, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -401,7 +401,7 @@ module.exports = function (app, passport) {
         }
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.payByMail, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.payByMail, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -435,7 +435,7 @@ module.exports = function (app, passport) {
         }
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.payOnline, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.payOnline, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -469,7 +469,7 @@ module.exports = function (app, passport) {
         }
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-        wufoo.makeQuery(pageNum, query.unpaid, function (body, nextPageNum, prevPageNum) {
+        wufoo.makePaginatedQuery(pageNum, query.unpaid, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                 var groupNumbers = [];
                 for (var i in rows) {
@@ -504,7 +504,7 @@ module.exports = function (app, passport) {
             }
             var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
             pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-            wufoo.makeQuery(pageNum, builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body, nextPageNum, prevPageNum) {
+            wufoo.makePaginatedQuery(pageNum, builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body, nextPageNum, prevPageNum) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                     var groupNumbers = [];
                     for (var i in rows) {
@@ -540,7 +540,7 @@ module.exports = function (app, passport) {
             }
             var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
             pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-            wufoo.makeQuery(pageNum, builder.buildNetidQuery(req.query['netid_search']), function (body, nextPageNum, prevPageNum) {
+            wufoo.makePaginatedQuery(pageNum, builder.buildNetidQuery(req.query['netid_search']), function (body, nextPageNum, prevPageNum) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                     var groupNumbers = [];
                     for (var i in rows) {
@@ -593,17 +593,11 @@ module.exports = function (app, passport) {
                 res.render('error.ejs', {errorMessage: "No groups"});
             } else {
                 var entryIds = [];
-                for (var i in rows) {
-                    entryIds[rows[i].wufooEntryId] = true;
+                for (var i = 0; i < rows.length; i++) {
+                    entryIds[i] = rows[i].wufooEntryId;
                 }
-                wufoo.makeQuery(0, query.all, function (body) {
-                    var peopleInGroup = [];
+                wufoo.getEntriesById(entryIds, function (body) {
                     body = JSON.parse(body);
-                    for (var i in body) {
-                        if (typeof entryIds[Number(body[i].EntryId)] !== "undefined") {
-                            peopleInGroup.push(body[i]);
-                        }
-                    }
                     dbConn.query("SELECT * FROM groups WHERE groupNumber = ?", [req.body.groupNumber], function (err, rows) {
                         if (err) {
                             console.log("ERROR: " + err);
@@ -613,7 +607,7 @@ module.exports = function (app, passport) {
                         } else {
                             res.render('group.ejs', {
                                 groupData: rows[0], //only one group with that group number
-                                peopleInGroup: peopleInGroup,
+                                peopleInGroup: body,
                                 fields: con.groupFields,
                                 headings: con.headings
                             });
@@ -661,7 +655,7 @@ module.exports = function (app, passport) {
                                 assignedFrosh.push(rows[i].wufooEntryId);
                             }
                         }
-                        wufoo.makeQuery(0, query.all, function (body) {
+                        wufoo.makePaginatedQuery(0, query.all, function (body) {
                             //show updated groups
                             body = JSON.parse(body);
                             var insertions = [];

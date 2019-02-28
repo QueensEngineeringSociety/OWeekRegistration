@@ -22,7 +22,7 @@ exports.queries = {
     pronoun: query.buildPronouns()
 };
 
-exports.makeQuery = function (pageNum, queryString, callback) {
+exports.makePaginatedQuery = function (pageNum, queryString, callback) {
     var pageStart = 1 + pageNum * PAGE_SIZE;
     request({
         uri: properties.get('uri') + queryString + "&pageSize=" + PAGE_SIZE + "&pageStart=" + pageStart,
@@ -34,7 +34,6 @@ exports.makeQuery = function (pageNum, queryString, callback) {
         }
     }, function (error, response, body) {
         var entries = (JSON.parse(body))["Entries"];
-        console.log(entries);
         getComments().then(function (allComments) {
             for (var i = 0; i < entries.length; ++i) {
                 (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
@@ -42,6 +41,28 @@ exports.makeQuery = function (pageNum, queryString, callback) {
             var nextPageNum = entries.length < 1 ? -1 : pageNum + 1;
             var prevPageNum = pageNum > 0 ? pageNum - 1 : -1;
             callback(JSON.stringify(entries), nextPageNum, prevPageNum); //make it a string so ejs files don't need to be changed (they expect json string)
+        }).catch(function (err) {
+            console.log("Error getting comments: " + err);
+        });
+    });
+};
+
+exports.getEntriesById = function (ids, callback) {
+    request({
+        uri: properties.get('uri') + query.buildEntryIDsQuery(ids),
+        method: properties.get('method'),
+        auth: {
+            'username': properties.get('username'),
+            'password': properties.get('password'),
+            'sendImmediately': false
+        }
+    }, function (error, response, body) {
+        var entries = (JSON.parse(body))["Entries"];
+        getComments().then(function (allComments) {
+            for (var i = 0; i < entries.length; ++i) {
+                (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
+            }
+            callback(JSON.stringify(entries)); //make it a string so ejs files don't need to be changed (they expect json string)
         }).catch(function (err) {
             console.log("Error getting comments: " + err);
         });

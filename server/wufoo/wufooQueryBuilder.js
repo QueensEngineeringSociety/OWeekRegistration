@@ -46,7 +46,7 @@ exports.customQuery = function (field, operator, value) {
 
 //helper for all partial builder queries - sets format and checks field and operator correctness
 function buildPartialQuery(field, value, operator) {
-    if (inObject(con.allFields, field) && inObject(con.operators, operator)) {
+    if (/*inObject(con.allFields, field) && */inObject(con.operators, operator)) {
         return field + '+' + operator + '+' + value;
     }
     return "";
@@ -124,4 +124,12 @@ exports.buildPronouns = function () {
 
 exports.buildNetidQuery = function (netid) {
     return exports.buildQuery() + "&Filter1=" + con.allFields.netid + '+' + con.operators.equals + '+' + netid;
+};
+
+exports.buildEntryIDsQuery = function (ids) {
+    var partialQueries = [];
+    for (var i = 0; i < ids.length; i++) {
+        partialQueries[i] = exports.buildEquals("EntryId", ids[i]);
+    }
+    return exports.buildQuery(partialQueries, con.grouping.or);
 };

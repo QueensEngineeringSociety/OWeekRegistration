@@ -47,13 +47,13 @@
             <a href="/unpaid" class="btn btn-default btn-sm">Unpaid</a>
         </div>
         <% if (prevPage > -1){ %>
-            <form action="<%=actionPath%>" method="get" style="float: left;">
+            <form action="<%= actionPath %>" method="get" style="float: left;">
                 <input type="submit" name="prevPage" value="<%= prevPage %>"
                        class="btn btn-default btn-sm"/>
             </form>
         <% } %>
         <% if (nextPage > 0){ %>
-            <form action="<%=actionPath%>" method="get" style="float:right;">
+            <form action="<%= actionPath %>" method="get" style="float:right;">
                 <input type="submit" name="nextPage" value="<%= nextPage %>"
                        class="btn btn-default btn-sm"/>
             </form>
@@ -101,7 +101,7 @@
             <% if (entries.hasOwnProperty(i)){ %>
                 <% var eachEntry = entries[i] %>
                 <tr>
-                    <td><%= groupNumbers[eachEntry.EntryId]/*entry ID is key for the groupNum*/ %></td>
+                    <td><%= groupNumbers[eachEntry.EntryId] + 1/*entry ID is key for the groupNum*/ %></td>
                     <% for (var valKey in eachEntry){ %>
                         <% if (eachEntry.hasOwnProperty(valKey)){ %>
                             <% for (var field in fields){ %>

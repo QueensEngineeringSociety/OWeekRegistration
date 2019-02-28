@@ -46,18 +46,6 @@
             <a href="/payOnline" class="btn btn-default btn-sm">Pay Online</a>
             <a href="/unpaid" class="btn btn-default btn-sm">Unpaid</a>
         </div>
-        <% if (prevPage > -1){ %>
-            <form action="<%= actionPath %>" method="get" style="float: left;">
-                <input type="submit" name="prevPage" value="<%= prevPage %>"
-                       class="btn btn-default btn-sm"/>
-            </form>
-        <% } %>
-        <% if (nextPage > 0){ %>
-            <form action="<%= actionPath %>" method="get" style="float:right;">
-                <input type="submit" name="nextPage" value="<%= nextPage %>"
-                       class="btn btn-default btn-sm"/>
-            </form>
-        <% } %>
         <form action="/search" method="get" style="display: inline;">
             <select name="field">
                 <!-- use the key as the value - key is english, value is wufoo API query version-->

@@ -502,23 +502,19 @@ module.exports = function (app, passport) {
             if (admin) {
                 accessFields = con.allFields;
             }
-            var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
-            pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-            wufoo.makePaginatedQuery(pageNum, builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body, nextPageNum, prevPageNum) {
+            wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                     var groupNumbers = [];
                     for (var i in rows) {
                         groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                     }
-                    res.render('filter.ejs', {
+                    res.render('search.ejs', {
                         wufoo: body,
                         groupNumbers: groupNumbers,
                         operators: con.operators,
                         fields: accessFields,
                         headings: con.headings,
                         isAdmin: admin,
-                        nextPage: nextPageNum,
-                        prevPage: prevPageNum,
                         actionPath: "/search"
                     });
                 });
@@ -538,23 +534,19 @@ module.exports = function (app, passport) {
             if (admin) {
                 accessFields = con.allFields;
             }
-            var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
-            pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
-            wufoo.makePaginatedQuery(pageNum, builder.buildNetidQuery(req.query['netid_search']), function (body, nextPageNum, prevPageNum) {
+            wufoo.makeQuery(builder.buildNetidQuery(req.query['netid_search']), function (body) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
                     var groupNumbers = [];
                     for (var i in rows) {
                         groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                     }
-                    res.render('filter.ejs', {
+                    res.render('search.ejs', {
                         wufoo: body,
                         groupNumbers: groupNumbers,
                         operators: con.operators,
                         fields: accessFields,
                         headings: con.headings,
                         isAdmin: admin,
-                        nextPage: nextPageNum,
-                        prevPage: prevPageNum,
                         actionPath: "/netid"
                     });
                 });

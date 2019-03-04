@@ -1,42 +1,69 @@
-var wufoo = require("../server/wufoo/wufooApi.js");
-var builder = require("../server/wufoo/wufooQueryBuilder");
-var dbConn = require("../config/database.js");
-var con = require("../server/wufoo/wufooConstants");
-var User = require("./models/user");
-var query = wufoo.queries;
+const wufoo = require("../server/wufoo/wufooApi.js");
+const builder = require("../server/wufoo/wufooQueryBuilder");
+const dbConn = require("../config/database.js");
+const con = require("../server/wufoo/wufooConstants");
+const User = require("./models/user");
+const query = wufoo.queries;
 
-var strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
-var maxNumInGroup = 30;
+const ROUTE_HOME="/";
+const ROUTE_LOGIN="/login";
+const ROUTE_USER_MANAGEMENT="/usermanagement";
+const ROUTE_SIGN_UP="/signup";
+const ROUTE_USER_EDIT="/useredit";
+const ROUTE_USER_DELETE="/userdelete";
+const ROUTE_FILTER="/filter";
+const ROUTE_AGE="/age";
+const ROUTE_FOOD_RESTRICTIONS="/food_restrictions";
+const ROUTE_PRIMER="/primer";
+const ROUTE_MEDICAL="/medical";
+const ROUTE_PRONOUNS="/pronouns";
+const ROUTE_ACCESSIBILITY="/accessibility";
+const ROUTE_PAY_PERSON="/payPerson";
+const ROUTE_PAY_ONLINE="/payOnline";
+const ROUTE_PAY_MAIL="/payMail";
+const ROUTE_UNPAID="/unpaid";
+const ROUTE_SEARCH="/search";
+const ROUTE_NET_ID="/netid";
+const ROUTE_ALL_GROUPS="/allgroups";
+const ROUTE_ONE_GROUP="/onegroup";
+const ROUTE_UPDATE_MAXNUM="/updatemaxnum";
+const ROUTE_ASSIGN="/assign";
+const ROUTE_CLEAR_GROUPS="/cleargroups";
+const ROUTE_ERROR="/error";
+const ROUTE_LOGOUT="/logout";
+
+const strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
+let maxNumInGroup = 30;
 
 module.exports = function (app, passport) {
-    app.get('/', function (req, res) {
+    app.get(ROUTE_HOME, function (req, res) {
             if (req.user) {
-                res.redirect('filter');
+                res.redirect(ROUTE_FILTER);
             } else {
                 res.render('index.ejs');
             }
         }
     );
 
-    app.get('/login', function (req, res) {
+    app.get(ROUTE_LOGIN, function (req, res) {
         if (req.user) {
-            res.redirect('filter');
+            res.redirect(ROUTE_FILTER);
         } else {
             res.render('login.ejs', {message: req.flash('loginMessage')});
         }
     });
 
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/filter',
-        failureRedirect: '/login',
+    app.post(ROUTE_LOGIN, passport.authenticate('local-login', {
+        successRedirect: ROUTE_FILTER,
+        failureRedirect: ROUTE_LOGIN,
         failureFlash: true
     }));
 
-    app.get('/usermanagement', requireAdmin, function (req, res) {
+    app.get(ROUTE_USER_MANAGEMENT, requireAdmin, function (req, res) {
         res.render('users.ejs', {message: req.flash('signupMessage')});
     });
 
-    app.post('/signup', requireAdmin, function (req, res) {
+    app.post(ROUTE_SIGN_UP, requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM users WHERE email = ?", [req.body.email], function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -60,7 +87,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.post('/useredit', requireAdmin, function (req, res) {
+    app.post(ROUTE_USER_EDIT, requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM users WHERE email = ?", [req.body.email], function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -83,7 +110,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/userdelete', requireAdmin, function (req, res) {
+    app.get(ROUTE_USER_DELETE, requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM users", [], function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -99,7 +126,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.post('/userdelete', requireAdmin, function (req, res) {
+    app.post(ROUTE_USER_DELETE, requireAdmin, function (req, res) {
         var queryString = "";
         if (typeof req.body.users.length === "object") {
             queryString = "DELETE FROM users WHERE email IN('" + req.body.users.join("','") + "')";
@@ -124,7 +151,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/filter', isLoggedIn, function (req, res) {
+    app.get(ROUTE_FILTER, isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
         if (admin) {
@@ -153,7 +180,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/age', isLoggedIn, function (req, res) {
+    app.get(ROUTE_AGE, isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
         if (admin) {
@@ -182,7 +209,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/food_restrictions', requireAdmin, function (req, res) {
+    app.get(ROUTE_FOOD_RESTRICTIONS, requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.foodRestrictions, function (body, nextPageNum, prevPageNum) {
@@ -206,7 +233,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/primer', requireAdmin, function (req, res) {
+    app.get(ROUTE_PRIMER, requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.wantPrimer, function (body, nextPageNum, prevPageNum) {
@@ -230,7 +257,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/medical', requireAdmin, function (req, res) {
+    app.get(ROUTE_MEDICAL, requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.medicalConcerns, function (body, nextPageNum, prevPageNum) {
@@ -254,7 +281,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/pronouns', requireAdmin, function (req, res) {
+    app.get(ROUTE_PRONOUNS, requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.pronoun, function (body, nextPageNum, prevPageNum) {
@@ -278,7 +305,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/accessibility', requireAdmin, function (req, res) {
+    app.get(ROUTE_ACCESSIBILITY, requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.accessibilityConcerns, function (body, nextPageNum, prevPageNum) {
@@ -302,7 +329,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/payPerson', isLoggedIn, function (req, res) {
+    app.get(ROUTE_PAY_PERSON, isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
         if (admin) {
@@ -331,7 +358,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/payMail', isLoggedIn, function (req, res) {
+    app.get(ROUTE_PAY_MAIL, isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
         if (admin) {
@@ -360,7 +387,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/payOnline', isLoggedIn, function (req, res) {
+    app.get(ROUTE_PAY_ONLINE, isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
         if (admin) {
@@ -389,7 +416,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/unpaid', isLoggedIn, function (req, res) {
+    app.get(ROUTE_UNPAID, isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
         if (admin) {
@@ -418,7 +445,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.get('/search', isLoggedIn, function (req, res) {
+    app.get(ROUTE_SEARCH, isLoggedIn, function (req, res) {
         if (req.query['field'] && req.query['operator'] && req.query['value']) {
             var accessFields = con.generalFields;
             var admin = isAdmin(req);
@@ -445,7 +472,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.get('/netid', isLoggedIn, function (req, res) {
+    app.get(ROUTE_NET_ID, isLoggedIn, function (req, res) {
         if (req.query['netid_search']) {
             var accessFields = con.generalFields;
             var admin = isAdmin(req);
@@ -472,7 +499,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.get('/allgroups', requireAdmin, function (req, res) {
+    app.get(ROUTE_ALL_GROUPS, requireAdmin, function (req, res) {
         dbConn.query("SELECT maxNumInGroup FROM groupMetaData", function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -494,7 +521,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.post('/onegroup', requireAdmin, function (req, res) {
+    app.post(ROUTE_ONE_GROUP, requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM groupData WHERE groupNum = ?", [req.body.groupNumber], function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -529,7 +556,7 @@ module.exports = function (app, passport) {
         });
     });
 
-    app.post("/updatemaxnum", requireAdmin, function (req, res) {
+    app.post(ROUTE_UPDATE_MAXNUM, requireAdmin, function (req, res) {
         if (req.body.updatemax) {
             dbConn.query("UPDATE groupMetaData SET maxNumInGroup=?", [req.body.updatemax], function (err) {
                 if (err) {
@@ -545,7 +572,7 @@ module.exports = function (app, passport) {
         }
     });
 
-    app.post('/assign', requireAdmin, function (req, res) {
+    app.post(ROUTE_ASSIGN, requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM groupMetaData", function (err, rows) {
                 if (err) {
                     console.log("ERROR: " + err);
@@ -594,7 +621,7 @@ module.exports = function (app, passport) {
         );
     });
 
-    app.post('/cleargroups', requireAdmin, function (req, res) {
+    app.post(ROUTE_CLEAR_GROUPS, requireAdmin, function (req, res) {
         dbConn.query("UPDATE groupMetaData set manGroupNum=0, womanGroupNum=0", function (err) {
             if (err) {
                 console.log("ERROR: " + err);
@@ -619,11 +646,11 @@ module.exports = function (app, passport) {
         })
     });
 
-    app.get('/error', isLoggedIn, function (req, res) {
+    app.get(ROUTE_ERROR, isLoggedIn, function (req, res) {
         res.render('error.ejs', {errorMessage: "You don't have the privileges to see this."});
     });
 
-    app.get('/logout', function (req, res) {
+    app.get(ROUTE_LOGOUT, function (req, res) {
         req.logout();
         res.redirect('/');
     });
@@ -633,17 +660,17 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     } else {
-        res.redirect('/');
+        res.redirect(ROUTE_HOME);
     }
 }
 
 function requireAdmin(req, res, next) {
     if (!req.isAuthenticated()) {
-        res.redirect('/');
+        res.redirect(ROUTE_HOME);
     } else if (req.user && req.user.is_admin) {
         return next();
     } else {
-        res.redirect('/error');
+        res.redirect(ROUTE_ERROR);
     }
 }
 

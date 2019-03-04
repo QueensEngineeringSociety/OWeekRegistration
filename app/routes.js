@@ -598,6 +598,7 @@ module.exports = function (app, passport) {
                             res.render('error.ejs', {errorMessage: "No groups"});
                         } else {
                             res.render('group.ejs', {
+                                isAdmin: true,
                                 groupData: rows[0], //only one group with that group number
                                 peopleInGroup: body,
                                 fields: con.groupFields,

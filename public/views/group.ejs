@@ -1,47 +1,86 @@
-<!-- views/users.ejs -->
+<!-- views/group.ejs -->
 <!doctype html>
 <html>
 <head>
     <title>OWeek Info</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/table.css" type="text/css">
-    <!-- load fontawesome -->
     <style>
         body {
             padding-top: 80px;
+            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div style="position: relative;">
-        <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
-                                                                            class="btn btn-default btn-sm">Logout</a>
-        </div>
+<% if (isAdmin){ %>
+<div style="position: relative;">
+    <div style="float: right; display: inline; padding-right: 10px;"><a href="/usermanagement"
+                                                                        class="btn btn-default btn-sm">User
+            Management</a></div>
+    <div style="float: right; display: inline; padding-right: 10px"><a href="/userdelete"
+                                                                       class="btn btn-default btn-sm">Delete
+            Users</a></div>
+    <div style="float: right; display: inline; padding-right: 10px"><a href="/allgroups"
+                                                                       class="btn btn-default btn-sm">Groups</a></div>
+    <% } %>
+    <div style="float: right; display: inline; padding-right: 10px;"><a href="/filter"
+                                                                        class="btn btn-default btn-sm">All</a></div>
+    <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
+                                                                        class="btn btn-default btn-sm">Logout</a>
     </div>
-    <div class="col-sm-6 col-sm-offset-3">
-        <h2>Group <%= groupData.groupNumber + 1 %></h2>
-        Men: <%= groupData.menCount %>
-        Women: <%= groupData.womenCount %>
-        Total: <%= groupData.totalCount %><br>
-        <table id="entryTable">
-            <% for (var eachField in fields){ %>
-                <% if (headings.hasOwnProperty(eachField)){ %>
+    <div class="page-header text-center">
+        <h1><span class="fa"></span>Group <%= groupData.groupNumber + 1 %></h1>
+    </div>
+    <br>
+    Men: <%= groupData.menCount %>
+    Women: <%= groupData.womenCount %>
+    Total: <%= groupData.totalCount %><br>
+    <table id="entryTable">
+        <% for (var eachField in fields){ %>
+            <% if (headings.hasOwnProperty(eachField)){ %>
+                <% if (eachField === "payStatus"){ %>
+                    <th><%= headings.paymentMethod %></th>
+                    <th><%= headings.payStatus %></th>
+                <% } else { %>
                     <th><%= headings[eachField] %></th>
                 <% } %>
             <% } %>
-            <% for (var i in peopleInGroup){ %>
+        <% } %>
+        <% for (var i in peopleInGroup){ %>
+            <% if (peopleInGroup.hasOwnProperty(i)){ %>
+                <% var eachEntry = peopleInGroup[i] %>
                 <tr>
-                    <% for (var j in fields){ %>
-                    <td><%= (peopleInGroup[i])[fields[j]] %></td>
+                    <% for (var valKey in eachEntry){ %>
+                        <% if (eachEntry.hasOwnProperty(valKey)){ %>
+                            <% for (var field in fields){ %>
+                                <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
+                                    <% break; %>
+                                <% } %>
+                                <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
+                                    <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
+                                        <td>Unpaid</td>
+                                    <% } else { %>
+                                        <td><%= eachEntry[valKey] %></td>
+                                    <% } %>
+                                <% } %>
+                            <% } %>
+                            <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                                <td>In person</td>
+                            <% } %>
+                            <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                                <td>By mail</td>
+                            <% } %>
+                            <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                                <td>Online</td>
+                            <% } %>
+                        <% } %>
                     <% } %>
                 </tr>
             <% } %>
-        </table>
-    </div>
-
+        <% } %>
+    </table>
 </div>
 </body>
 </html>

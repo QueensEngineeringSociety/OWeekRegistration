@@ -74,8 +74,8 @@ module.exports = function (app, passport) {
                 res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
             } else {
                 // if there is no user with that username, then create that user
-                var newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
-                var insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
+                let newUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
+                let insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
                 dbConn.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
                     function (err, rows) {
                         if (err)
@@ -97,8 +97,8 @@ module.exports = function (app, passport) {
             } else if (!strongPassRegex.test(req.body.password)) {
                 res.render('error.ejs', {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
             } else {
-                var replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
-                var query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
+                let replacementUser = new User(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.is_admin === "admin");
+                let query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
                 dbConn.query(query, [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin, rows[0].id],
                     function (err, rows) {
                         if (err)
@@ -127,7 +127,7 @@ module.exports = function (app, passport) {
     });
 
     app.post(ROUTE_USER_DELETE, requireAdmin, function (req, res) {
-        var queryString = "";
+        let queryString = "";
         if (typeof req.body.users.length === "object") {
             queryString = "DELETE FROM users WHERE email IN('" + req.body.users.join("','") + "')";
         } else {
@@ -152,17 +152,17 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_FILTER, isLoggedIn, function (req, res) {
-        var accessFields = con.generalFields;
-        var admin = isAdmin(req);
+        let accessFields = con.generalFields;
+        let admin = isAdmin(req);
         if (admin) {
             accessFields = con.allFields;
         }
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.all, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -181,17 +181,17 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_AGE, isLoggedIn, function (req, res) {
-        var accessFields = con.generalFields;
-        var admin = isAdmin(req);
+        let accessFields = con.generalFields;
+        let admin = isAdmin(req);
         if (admin) {
             accessFields = con.allFields;
         }
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.age, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -210,12 +210,12 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_FOOD_RESTRICTIONS, requireAdmin, function (req, res) {
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.foodRestrictions, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -234,12 +234,12 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_PRIMER, requireAdmin, function (req, res) {
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.wantPrimer, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -258,12 +258,12 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_MEDICAL, requireAdmin, function (req, res) {
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.medicalConcerns, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -282,12 +282,12 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_PRONOUNS, requireAdmin, function (req, res) {
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.pronoun, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -306,12 +306,12 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_ACCESSIBILITY, requireAdmin, function (req, res) {
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.accessibilityConcerns, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -330,17 +330,17 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_PAY_PERSON, isLoggedIn, function (req, res) {
-        var accessFields = con.generalFields;
-        var admin = isAdmin(req);
+        let accessFields = con.generalFields;
+        let admin = isAdmin(req);
         if (admin) {
             accessFields = con.allFields;
         }
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.payInPerson, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -359,17 +359,17 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_PAY_MAIL, isLoggedIn, function (req, res) {
-        var accessFields = con.generalFields;
-        var admin = isAdmin(req);
+        let accessFields = con.generalFields;
+        let admin = isAdmin(req);
         if (admin) {
             accessFields = con.allFields;
         }
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.payByMail, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -388,17 +388,17 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_PAY_ONLINE, isLoggedIn, function (req, res) {
-        var accessFields = con.generalFields;
-        var admin = isAdmin(req);
+        let accessFields = con.generalFields;
+        let admin = isAdmin(req);
         if (admin) {
             accessFields = con.allFields;
         }
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.payOnline, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -417,17 +417,17 @@ module.exports = function (app, passport) {
     });
 
     app.get(ROUTE_UNPAID, isLoggedIn, function (req, res) {
-        var accessFields = con.generalFields;
-        var admin = isAdmin(req);
+        let accessFields = con.generalFields;
+        let admin = isAdmin(req);
         if (admin) {
             accessFields = con.allFields;
         }
-        var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
+        let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
         wufoo.makePaginatedQuery(pageNum, query.unpaid, function (body, nextPageNum, prevPageNum) {
             dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                var groupNumbers = [];
-                for (var i in rows) {
+                let groupNumbers = [];
+                for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
                 res.render('filter.ejs', {
@@ -447,15 +447,15 @@ module.exports = function (app, passport) {
 
     app.get(ROUTE_SEARCH, isLoggedIn, function (req, res) {
         if (req.query['field'] && req.query['operator'] && req.query['value']) {
-            var accessFields = con.generalFields;
-            var admin = isAdmin(req);
+            let accessFields = con.generalFields;
+            let admin = isAdmin(req);
             if (admin) {
                 accessFields = con.allFields;
             }
             wufoo.makeQuery(builder.customQuery(req.query['field'], req.query['operator'], req.query['value']), function (body) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                    var groupNumbers = [];
-                    for (var i in rows) {
+                    let groupNumbers = [];
+                    for (let i in rows) {
                         groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                     }
                     res.render('search.ejs', {
@@ -474,15 +474,15 @@ module.exports = function (app, passport) {
 
     app.get(ROUTE_NET_ID, isLoggedIn, function (req, res) {
         if (req.query['netid_search']) {
-            var accessFields = con.generalFields;
-            var admin = isAdmin(req);
+            let accessFields = con.generalFields;
+            let admin = isAdmin(req);
             if (admin) {
                 accessFields = con.allFields;
             }
             wufoo.makeQuery(builder.buildNetidQuery(req.query['netid_search']), function (body) {
                 dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
-                    var groupNumbers = [];
-                    for (var i in rows) {
+                    let groupNumbers = [];
+                    for (let i in rows) {
                         groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                     }
                     res.render('search.ejs', {
@@ -529,8 +529,8 @@ module.exports = function (app, passport) {
             if (!rows.length) {
                 res.render('error.ejs', {errorMessage: "No groups"});
             } else {
-                var entryIds = [];
-                for (var i = 0; i < rows.length; i++) {
+                let entryIds = [];
+                for (let i = 0; i < rows.length; i++) {
                     entryIds[i] = rows[i].wufooEntryId;
                 }
                 wufoo.getEntriesById(entryIds, function (body) {
@@ -580,24 +580,24 @@ module.exports = function (app, passport) {
                 if (!rows.length) {
                     res.render('error.ejs', {errorMessage: "No metadata could be used to assign groups."});
                 } else {
-                    var manGroupNum = rows[0].manGroupNum;
-                    var womanGroupNum = rows[0].womanGroupNum;
+                    let manGroupNum = rows[0].manGroupNum;
+                    let womanGroupNum = rows[0].womanGroupNum;
                     //get frosh already in a group
                     dbConn.query("SELECT * FROM groupData", function (err, rows) {
-                        var assignedFrosh = [];
+                        let assignedFrosh = [];
                         if (err) {
                             console.log("ERROR: " + err);
                         }
                         if (rows.length) {
-                            for (var i in rows) {
+                            for (let i in rows) {
                                 assignedFrosh.push(rows[i].wufooEntryId);
                             }
                         }
                         wufoo.makePaginatedQuery(0, query.all, function (body) {
                             //show updated groups
                             body = JSON.parse(body);
-                            var insertions = [];
-                            for (var i in body) {
+                            let insertions = [];
+                            for (let i in body) {
                                 if (!inArr(assignedFrosh, body[i].EntryId)) {
                                     insertions.push({
                                         "id": body[i].EntryId,
@@ -691,8 +691,8 @@ function isMan(text) {
 function insertFroshToGroup(insertIdx, insertions) {
     return new Promise(function (res, rej) {
         if (insertIdx < insertions.length) {
-            var id = insertions[insertIdx].wufooEntryId;
-            var num = insertions[insertIdx].groupNum;
+            let id = insertions[insertIdx].wufooEntryId;
+            let num = insertions[insertIdx].groupNum;
             dbConn.query("insert groupData values(?,?)", [id, num], function (err) {
                 if (err) {
                     console.log("ERROR: " + err);
@@ -712,7 +712,7 @@ function insertFroshToGroup(insertIdx, insertions) {
 function insertNewGroupData(insertIdx, newGroupData) {
     return new Promise(function (res, rej) {
             if (insertIdx < newGroupData.length) {
-                var data = newGroupData[insertIdx];
+                let data = newGroupData[insertIdx];
                 if (data) {
                     dbConn.query("INSERT groups VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE menCount=VALUES(menCount),womenCount=VALUES(womenCount),totalCount=VALUES(totalCount)",
                         [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err) {
@@ -739,7 +739,7 @@ function insertNewGroupData(insertIdx, newGroupData) {
 }
 
 function inArr(assignedFrosh, compareId) {
-    for (var i in assignedFrosh) {
+    for (let i in assignedFrosh) {
         if (assignedFrosh[i] == compareId) { //diff types
             return true;
         }
@@ -750,10 +750,10 @@ function inArr(assignedFrosh, compareId) {
 function assign(manGroupNum, womanGroupNum, froshToInsert) {
     return new Promise(function (resolve, reject) {
         //determine which frosh goes into which group
-        var insertions = [];
-        var newGroupData = []; //index will be group number, holds object with the man/woman count
-        for (var i = 0; i < froshToInsert.length; i++) {
-            var newData = {
+        let insertions = [];
+        let newGroupData = []; //index will be group number, holds object with the man/woman count
+        for (let i = 0; i < froshToInsert.length; i++) {
+            let newData = {
                 "menCount": 0,
                 "womenCount": 0,
                 "totalCount": 0
@@ -801,8 +801,8 @@ function assign(manGroupNum, womanGroupNum, froshToInsert) {
                         } else {
                             if (rows.length) {
                                 //previous groups, combine new with old data
-                                for (var i = 0; i < rows.length; i++) {
-                                    var newData = newGroupData[rows[i].groupNumber];
+                                for (let i = 0; i < rows.length; i++) {
+                                    let newData = newGroupData[rows[i].groupNumber];
                                     if (newData) {
                                         newData.totalCount += rows[i].totalCount;
                                         newData.womenCount += rows[i].womenCount;

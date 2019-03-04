@@ -42,5 +42,4 @@ app.listen(port);
 
 //TODO improve user management
 //TODO improve visuals of /allgroups
-//TODO improve visuals of /onegroup
 //TODO comments

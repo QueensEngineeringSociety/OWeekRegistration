@@ -9,25 +9,16 @@ var strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^
 var maxNumInGroup = 30;
 
 module.exports = function (app, passport) {
-
-    // =====================================
-    // HOME PAGE (with login links) ========
-    // =====================================
     app.get('/', function (req, res) {
             if (req.user) {
                 res.redirect('filter');
             } else {
-                res.render('index.ejs'); // load the index.ejs file}
+                res.render('index.ejs');
             }
         }
     );
 
-    // =====================================
-    // LOGIN ===============================
-    // =====================================
-    // show the login form
     app.get('/login', function (req, res) {
-        // render the page and pass in any flash data if it exists
         if (req.user) {
             res.redirect('filter');
         } else {
@@ -35,23 +26,16 @@ module.exports = function (app, passport) {
         }
     });
 
-    // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/filter', // redirect to the secure profile section
-        failureRedirect: '/login', // redirect back to the signup page if there is an error
-        failureFlash: true // allow flash messages
+        successRedirect: '/filter',
+        failureRedirect: '/login',
+        failureFlash: true
     }));
 
-    // =====================================
-    //USER MGM =============================
-    // =====================================
-    // show the user addition form
     app.get('/usermanagement', requireAdmin, function (req, res) {
-        // render the page and pass in any flash data if it exists
         res.render('users.ejs', {message: req.flash('signupMessage')});
     });
 
-    // process the sign-up of new user
     app.post('/signup', requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM users WHERE email = ?", [req.body.email], function (err, rows) {
             if (err) {
@@ -76,7 +60,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // process the edit of a user
     app.post('/useredit', requireAdmin, function (req, res) {
         dbConn.query("SELECT * FROM users WHERE email = ?", [req.body.email], function (err, rows) {
             if (err) {
@@ -141,11 +124,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // FILTER SECTION =====================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/filter', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
@@ -175,11 +153,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // Age =================================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/age', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
@@ -209,11 +182,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // FOOD RESTRICTIONS====================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/food_restrictions', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
@@ -238,11 +206,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // Primer ==============================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/primer', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
@@ -267,11 +230,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // Medical ==============================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/medical', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
@@ -296,11 +254,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // Pronouns ============================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/pronouns', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
@@ -325,11 +278,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // Accessibility =======================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/accessibility', requireAdmin, function (req, res) {
         var pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
         pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
@@ -354,11 +302,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // PayPerson ===========================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/payPerson', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
@@ -388,11 +331,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // PayMail ===========================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/payMail', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
@@ -422,11 +360,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // PayOnline ===========================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/payOnline', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
@@ -456,11 +389,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // Unpaid ==============================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/unpaid', isLoggedIn, function (req, res) {
         var accessFields = con.generalFields;
         var admin = isAdmin(req);
@@ -490,11 +418,6 @@ module.exports = function (app, passport) {
         });
     });
 
-    // =====================================
-    // SEARCH ==============================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/search', isLoggedIn, function (req, res) {
         if (req.query['field'] && req.query['operator'] && req.query['value']) {
             var accessFields = con.generalFields;
@@ -522,11 +445,6 @@ module.exports = function (app, passport) {
         }
     });
 
-    // =====================================
-    // NetID Search ========================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/netid', isLoggedIn, function (req, res) {
         if (req.query['netid_search']) {
             var accessFields = con.generalFields;
@@ -676,146 +594,6 @@ module.exports = function (app, passport) {
         );
     });
 
-    function inArr(assignedFrosh, compareId) {
-        for (var i in assignedFrosh) {
-            if (assignedFrosh[i] == compareId) { //diff types
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function assign(manGroupNum, womanGroupNum, froshToInsert) {
-        return new Promise(function (resolve, reject) {
-            //determine which frosh goes into which group
-            var insertions = [];
-            var newGroupData = []; //index will be group number, holds object with the man/woman count
-            for (var i = 0; i < froshToInsert.length; i++) {
-                var newData = {
-                    "menCount": 0,
-                    "womenCount": 0,
-                    "totalCount": 0
-                };
-                if (froshToInsert[i].genderIsMan) {
-                    insertions.push({"groupNum": manGroupNum, "wufooEntryId": froshToInsert[i].id});
-                    if (newGroupData[manGroupNum]) {
-                        newData.menCount = newGroupData[manGroupNum].menCount + 1;
-                        newData.womenCount = newGroupData[manGroupNum].womenCount;
-                        newData.totalCount = newGroupData[manGroupNum].totalCount + 1;
-                        newGroupData[manGroupNum] = newData;
-                    } else {
-                        newData.menCount = 1;
-                        newData.totalCount = 1;
-                        newGroupData[manGroupNum] = newData;
-                    }
-                    manGroupNum = incGroupNum(manGroupNum);
-                } else {
-                    insertions.push({"groupNum": womanGroupNum, "wufooEntryId": froshToInsert[i].id});
-                    if (newGroupData[womanGroupNum]) {
-                        newData.menCount = newGroupData[womanGroupNum].menCount;
-                        newData.womenCount = newGroupData[womanGroupNum].womenCount + 1;
-                        newData.totalCount = newGroupData[womanGroupNum].totalCount + 1;
-                        newGroupData[womanGroupNum] = newData;
-                    } else {
-                        newData.womenCount = 1;
-                        newData.totalCount = 1;
-                        newGroupData[womanGroupNum] = newData;
-                    }
-                    womanGroupNum = incGroupNum(womanGroupNum);
-                }
-            }
-            //update running counter for man and woman group numbers
-            dbConn.query("UPDATE groupMetaData SET manGroupNum=?, womanGroupNum=?",
-                [manGroupNum, womanGroupNum], function (err) {
-                    if (err) {
-                        console.log("ERROR: " + err);
-                        reject("Couldn't update groups.");
-                    } else {
-                        //get the old group data, then add on new group data and update
-                        dbConn.query("SELECT * FROM groups", function (err, rows) {
-                            if (err) {
-                                console.log("ERROR: " + err);
-                                reject("Couldn't update group data, metadata was updated so contact DoIT.")
-                            } else {
-                                if (rows.length) {
-                                    //previous groups, combine new with old data
-                                    for (var i = 0; i < rows.length; i++) {
-                                        var newData = newGroupData[rows[i].groupNumber];
-                                        if (newData) {
-                                            newData.totalCount += rows[i].totalCount;
-                                            newData.womenCount += rows[i].womenCount;
-                                            newData.menCount += rows[i].menCount;
-                                        }
-                                        newGroupData[rows[i].groupNumber] = newData;
-                                    }
-                                }
-                                insertNewGroupData(0, newGroupData).then(function () {
-                                    //update individual frosh
-                                    insertFroshToGroup(0, insertions).then(function () {
-                                        resolve();
-                                    }).catch(function (m) {
-                                        reject(m);
-                                    });
-                                }).catch(function (m) {
-                                    reject(m);
-                                });
-                            }
-                        });
-                    }
-                });
-        });
-    }
-
-    function insertNewGroupData(insertIdx, newGroupData) {
-        return new Promise(function (res, rej) {
-                if (insertIdx < newGroupData.length) {
-                    var data = newGroupData[insertIdx];
-                    if (data) {
-                        dbConn.query("INSERT groups VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE menCount=VALUES(menCount),womenCount=VALUES(womenCount),totalCount=VALUES(totalCount)",
-                            [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err) {
-                                if (err) {
-                                    console.log("ERROR: " + err);
-                                    rej("Couldn't update groups properly. Metadata was updated, contact DoIT to edit the database.")
-                                } else {
-                                    insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
-                                        res();
-                                    });
-                                }
-                            });
-                    } else {
-                        insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
-                            res();
-                        });
-                    }
-
-                } else {
-                    res();
-                }
-            }
-        );
-    }
-
-    function insertFroshToGroup(insertIdx, insertions) {
-        return new Promise(function (res, rej) {
-            if (insertIdx < insertions.length) {
-                var id = insertions[insertIdx].wufooEntryId;
-                var num = insertions[insertIdx].groupNum;
-                dbConn.query("insert groupData values(?,?)", [id, num], function (err) {
-                    if (err) {
-                        console.log("ERROR: " + err);
-                        rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.");
-                    } else {
-                        insertFroshToGroup(insertIdx + 1, insertions).then(function () {
-                            res();
-                        });
-                    }
-                });
-            } else {
-                res();
-            }
-        });
-    }
-
     app.post('/cleargroups', requireAdmin, function (req, res) {
         dbConn.query("UPDATE groupMetaData set manGroupNum=0, womanGroupNum=0", function (err) {
             if (err) {
@@ -841,40 +619,22 @@ module.exports = function (app, passport) {
         })
     });
 
-    function incGroupNum(num) {
-        return (num + 1) % maxNumInGroup;
-    }
-
-    function isMan(text) {
-        //if doesn't use she or her as pronoun, assume man
-        text = text.toLowerCase();
-        return text.indexOf("she") === -1 && text.indexOf("her") === -1;
-    }
-
-    // =====================================
-    // NOT AUTHORIZED ======================
-    // =====================================
     app.get('/error', isLoggedIn, function (req, res) {
         res.render('error.ejs', {errorMessage: "You don't have the privileges to see this."});
     });
 
-    // =====================================
-    // LOGOUT ==============================
-    // =====================================
     app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/');
     });
 };
 
-// route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
         return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
+    } else {
+        res.redirect('/');
+    }
 }
 
 function requireAdmin(req, res, next) {
@@ -889,4 +649,154 @@ function requireAdmin(req, res, next) {
 
 function isAdmin(req) {
     return req.user.is_admin;
+}
+
+function incGroupNum(num) {
+    return (num + 1) % maxNumInGroup;
+}
+
+function isMan(text) {
+    //if doesn't use she or her as pronoun, assume man
+    text = text.toLowerCase();
+    return text.indexOf("she") === -1 && text.indexOf("her") === -1;
+}
+
+function insertFroshToGroup(insertIdx, insertions) {
+    return new Promise(function (res, rej) {
+        if (insertIdx < insertions.length) {
+            var id = insertions[insertIdx].wufooEntryId;
+            var num = insertions[insertIdx].groupNum;
+            dbConn.query("insert groupData values(?,?)", [id, num], function (err) {
+                if (err) {
+                    console.log("ERROR: " + err);
+                    rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.");
+                } else {
+                    insertFroshToGroup(insertIdx + 1, insertions).then(function () {
+                        res();
+                    });
+                }
+            });
+        } else {
+            res();
+        }
+    });
+}
+
+function insertNewGroupData(insertIdx, newGroupData) {
+    return new Promise(function (res, rej) {
+            if (insertIdx < newGroupData.length) {
+                var data = newGroupData[insertIdx];
+                if (data) {
+                    dbConn.query("INSERT groups VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE menCount=VALUES(menCount),womenCount=VALUES(womenCount),totalCount=VALUES(totalCount)",
+                        [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err) {
+                            if (err) {
+                                console.log("ERROR: " + err);
+                                rej("Couldn't update groups properly. Metadata was updated, contact DoIT to edit the database.")
+                            } else {
+                                insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
+                                    res();
+                                });
+                            }
+                        });
+                } else {
+                    insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
+                        res();
+                    });
+                }
+
+            } else {
+                res();
+            }
+        }
+    );
+}
+
+function inArr(assignedFrosh, compareId) {
+    for (var i in assignedFrosh) {
+        if (assignedFrosh[i] == compareId) { //diff types
+            return true;
+        }
+    }
+    return false;
+}
+
+function assign(manGroupNum, womanGroupNum, froshToInsert) {
+    return new Promise(function (resolve, reject) {
+        //determine which frosh goes into which group
+        var insertions = [];
+        var newGroupData = []; //index will be group number, holds object with the man/woman count
+        for (var i = 0; i < froshToInsert.length; i++) {
+            var newData = {
+                "menCount": 0,
+                "womenCount": 0,
+                "totalCount": 0
+            };
+            if (froshToInsert[i].genderIsMan) {
+                insertions.push({"groupNum": manGroupNum, "wufooEntryId": froshToInsert[i].id});
+                if (newGroupData[manGroupNum]) {
+                    newData.menCount = newGroupData[manGroupNum].menCount + 1;
+                    newData.womenCount = newGroupData[manGroupNum].womenCount;
+                    newData.totalCount = newGroupData[manGroupNum].totalCount + 1;
+                    newGroupData[manGroupNum] = newData;
+                } else {
+                    newData.menCount = 1;
+                    newData.totalCount = 1;
+                    newGroupData[manGroupNum] = newData;
+                }
+                manGroupNum = incGroupNum(manGroupNum);
+            } else {
+                insertions.push({"groupNum": womanGroupNum, "wufooEntryId": froshToInsert[i].id});
+                if (newGroupData[womanGroupNum]) {
+                    newData.menCount = newGroupData[womanGroupNum].menCount;
+                    newData.womenCount = newGroupData[womanGroupNum].womenCount + 1;
+                    newData.totalCount = newGroupData[womanGroupNum].totalCount + 1;
+                    newGroupData[womanGroupNum] = newData;
+                } else {
+                    newData.womenCount = 1;
+                    newData.totalCount = 1;
+                    newGroupData[womanGroupNum] = newData;
+                }
+                womanGroupNum = incGroupNum(womanGroupNum);
+            }
+        }
+        //update running counter for man and woman group numbers
+        dbConn.query("UPDATE groupMetaData SET manGroupNum=?, womanGroupNum=?",
+            [manGroupNum, womanGroupNum], function (err) {
+                if (err) {
+                    console.log("ERROR: " + err);
+                    reject("Couldn't update groups.");
+                } else {
+                    //get the old group data, then add on new group data and update
+                    dbConn.query("SELECT * FROM groups", function (err, rows) {
+                        if (err) {
+                            console.log("ERROR: " + err);
+                            reject("Couldn't update group data, metadata was updated so contact DoIT.")
+                        } else {
+                            if (rows.length) {
+                                //previous groups, combine new with old data
+                                for (var i = 0; i < rows.length; i++) {
+                                    var newData = newGroupData[rows[i].groupNumber];
+                                    if (newData) {
+                                        newData.totalCount += rows[i].totalCount;
+                                        newData.womenCount += rows[i].womenCount;
+                                        newData.menCount += rows[i].menCount;
+                                    }
+                                    newGroupData[rows[i].groupNumber] = newData;
+                                }
+                            }
+                            insertNewGroupData(0, newGroupData).then(function () {
+                                //update individual frosh
+                                insertFroshToGroup(0, insertions).then(function () {
+                                    resolve();
+                                }).catch(function (m) {
+                                    reject(m);
+                                });
+                            }).catch(function (m) {
+                                reject(m);
+                            });
+                        }
+                    });
+                }
+            });
+    });
 }

@@ -33,9 +33,10 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 require('../config/passport')(passport); // pass passport for configuration
 app.use(flash()); // use connect-flash for flash messages stored in session
+global.__basedir = "/";
 
 // routes ======================================================================
-require('../app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+require('../app/routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch ======================================================================
 app.listen(port);

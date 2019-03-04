@@ -16,7 +16,7 @@ exports.connect = function () {
     });
 };
 
-//TODO make multiple query functions - e.g. insert, delete, update etc. - e.g. insert has NOW() automatically for created
+//TODO make multiple query functions - e.g. insert, getDelete, update etc. - e.g. insert has NOW() automatically for created
 exports.query = function (queryString, params, callback) {
     //TODO check queryString for correctness
     con.query(queryString, params, function (err, rows) {

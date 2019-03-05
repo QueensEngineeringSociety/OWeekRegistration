@@ -81,10 +81,10 @@ function postSpecificOne(request, result) {
 
 function postMaxGroupNum(request, result) {
     if (request.body.updatemax) {
-        dbConn.query("UPDATE groupMetaData SET maxNumInGroup=?", [request.body.updatemax], function (err) {
+        dbConn.updateAllColumns("groupMetaData", ["maxNumInGroup"], [request.body.updatemax], function (err) {
             if (err) {
                 console.log("ERROR: " + err);
-                result.render(views.ERROR, {errorMessage: "Couldn't update maximum group number."});
+                result.render(views.ERROR, {errorMessage: "Couldn't updateAllColumns maximum group number."});
             } else {
                 result.redirect(routes.ALL_GROUPS);
             }
@@ -189,18 +189,18 @@ function assign(manGroupNum, womanGroupNum, froshToInsert) {
                 womanGroupNum = incGroupNum(womanGroupNum);
             }
         }
-        //update running counter for man and woman group numbers
-        dbConn.query("UPDATE groupMetaData SET manGroupNum=?, womanGroupNum=?",
+        //updateAllColumns running counter for man and woman group numbers
+        dbConn.updateAllColumns("groupMetaData", ["manGroupNum", "womanGroupNum"],
             [manGroupNum, womanGroupNum], function (err) {
                 if (err) {
                     console.log("ERROR: " + err);
-                    reject("Couldn't update groups.");
+                    reject("Couldn't updateAllColumns groups.");
                 } else {
-                    //get the old group data, then add on new group data and update
+                    //get the old group data, then add on new group data and updateAllColumns
                     dbConn.selectAll("groups", function (err, rows) {
                         if (err) {
                             console.log("ERROR: " + err);
-                            reject("Couldn't update group data, metadata was updated so contact DoIT.")
+                            reject("Couldn't updateAllColumns group data, metadata was updated so contact DoIT.")
                         } else {
                             if (rows.length) {
                                 //previous groups, combine new with old data
@@ -215,7 +215,7 @@ function assign(manGroupNum, womanGroupNum, froshToInsert) {
                                 }
                             }
                             insertNewGroupData(0, newGroupData).then(function () {
-                                //update individual frosh
+                                //updateAllColumns individual frosh
                                 insertFroshToGroup(0, insertions).then(function () {
                                     resolve();
                                 }).catch(function (m) {
@@ -243,7 +243,7 @@ function insertFroshToGroup(insertIdx, insertions) {
             dbConn.insert("groupData", ["wufooEntryId", "groupNum"], [id, num], function (err) {
                 if (err) {
                     console.log("ERROR: " + err);
-                    rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.");
+                    rej("Couldn't updateAllColumns individual frosh, contact DoIT as metadata and group data were updated.");
                 } else {
                     insertFroshToGroup(insertIdx + 1, insertions).then(function () {
                         res();
@@ -265,7 +265,7 @@ function insertNewGroupData(insertIdx, newGroupData) {
                         [insertIdx, data.menCount, data.womenCount, data.totalCount], function (err) {
                             if (err) {
                                 console.log("ERROR: " + err);
-                                rej("Couldn't update groups properly. Metadata was updated, contact DoIT to postEdit the database.")
+                                rej("Couldn't updateAllColumns groups properly. Metadata was updated, contact DoIT to postEdit the database.")
                             } else {
                                 insertNewGroupData(insertIdx + 1, newGroupData).then(function () {
                                     res();
@@ -295,7 +295,7 @@ function inArr(assignedFrosh, compareId) {
 }
 
 function postClear(request, result) {
-    dbConn.update("groupMetaData", ["manGroupNum", "womanGroupNum"], [0, 0], function (err) {
+    dbConn.updateAllColumns("groupMetaData", ["manGroupNum", "womanGroupNum"], [0, 0], function (err) {
         if (err) {
             console.log("ERROR: " + err);
             result.render(views.ERROR, {errorMessage: "Could not getDelete any group data"});

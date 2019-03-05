@@ -42,7 +42,7 @@ exports.insert = function (table, columns, values, callback) {
     }
 };
 
-exports.update = function (table, columns, values, callback) {
+exports.updateAllColumns = function (table, columns, values, callback) {
     if (columns instanceof Array && values instanceof Array && columns.length === values.length) {
         query(buildUpdateQuery(table, columns), table, values, callback);
     } else {

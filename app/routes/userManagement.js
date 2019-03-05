@@ -50,8 +50,8 @@ function postEdit(request, result) {
             result.render(views.ERROR, {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
         } else {
             let replacementUser = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
-            let query = "UPDATE users SET first_name=?, last_name=?,email=?,password=?,is_admin=? WHERE id=?;";
-            dbConn.query(query, [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin, rows[0].id],
+            dbConn.updateWhereClause("users", ["first_name", "last_name", "email", "password", "is_admin"],
+                [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin], "id", rows[0].id,
                 function (err, rows) {
                     if (err)
                         console.log("ERROR: " + err);

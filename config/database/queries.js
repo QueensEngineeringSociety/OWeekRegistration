@@ -35,12 +35,30 @@ exports.deleteAll = function (table, callback) {
 };
 
 exports.insert = function (table, columns, values, callback) {
-    query(buildParameterizedQuery(table, columns), table, values, callback);
+    query(buildParameterizedQuery(table, columns, values, "insert", callback), table, values, callback);
 };
 
 exports.updateAllColumns = function (table, columns, values, callback) {
-    query(buildParameterizedQuery(table, columns), table, values, callback);
+    query(buildParameterizedQuery(table, columns, values, "update", callback), table, values, callback);
 };
+
+exports.updateWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
+    whereQuery(table, columns, values, whereColumn, whereValue, "update", callback);
+};
+
+exports.insertWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
+    whereQuery(table, columns, values, whereColumn, whereValue, "insert", callback);
+};
+
+function whereQuery(table, columns, values, whereColumn, whereValue, type, callback) {
+    let queryString = addOneWhereClause(buildParameterizedQuery(table, columns, values, type, callback), whereColumn);
+    values.push(whereValue);
+    query(queryString, table, values, callback);
+}
+
+function addOneWhereClause(queryString, column) {
+    return queryString + " WHERE " + column + "=?";
+}
 
 function buildParameterizedQuery(table, columns, values, type, callback) {
     if (columns instanceof Array && values instanceof Array && columns.length === values.length) {

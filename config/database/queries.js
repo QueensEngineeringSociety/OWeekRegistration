@@ -43,14 +43,14 @@ exports.updateAllColumns = function (table, columns, values, callback) {
 };
 
 exports.updateWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
-    whereQuery(table, columns, values, whereColumn, whereValue, "update", callback);
+    whereParameterizedQuery(table, columns, values, whereColumn, whereValue, "update", callback);
 };
 
 exports.insertWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
-    whereQuery(table, columns, values, whereColumn, whereValue, "insert", callback);
+    whereParameterizedQuery(table, columns, values, whereColumn, whereValue, "insert", callback);
 };
 
-function whereQuery(table, columns, values, whereColumn, whereValue, type, callback) {
+function whereParameterizedQuery(table, columns, values, whereColumn, whereValue, type, callback) {
     let queryString = addOneWhereClause(buildParameterizedQuery(table, columns, values, type, callback), whereColumn);
     values.push(whereValue);
     query(queryString, table, values, callback);

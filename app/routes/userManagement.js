@@ -90,7 +90,7 @@ function postDelete(request, result) {
         if (topErr) {
             console.log("ERROR: " + topErr);
         }
-        dbConn.query("SELECT * FROM users", [], function (err, rows) {
+        dbConn.selectAll("users", function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
             }

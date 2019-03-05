@@ -35,20 +35,27 @@ exports.deleteAll = function (table, callback) {
 };
 
 exports.insert = function (table, columns, values, callback) {
-    if (columns instanceof Array && values instanceof Array && columns.length === values.length) {
-        query(buildInsertQuery(table, columns), table, values, callback);
-    } else {
-        callback("Insert failed; poorly formed columns and values");
-    }
+    query(buildParameterizedQuery(table, columns), table, values, callback);
 };
 
 exports.updateAllColumns = function (table, columns, values, callback) {
-    if (columns instanceof Array && values instanceof Array && columns.length === values.length) {
-        query(buildUpdateQuery(table, columns), table, values, callback);
-    } else {
-        callback("Update failed: poorly formed columns and values")
-    }
+    query(buildParameterizedQuery(table, columns), table, values, callback);
 };
+
+function buildParameterizedQuery(table, columns, values, type, callback) {
+    if (columns instanceof Array && values instanceof Array && columns.length === values.length) {
+        switch (type) {
+            case "update":
+                return buildUpdateQuery(table, columns);
+            case "insert":
+                return buildInsertQuery(table, columns);
+            default:
+                callback("Parameterized query failure: " + type + " is not a parameterized query");
+        }
+    } else {
+        callback("Parameterized query failed: poorly formed columns and values")
+    }
+}
 
 function buildUpdateQuery(table, columns) {
     let queryString = queries.UPDATE + " " + table + " SET ";

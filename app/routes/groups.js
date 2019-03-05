@@ -295,7 +295,7 @@ function inArr(assignedFrosh, compareId) {
 }
 
 function postClear(request, result) {
-    dbConn.query("UPDATE groupMetaData set manGroupNum=0, womanGroupNum=0", function (err) {
+    dbConn.update("groupMetaData", ["manGroupNum", "womanGroupNum"], [0, 0], function (err) {
         if (err) {
             console.log("ERROR: " + err);
             result.render(views.ERROR, {errorMessage: "Could not getDelete any group data"});

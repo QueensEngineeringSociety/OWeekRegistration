@@ -8,5 +8,6 @@ exports.tables = {
 exports.queries = {
     SELECT_ALL: "SELECT * FROM",
     DELETE_ALL: "DELETE FROM",
-    INSERT: "INSERT INTO"
+    INSERT: "INSERT INTO",
+    UPDATE: "UPDATE"
 };

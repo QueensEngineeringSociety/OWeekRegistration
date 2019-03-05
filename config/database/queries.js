@@ -5,7 +5,6 @@ const util = require("../../server/util");
 
 const tables = constants.tables;
 const queries = constants.queries;
-const conditionals = constants.conditionals;
 const properties = PropertiesReader(__dirname + "/db_properties.ini");
 
 let con = mysql.createConnection({
@@ -39,14 +38,33 @@ exports.insert = function (table, columns, values, callback) {
     if (columns instanceof Array && values instanceof Array && columns.length === values.length) {
         query(buildInsertQuery(table, columns), table, values, callback);
     } else {
-        callback(table + " is not a table in the database");
+        callback("Insert failed; poorly formed columns and values");
     }
 };
+
+exports.update = function (table, columns, values, callback) {
+    if (columns instanceof Array && values instanceof Array && columns.length === values.length) {
+        query(buildUpdateQuery(table, columns), table, values, callback);
+    } else {
+        callback("Update failed: poorly formed columns and values")
+    }
+};
+
+function buildUpdateQuery(table, columns) {
+    let queryString = queries.UPDATE + " " + table + " SET ";
+    for (let i = 0; i < columns.length; i++) {
+        queryString += (columns[i] + "=?");
+        if (i < columns.length - 1) {
+            //add comma if not last item
+            queryString += ",";
+        }
+    }
+    return queryString;
+}
 
 function buildInsertQuery(table, columns) {
     let columnsString = queries.INSERT + " " + table + " (";
     let paramsString = "VALUES (";
-    //columns and values same length due to if, so use one for loop to concat items
     for (let i = 0; i < columns.length; i++) {
         columnsString += columns[i];
         paramsString += "?";
@@ -69,7 +87,7 @@ function query(queryString, table, params, callback) {
     if (util.valInObj(table, tables)) {
         makeQuery(queryString, params, callback);
     } else {
-        callback(table + " is not a table in the database");
+        callback("Query failed: " + table + " is not a table in the database");
     }
 }
 

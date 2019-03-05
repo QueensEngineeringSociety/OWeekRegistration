@@ -27,8 +27,8 @@ function postSignUp(request, result) {
         } else {
             // if there is no user with that username, then create that user
             let newUser = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
-            let insertQuery = "INSERT INTO users (first_name,last_name,email,password,created,is_admin) values (?,?,?,?,?,?);";
-            dbConn.query(insertQuery, [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
+            dbConn.insert("users", ["first_name", "last_name", "email", "password", "created", "is_admin"],
+                [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
                 function (err, rows) {
                     if (err)
                         console.log("ERROR: " + err);

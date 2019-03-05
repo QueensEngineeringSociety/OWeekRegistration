@@ -240,7 +240,7 @@ function insertFroshToGroup(insertIdx, insertions) {
         if (insertIdx < insertions.length) {
             let id = insertions[insertIdx].wufooEntryId;
             let num = insertions[insertIdx].groupNum;
-            dbConn.query("INSERT groupData VALUES(?,?)", [id, num], function (err) {
+            dbConn.insert("groupData", ["wufooEntryId", "groupNum"], [id, num], function (err) {
                 if (err) {
                     console.log("ERROR: " + err);
                     rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.");

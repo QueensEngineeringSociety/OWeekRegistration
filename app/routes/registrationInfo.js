@@ -2,8 +2,11 @@ const con = require("../../server/wufoo/wufooConstants");
 const wufoo = require("../../server/wufoo/wufooApi.js");
 const dbConn = require("../../config/database.js");
 const util = require("../../app/util");
+const constants = require("../util");
 
 const query = wufoo.queries;
+const views = constants.views;
+const routes = constants.routes;
 
 exports.get = {
     displayAll: getDisplayAll,
@@ -33,7 +36,7 @@ function getDisplayAll(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -42,7 +45,7 @@ function getDisplayAll(request, result) {
                 isAdmin: admin,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/filter"
+                actionPath: routes.FILTER
             });
         });
     });
@@ -62,7 +65,7 @@ function getDisplayAge(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -71,7 +74,7 @@ function getDisplayAge(request, result) {
                 isAdmin: admin,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/age"
+                actionPath: routes.AGE
             });
         });
     });
@@ -86,7 +89,7 @@ function getDisplayFood(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -95,7 +98,7 @@ function getDisplayFood(request, result) {
                 isAdmin: true,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/food_restrictions"
+                actionPath: routes.FOOD_RESTRICTIONS
             });
         });
     });
@@ -110,7 +113,7 @@ function getDisplayPrimer(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -119,7 +122,7 @@ function getDisplayPrimer(request, result) {
                 isAdmin: true,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/primer"
+                actionPath: routes.PRIMER
             });
         });
     });
@@ -134,7 +137,7 @@ function getDisplayMedical(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -143,7 +146,7 @@ function getDisplayMedical(request, result) {
                 isAdmin: true,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/medical"
+                actionPath: routes.MEDICAL
             });
         });
     });
@@ -158,7 +161,7 @@ function getDisplayPronouns(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -167,7 +170,7 @@ function getDisplayPronouns(request, result) {
                 isAdmin: true,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/pronouns"
+                actionPath: routes.PRONOUNS
             });
         });
     });
@@ -182,7 +185,7 @@ function getDisplayAccessibility(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -191,7 +194,7 @@ function getDisplayAccessibility(request, result) {
                 isAdmin: true,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/accessibility"
+                actionPath: routes.ACCESSIBILITY
             });
         });
     });
@@ -211,7 +214,7 @@ function getDisplayPayPerson(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -220,7 +223,7 @@ function getDisplayPayPerson(request, result) {
                 isAdmin: admin,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/payPerson"
+                actionPath: routes.PAY_PERSON
             });
         });
     });
@@ -240,7 +243,7 @@ function getDisplayPayMail(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -249,7 +252,7 @@ function getDisplayPayMail(request, result) {
                 isAdmin: admin,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/payMail"
+                actionPath: routes.PAY_MAIL
             });
         });
     });
@@ -269,7 +272,7 @@ function getDisplayPayOnline(req, res) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            res.render('filter.ejs', {
+            res.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -278,7 +281,7 @@ function getDisplayPayOnline(req, res) {
                 isAdmin: admin,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/payOnline"
+                actionPath: routes.PAY_ONLINE
             });
         });
     });
@@ -298,7 +301,7 @@ function getDisplayUnpaid(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render('filter.ejs', {
+            result.render(views.FILTER, {
                 wufoo: body,
                 groupNumbers: groupNumbers,
                 operators: con.operators,
@@ -307,7 +310,7 @@ function getDisplayUnpaid(request, result) {
                 isAdmin: admin,
                 nextPage: nextPageNum,
                 prevPage: prevPageNum,
-                actionPath: "/unpaid"
+                actionPath: routes.UNPAID
             });
         });
     });

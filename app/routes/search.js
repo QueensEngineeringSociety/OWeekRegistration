@@ -3,6 +3,10 @@ const wufoo = require("../../server/wufoo/wufooApi.js");
 const builder = require("../../server/wufoo/wufooQueryBuilder");
 const dbConn = require("../../config/database.js");
 const util = require("../../app/util");
+const constants = require("../util");
+
+const routes = constants.routes;
+const views = constants.views;
 
 exports.get = {
     general: getGeneral,
@@ -22,21 +26,21 @@ function getGeneral(request, result) {
                 for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
-                result.render('search.ejs', {
+                result.render(views.SEARCH, {
                     wufoo: body,
                     groupNumbers: groupNumbers,
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
                     isAdmin: admin,
-                    actionPath: "/search"
+                    actionPath: routes.SEARCH
                 });
             });
         });
     }
 }
 
-function getNetid(request,result){
+function getNetid(request, result) {
     if (request.query['netid_search']) {
         let accessFields = con.generalFields;
         let admin = util.isAdmin(request);
@@ -49,14 +53,14 @@ function getNetid(request,result){
                 for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
-                result.render('search.ejs', {
+                result.render(views.SEARCH, {
                     wufoo: body,
                     groupNumbers: groupNumbers,
                     operators: con.operators,
                     fields: accessFields,
                     headings: con.headings,
                     isAdmin: admin,
-                    actionPath: "/netid"
+                    actionPath: routes.NET_ID
                 });
             });
         });

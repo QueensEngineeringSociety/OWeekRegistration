@@ -1,18 +1,18 @@
 // set up ======================================================================
-var express = require('express');
-var app = express();
-var port = process.env.PORT || 8080;
-var passport = require('passport');
-var flash = require('connect-flash');
-var morgan = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var path = require('path');
-var PropertiesReader = require('properties-reader');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 8080;
+const passport = require('passport');
+const flash = require('connect-flash');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const path = require('path');
+const PropertiesReader = require('properties-reader');
 
-var properties = PropertiesReader(__dirname + "/../config/passport.ini");
-var db = require('../config/database.js');
+const properties = PropertiesReader(__dirname + "/../config/passport.ini");
+const db = require('../config/database.js');
 
 // configuration ===============================================================
 db.connect(); // connect to our database
@@ -33,7 +33,6 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 require('../config/passport')(passport); // pass passport for configuration
 app.use(flash()); // use connect-flash for flash messages stored in session
-global.__basedir = "/";
 
 // routes ======================================================================
 require('../app/routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport

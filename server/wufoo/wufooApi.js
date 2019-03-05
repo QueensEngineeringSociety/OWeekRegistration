@@ -1,12 +1,12 @@
-var request = require("request");
-var PropertiesReader = require('properties-reader');
-var con = require("./wufooConstants.js");
-var query = require("./wufooQueryBuilder.js");
+const request = require("request");
+const PropertiesReader = require('properties-reader');
+const con = require("./wufooConstants.js");
+const query = require("./wufooQueryBuilder.js");
 
-var properties = PropertiesReader(__dirname + "/../../config/wufoo_properties.ini");
+const properties = PropertiesReader(__dirname + "/../../config/wufoo_properties.ini");
 
-var fields = con.allFields;
-var PAGE_SIZE = 3;
+const fields = con.allFields;
+const PAGE_SIZE = 3;
 
 exports.queries = {
     all: query.buildQuery(),
@@ -32,9 +32,9 @@ exports.makeQuery = function (queryString, callback) {
             'sendImmediately': false
         }
     }, function (error, response, body) {
-        var entries = (JSON.parse(body))["Entries"];
+        let entries = (JSON.parse(body))["Entries"];
         getComments().then(function (allComments) {
-            for (var i = 0; i < entries.length; ++i) {
+            for (let i = 0; i < entries.length; ++i) {
                 (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
             }
             callback(JSON.stringify(entries)); //make it a string so ejs files don't need to be changed (they expect json string)
@@ -45,7 +45,7 @@ exports.makeQuery = function (queryString, callback) {
 };
 
 exports.makePaginatedQuery = function (pageNum, queryString, callback) {
-    var pageStart = pageNum * PAGE_SIZE;
+    let pageStart = pageNum * PAGE_SIZE;
     request({
         uri: properties.get('uri') + queryString + "&pageSize=" + PAGE_SIZE + "&pageStart=" + pageStart,
         method: properties.get('method'),
@@ -55,13 +55,13 @@ exports.makePaginatedQuery = function (pageNum, queryString, callback) {
             'sendImmediately': false
         }
     }, function (error, response, body) {
-        var entries = (JSON.parse(body))["Entries"];
+        let entries = (JSON.parse(body))["Entries"];
         getComments().then(function (allComments) {
-            for (var i = 0; i < entries.length; ++i) {
+            for (let i = 0; i < entries.length; ++i) {
                 (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
             }
-            var nextPageNum = entries.length < 1 ? -1 : pageNum + 1;
-            var prevPageNum = pageNum > 0 ? pageNum - 1 : -1;
+            let nextPageNum = entries.length < 1 ? -1 : pageNum + 1;
+            let prevPageNum = pageNum > 0 ? pageNum - 1 : -1;
             callback(JSON.stringify(entries), nextPageNum, prevPageNum); //make it a string so ejs files don't need to be changed (they expect json string)
         }).catch(function (err) {
             console.log("Error getting comments: " + err);
@@ -79,9 +79,9 @@ exports.getEntriesById = function (ids, callback) {
             'sendImmediately': false
         }
     }, function (error, response, body) {
-        var entries = (JSON.parse(body))["Entries"];
+        let entries = (JSON.parse(body))["Entries"];
         getComments().then(function (allComments) {
-            for (var i = 0; i < entries.length; ++i) {
+            for (let i = 0; i < entries.length; ++i) {
                 (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
             }
             callback(JSON.stringify(entries)); //make it a string so ejs files don't need to be changed (they expect json string)
@@ -108,8 +108,8 @@ function getComments() {
 }
 
 function getEntryComment(entryId, allComments) {
-    var comments = (JSON.parse(allComments))['Comments'];
-    for (var i = 0; i < comments.length; ++i) {
+    let comments = (JSON.parse(allComments))['Comments'];
+    for (let i = 0; i < comments.length; ++i) {
         if ((comments[i])["EntryId"] == entryId) { //i ID comes in as string, json value is int
             return (comments[i])["Text"];
         }

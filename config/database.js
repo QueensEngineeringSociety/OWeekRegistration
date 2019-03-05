@@ -1,9 +1,9 @@
-var mysql = require('mysql');
-var PropertiesReader = require('properties-reader');
+const mysql = require('mysql');
+const PropertiesReader = require('properties-reader');
 
-var properties = PropertiesReader(__dirname+"/db_properties.ini");
+const properties = PropertiesReader(__dirname+"/db_properties.ini");
 
-var con = mysql.createConnection({
+let con = mysql.createConnection({
     host: properties.get('host'),
     user: properties.get('user'),
     password: properties.get('password'),

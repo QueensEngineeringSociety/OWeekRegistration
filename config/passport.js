@@ -1,23 +1,14 @@
-var LocalStrategy = require('passport-local').Strategy;
-var bcrypt = require("bcrypt-nodejs");
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require("bcrypt-nodejs");
 
-var dbConn = require('./database.js');
-var User = require("../app/models/user");
+const dbConn = require('./database.js');
 
 module.exports = function (passport) {
 
-    // =========================================================================
-    // passport session setup ==================================================
-    // =========================================================================
-    // required for persistent login sessions
-    // passport needs ability to serialize and un-serialize users out of session
-
-    // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
         done(null, user.id);
     });
 
-    // used to deserialize the user
     passport.deserializeUser(function (id, done) {
         dbConn.query("select * from users where id = ?", [id], function (err, rows) {
             done(err, rows[0]);

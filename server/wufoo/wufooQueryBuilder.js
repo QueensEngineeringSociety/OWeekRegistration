@@ -1,4 +1,4 @@
-var con = require("./wufooConstants");
+const con = require("./wufooConstants");
 
 //takes array of built partial queries and combines them
 //grouping is optional - if undefined it is ignored.
@@ -6,9 +6,9 @@ exports.buildQuery = function (partialQueries, grouping) {
     if (typeof partialQueries === "undefined") {
         return "?sort=EntryId&sortDirection=DESC&system=true"; //for paymentMethod status and newest entries first. No data passed in, so just take all entries
     }
-    var queryString = "?";
-    var length = partialQueries.length;
-    for (var i = 0; i < length; i++) {
+    let queryString = "?";
+    let length = partialQueries.length;
+    for (let i = 0; i < length; i++) {
         if (i > 0) {
             //add & if on second or further filter
             queryString += "&";
@@ -30,13 +30,13 @@ exports.buildIssueQuery = function (field) {
 //the form has the key names as those are the english ones
 //this checks for that key actually being in the containing object, then puts the value in the query
 exports.customQuery = function (field, operator, value) {
-    var f, op;
-    for (var fKey in con.allFields) {
+    let f, op;
+    for (let fKey in con.allFields) {
         if (con.allFields.hasOwnProperty(fKey) && field === fKey) {
             f = con.allFields[fKey];
         }
     }
-    for (var opKey in con.operators) {
+    for (let opKey in con.operators) {
         if (con.operators.hasOwnProperty(opKey) && operator === opKey) {
             op = con.operators[opKey];
         }
@@ -108,7 +108,7 @@ exports.buildNotNull = function (field) {
 
 //ensure a value said to be in an object is actually in the object
 function inObject(obj, value) {
-    for (var eachKey in obj) {
+    for (let eachKey in obj) {
         if (obj.hasOwnProperty(eachKey) && obj[eachKey] === value)
             return true;
     }
@@ -127,8 +127,8 @@ exports.buildNetidQuery = function (netid) {
 };
 
 exports.buildEntryIDsQuery = function (ids) {
-    var partialQueries = [];
-    for (var i = 0; i < ids.length; i++) {
+    let partialQueries = [];
+    for (let i = 0; i < ids.length; i++) {
         partialQueries[i] = exports.buildEquals("EntryId", ids[i]);
     }
     return exports.buildQuery(partialQueries, con.grouping.or);

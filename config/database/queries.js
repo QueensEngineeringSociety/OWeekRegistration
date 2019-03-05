@@ -4,6 +4,7 @@ const constants = require("./dbConstants");
 const util = require("../../server/util");
 
 const tables = constants.tables;
+const queries = constants.queries;
 const properties = PropertiesReader(__dirname + "/db_properties.ini");
 
 let con = mysql.createConnection({
@@ -19,23 +20,29 @@ exports.connect = function () {
     });
 };
 
-//TODO make multiple query functions - e.g. insert, getDelete, update etc. - e.g. insert has NOW() automatically for created
 exports.query = function (queryString, params, callback) {
-    //TODO check queryString for correctness
     con.query(queryString, params, function (err, rows) {
         callback(err, rows);
     });
 };
 
 exports.selectAll = function (table, callback) {
-    if (util.valInObj(table, tables)) {
-        query("SELECT * FROM " + table, [], callback);
-    } else {
-        callback(table + " is not a valid table in the database");
-    }
+    query(queries.SELECT_ALL, table, [], callback);
 };
 
-function query(queryString, params, callback) {
+exports.deleteAll = function (table, callback) {
+    query(queries.DELETE_ALL, table, [], callback);
+};
+
+function query(queryString, table, params, callback) {
+    if (util.valInObj(table, tables)) {
+        makeQuery(queryString + " " + table, params, callback);
+    } else {
+        callback(table + " is not a table in the database");
+    }
+}
+
+function makeQuery(queryString, params, callback) {
     con.query(queryString, params, function (err, rows) {
         callback(err, rows);
     });

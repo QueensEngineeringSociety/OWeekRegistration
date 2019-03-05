@@ -1,7 +1,11 @@
-const USERS = "users";
-
 exports.tables = {
-    USERS: USERS
+    USERS: "users",
+    GROUP_DATA: "groupData",
+    GROUP_META_DATA: "groupMetaData",
+    GROUPS: "groups"
 };
 
-exports.queries = {};
+exports.queries = {
+    SELECT_ALL: "SELECT * FROM",
+    DELETE_ALL: "DELETE FROM",
+};

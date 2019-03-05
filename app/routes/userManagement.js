@@ -16,7 +16,7 @@ exports.post = {
 };
 
 function postSignUp(request, result) {
-    dbConn.query("SELECT * FROM users WHERE email = ?", [request.body.email], function (err, rows) {
+    dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
         if (err) {
             console.log("ERROR: " + err);
         }
@@ -40,7 +40,7 @@ function postSignUp(request, result) {
 }
 
 function postEdit(request, result) {
-    dbConn.query("SELECT * FROM users WHERE email = ?", [request.body.email], function (err, rows) {
+    dbConn.selectWhereClause("users","email",request.body.email, function (err, rows) {
         if (err) {
             console.log("ERROR: " + err);
         }
@@ -77,7 +77,7 @@ function getDelete(request, result) {
         }
     });
 }
-
+//TODO not working to delete user
 function postDelete(request, result) {
     let queryString = "";
     if (typeof request.body.users.length === "object") {

@@ -21,7 +21,7 @@ function getGeneral(request, result) {
             accessFields = con.allFields;
         }
         wufoo.makeQuery(builder.customQuery(request.query['field'], request.query['operator'], request.query['value']), function (body) {
-            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+            dbConn.selectAll("groupData", function (err, rows) {
                 let groupNumbers = [];
                 for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique

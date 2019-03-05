@@ -30,8 +30,12 @@ exports.selectAll = function (table, callback) {
     query(buildSimpleTableQuery(queries.SELECT_ALL, table), table, [], callback);
 };
 
-exports.deleteAll = function (table, callback) {
-    query(buildSimpleTableQuery(queries.DELETE_ALL, table), table, [], callback);
+exports.selectWhereClause = function (table, whereColumn, whereValue, callback) {
+    simpleTableWhereQuery(table, whereColumn, whereValue, queries.SELECT_ALL, callback);
+};
+
+exports.deleteWhereClause = function (table, whereColumn, whereValue, callback) {
+    simpleTableWhereQuery(table, whereColumn, whereValue, queries.DELETE_ALL, callback);
 };
 
 exports.insert = function (table, columns, values, callback) {
@@ -43,17 +47,22 @@ exports.updateAllColumns = function (table, columns, values, callback) {
 };
 
 exports.updateWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
-    whereParameterizedQuery(table, columns, values, whereColumn, whereValue, "update", callback);
+    parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, "update", callback);
 };
 
 exports.insertWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
-    whereParameterizedQuery(table, columns, values, whereColumn, whereValue, "insert", callback);
+    parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, "insert", callback);
 };
 
-function whereParameterizedQuery(table, columns, values, whereColumn, whereValue, type, callback) {
+function parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, type, callback) {
     let queryString = addOneWhereClause(buildParameterizedQuery(table, columns, values, type, callback), whereColumn);
     values.push(whereValue);
     query(queryString, table, values, callback);
+}
+
+function simpleTableWhereQuery(table, whereColumn, whereValue, queryString, callback) {
+    queryString = addOneWhereClause(buildSimpleTableQuery(queryString, table), whereColumn);
+    query(queryString, table, [whereValue], callback);
 }
 
 function addOneWhereClause(queryString, column) {

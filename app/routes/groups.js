@@ -45,7 +45,7 @@ function getAll(request, result) {
 }
 
 function postSpecificOne(request, result) {
-    dbConn.query("SELECT * FROM groupData WHERE groupNum = ?", [request.body.groupNumber], function (err, rows) {
+    dbConn.selectWhereClause("groupData", "groupNum", request.body.groupNumber, function (err, rows) {
         if (err) {
             console.log("ERROR: " + err);
         }
@@ -58,7 +58,7 @@ function postSpecificOne(request, result) {
             }
             wufoo.getEntriesById(entryIds, function (body) {
                 body = JSON.parse(body);
-                dbConn.query("SELECT * FROM groups WHERE groupNumber = ?", [request.body.groupNumber], function (err, rows) {
+                dbConn.selectWhereClause("groups", "groupNumber", request.body.groupNumber, function (err, rows) {
                     if (err) {
                         console.log("ERROR: " + err);
                     }

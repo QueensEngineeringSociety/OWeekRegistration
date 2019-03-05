@@ -42,3 +42,7 @@ exports.views = {
 exports.isAdmin = function (req) {
     return req.user.is_admin;
 };
+
+exports.valInObj = function (val, obj) {
+    return Object.values(obj).indexOf(val) > -1;
+};

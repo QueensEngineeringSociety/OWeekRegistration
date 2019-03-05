@@ -2,7 +2,7 @@ const userManagement = require("../../app/routes/userManagement");
 const regInfo = require("../../app/routes/registrationInfo");
 const search = require("../../app/routes/search");
 const groups = require("../../app/routes/groups");
-const constants = require("../util");
+const constants = require("../../server/util");
 const routes = constants.routes;
 const views = constants.views;
 

@@ -12,7 +12,7 @@ const path = require('path');
 const PropertiesReader = require('properties-reader');
 
 const properties = PropertiesReader(__dirname + "/../config/passport.ini");
-const db = require('../config/database.js');
+const db = require('../config/database/queries.js');
 
 // configuration ===============================================================
 db.connect(); // connect to our database

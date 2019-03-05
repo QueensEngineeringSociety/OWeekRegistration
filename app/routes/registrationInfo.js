@@ -1,8 +1,8 @@
 const con = require("../../server/wufoo/wufooConstants");
 const wufoo = require("../../server/wufoo/wufooApi.js");
-const dbConn = require("../../config/database.js");
-const util = require("../../app/util");
-const constants = require("../util");
+const dbConn = require("../../config/database/queries.js");
+const util = require("../../server/util");
+const constants = require("../../server/util");
 
 const query = wufoo.queries;
 const views = constants.views;
@@ -31,7 +31,7 @@ function getDisplayAll(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.all, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -60,7 +60,7 @@ function getDisplayAge(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.age, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -84,7 +84,7 @@ function getDisplayFood(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.foodRestrictions, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -108,7 +108,7 @@ function getDisplayPrimer(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.wantPrimer, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -132,7 +132,7 @@ function getDisplayMedical(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.medicalConcerns, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -156,7 +156,7 @@ function getDisplayPronouns(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.pronoun, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -180,7 +180,7 @@ function getDisplayAccessibility(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.accessibilityConcerns, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -209,7 +209,7 @@ function getDisplayPayPerson(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.payInPerson, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -238,7 +238,7 @@ function getDisplayPayMail(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.payByMail, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -267,7 +267,7 @@ function getDisplayPayOnline(req, res) {
     let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
     pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.payOnline, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
@@ -296,7 +296,7 @@ function getDisplayUnpaid(request, result) {
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.unpaid, function (body, nextPageNum, prevPageNum) {
-        dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+        dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique

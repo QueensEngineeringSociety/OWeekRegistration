@@ -1,7 +1,7 @@
-const dbConn = require("../../config/database.js");
+const dbConn = require("../../config/database/queries.js");
 const con = require("../../server/wufoo/wufooConstants");
 const wufoo = require("../../server/wufoo/wufooApi.js");
-const constants = require("../util");
+const constants = require("../../server/util");
 
 const routes = constants.routes;
 const views = constants.views;
@@ -29,7 +29,7 @@ function getAll(request, result) {
             result.render(views.ERROR, {errorMessage: "Cannot get number of groups."});
         } else {
             maxNumInGroup = rows[0].maxNumInGroup;
-            dbConn.query("SELECT * FROM groups", [], function (err, rows) {
+            dbConn.selectAll("groups", function (err, rows) {
                 if (err) {
                     console.log("ERROR: " + err);
                     result.render(views.ERROR, {errorMessage: "No groups"});
@@ -96,7 +96,7 @@ function postMaxGroupNum(request, result) {
 }
 
 function postAssign(request, result) {
-    dbConn.query("SELECT * FROM groupMetaData", function (err, rows) {
+    dbConn.selectAll("groupMetaData", function (err, rows) {
             if (err) {
                 console.log("ERROR: " + err);
             }
@@ -106,7 +106,7 @@ function postAssign(request, result) {
                 let manGroupNum = rows[0].manGroupNum;
                 let womanGroupNum = rows[0].womanGroupNum;
                 //get frosh already in a group
-                dbConn.query("SELECT * FROM groupData", function (err, rows) {
+                dbConn.selectAll("groupData", function (err, rows) {
                     let assignedFrosh = [];
                     if (err) {
                         console.log("ERROR: " + err);
@@ -197,7 +197,7 @@ function assign(manGroupNum, womanGroupNum, froshToInsert) {
                     reject("Couldn't update groups.");
                 } else {
                     //get the old group data, then add on new group data and update
-                    dbConn.query("SELECT * FROM groups", function (err, rows) {
+                    dbConn.selectAll("groups", function (err, rows) {
                         if (err) {
                             console.log("ERROR: " + err);
                             reject("Couldn't update group data, metadata was updated so contact DoIT.")
@@ -240,7 +240,7 @@ function insertFroshToGroup(insertIdx, insertions) {
         if (insertIdx < insertions.length) {
             let id = insertions[insertIdx].wufooEntryId;
             let num = insertions[insertIdx].groupNum;
-            dbConn.query("insert groupData values(?,?)", [id, num], function (err) {
+            dbConn.query("INSERT groupData VALUES(?,?)", [id, num], function (err) {
                 if (err) {
                     console.log("ERROR: " + err);
                     rej("Couldn't update individual frosh, contact DoIT as metadata and group data were updated.");

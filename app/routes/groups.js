@@ -2,6 +2,7 @@ const dbConn = require("../../config/database/queries.js");
 const con = require("../../server/wufoo/wufooConstants");
 const wufoo = require("../../server/wufoo/wufooApi.js");
 const constants = require("../../server/util");
+const view = require("./rendering");
 
 const routes = constants.routes;
 const views = constants.views;
@@ -32,7 +33,7 @@ function getAll(request, result) {
             dbConn.selectAll("groups", function (err, rows) {
                 if (err) {
                     console.log("ERROR: " + err);
-                    result.render(views.ERROR, {errorMessage: "No groups"});
+                    view.renderError(result, "No groups");
                 } else {
                     result.render(views.GROUPS, {
                         groups: rows,

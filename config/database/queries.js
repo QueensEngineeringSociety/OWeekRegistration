@@ -3,6 +3,8 @@ const PropertiesReader = require('properties-reader');
 const constants = require("./dbConstants");
 const util = require("../../server/util");
 
+//TODO finish building pre-made queries
+
 const tables = constants.tables;
 const queries = constants.queries;
 const properties = PropertiesReader(__dirname + "/db_properties.ini");

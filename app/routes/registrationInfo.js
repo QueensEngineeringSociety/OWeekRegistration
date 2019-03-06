@@ -1,7 +1,5 @@
-const con = require("../../server/wufoo/wufooConstants");
 const wufoo = require("../../server/wufoo/wufooApi.js");
 const dbConn = require("../../config/database/queries.js");
-const util = require("../../server/util");
 const constants = require("../../server/util");
 const view = require("./rendering");
 

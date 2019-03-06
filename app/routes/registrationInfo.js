@@ -3,6 +3,7 @@ const wufoo = require("../../server/wufoo/wufooApi.js");
 const dbConn = require("../../config/database/queries.js");
 const util = require("../../server/util");
 const constants = require("../../server/util");
+const view = require("./rendering");
 
 const query = wufoo.queries;
 const views = constants.views;
@@ -23,11 +24,6 @@ exports.get = {
 };
 
 function getDisplayAll(request, result) {
-    let accessFields = con.generalFields;
-    let admin = util.isAdmin(request);
-    if (admin) {
-        accessFields = con.allFields;
-    }
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.all, function (body, nextPageNum, prevPageNum) {
@@ -36,27 +32,12 @@ function getDisplayAll(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.FILTER
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.FILTER, nextPageNum, prevPageNum);
         });
     });
 }
 
 function getDisplayAge(request, result) {
-    let accessFields = con.generalFields;
-    let admin = util.isAdmin(request);
-    if (admin) {
-        accessFields = con.allFields;
-    }
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.age, function (body, nextPageNum, prevPageNum) {
@@ -65,17 +46,7 @@ function getDisplayAge(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.AGE
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.AGE, nextPageNum, prevPageNum);
         });
     });
 }
@@ -89,17 +60,7 @@ function getDisplayFood(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.FOOD_RESTRICTIONS
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.FOOD_RESTRICTIONS, nextPageNum, prevPageNum);
         });
     });
 }
@@ -113,17 +74,7 @@ function getDisplayPrimer(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.PRIMER
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.PRIMER, nextPageNum, prevPageNum);
         });
     });
 }
@@ -137,17 +88,7 @@ function getDisplayMedical(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.MEDICAL
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.MEDICAL, nextPageNum, prevPageNum);
         });
     });
 }
@@ -161,17 +102,7 @@ function getDisplayPronouns(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.PRONOUNS
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.PRONOUNS, nextPageNum, prevPageNum);
         });
     });
 }
@@ -185,27 +116,12 @@ function getDisplayAccessibility(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: con.allFields,
-                headings: con.headings,
-                isAdmin: true,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.ACCESSIBILITY
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.ACCESSIBILITY, nextPageNum, prevPageNum);
         });
     });
 }
 
 function getDisplayPayPerson(request, result) {
-    let accessFields = con.generalFields;
-    let admin = util.isAdmin(request);
-    if (admin) {
-        accessFields = con.allFields;
-    }
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.payInPerson, function (body, nextPageNum, prevPageNum) {
@@ -214,27 +130,12 @@ function getDisplayPayPerson(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.PAY_PERSON
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.PAY_PERSON, nextPageNum, prevPageNum);
         });
     });
 }
 
 function getDisplayPayMail(request, result) {
-    let accessFields = con.generalFields;
-    let admin = util.isAdmin(request);
-    if (admin) {
-        accessFields = con.allFields;
-    }
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.payByMail, function (body, nextPageNum, prevPageNum) {
@@ -243,56 +144,26 @@ function getDisplayPayMail(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.PAY_MAIL
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.PAY_MAIL, nextPageNum, prevPageNum);
         });
     });
 }
 
-function getDisplayPayOnline(req, res) {
-    let accessFields = con.generalFields;
-    let admin = util.isAdmin(req);
-    if (admin) {
-        accessFields = con.allFields;
-    }
-    let pageNum = req.query.nextPage ? parseInt(req.query.nextPage) : 0;
-    pageNum = req.query.prevPage ? parseInt(req.query.prevPage) : pageNum;
+function getDisplayPayOnline(request, result) {
+    let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
+    pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.payOnline, function (body, nextPageNum, prevPageNum) {
         dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = [];
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            res.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.PAY_ONLINE
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.PAY_ONLINE, nextPageNum, prevPageNum);
         });
     });
 }
 
 function getDisplayUnpaid(request, result) {
-    let accessFields = con.generalFields;
-    let admin = util.isAdmin(request);
-    if (admin) {
-        accessFields = con.allFields;
-    }
     let pageNum = request.query.nextPage ? parseInt(request.query.nextPage) : 0;
     pageNum = request.query.prevPage ? parseInt(request.query.prevPage) : pageNum;
     wufoo.makePaginatedQuery(pageNum, query.unpaid, function (body, nextPageNum, prevPageNum) {
@@ -301,17 +172,7 @@ function getDisplayUnpaid(request, result) {
             for (let i in rows) {
                 groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
             }
-            result.render(views.FILTER, {
-                wufoo: body,
-                groupNumbers: groupNumbers,
-                operators: con.operators,
-                fields: accessFields,
-                headings: con.headings,
-                isAdmin: admin,
-                nextPage: nextPageNum,
-                prevPage: prevPageNum,
-                actionPath: routes.UNPAID
-            });
+            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, routes.UNPAID, nextPageNum, prevPageNum);
         });
     });
 }

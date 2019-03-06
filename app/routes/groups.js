@@ -27,7 +27,7 @@ function getAll(request, result) {
     dbConn.query("SELECT maxNumInGroup FROM groupMetaData", function (err, rows) {
         if (err) {
             console.log("ERROR: " + err);
-            result.render(views.ERROR, {errorMessage: "Cannot get number of groups."});
+            view.renderError(result, "Cannot get number of groups.");
         } else {
             maxNumInGroup = rows[0].maxNumInGroup;
             dbConn.selectAll("groups", function (err, rows) {
@@ -51,7 +51,7 @@ function postSpecificOne(request, result) {
             console.log("ERROR: " + err);
         }
         if (!rows.length) {
-            result.render(views.ERROR, {errorMessage: "No groups"});
+            view.renderError(result, "No groups");
         } else {
             let entryIds = [];
             for (let i = 0; i < rows.length; i++) {
@@ -64,7 +64,7 @@ function postSpecificOne(request, result) {
                         console.log("ERROR: " + err);
                     }
                     if (!rows.length) {
-                        result.render(views.ERROR, {errorMessage: "No groups"});
+                        view.renderError(result, "No groups");
                     } else {
                         result.render(views.GROUP, {
                             isAdmin: true,
@@ -92,7 +92,7 @@ function postMaxGroupNum(request, result) {
         });
     } else {
         console.log("ERROR: No given maximum");
-        result.render(views.ERROR, {errorMessage: "Not given a maximum group number."});
+        view.renderError(result, "Not given a maximum group number.");
     }
 }
 
@@ -102,7 +102,7 @@ function postAssign(request, result) {
                 console.log("ERROR: " + err);
             }
             if (!rows.length) {
-                result.render(views.ERROR, {errorMessage: "No metadata could be used to assign groups."});
+                view.renderError(result, "No metadata could be used to assign groups.");
             } else {
                 let manGroupNum = rows[0].manGroupNum;
                 let womanGroupNum = rows[0].womanGroupNum;
@@ -133,7 +133,7 @@ function postAssign(request, result) {
                             assign(manGroupNum, womanGroupNum, insertions).then(function () {
                                 result.redirect("back"); //refresh
                             }).catch(function (errMessage) {
-                                result.render(views.ERROR, {errorMessage: errMessage});
+                                view.renderError(result, errMessage);
                             });
                         } else {
                             result.redirect("back");
@@ -299,17 +299,17 @@ function postClear(request, result) {
     dbConn.updateAllColumns("groupMetaData", ["manGroupNum", "womanGroupNum"], [0, 0], function (err) {
         if (err) {
             console.log("ERROR: " + err);
-            result.render(views.ERROR, {errorMessage: "Could not getDelete any group data"});
+            view.renderError(result, "Could not getDelete any group data");
         } else {
             dbConn.query("DELETE FROM groupData", function (err) {
                 if (err) {
                     console.log("ERROR: " + err);
-                    result.render(views.ERROR, {errorMessage: "Cleared metadata and groups, but couldn't getDelete group data. Contact DoIT."});
+                    view.renderError(result, "Cleared metadata and groups, but couldn't getDelete group data. Contact DoIT.");
                 } else {
                     dbConn.query("DELETE FROM groups", function (err) {
                         if (err) {
                             console.log("ERROR: " + err);
-                            result.render(views.ERROR, {errorMessage: "Cleared metadata, but couldn't getDelete groups. Contact DoIT."});
+                            view.renderError(result, "Cleared metadata, but couldn't getDelete groups. Contact DoIT.");
                         } else {
                             result.redirect(routes.ALL_GROUPS);
                         }

@@ -1,6 +1,7 @@
 const dbConn = require("../../config/database/queries.js");
 const User = require("../../app/models/user");
 const constants = require("../../server/util");
+const view = require("./rendering");
 
 const views = constants.views;
 const strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
@@ -21,9 +22,11 @@ function postSignUp(request, result) {
             console.log("ERROR: " + err);
         }
         if (rows.length) {
-            result.render(views.ERROR, {errorMessage: "That email already exists"});
+            view.renderError(result, "That email already exists");
         } else if (!strongPassRegex.test(request.body.password)) {
-            result.render(views.ERROR, {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
+            view.renderError(result, "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"
+            )
+            ;
         } else {
             // if there is no user with that username, then create that user
             let newUser = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
@@ -33,21 +36,21 @@ function postSignUp(request, result) {
                     if (err)
                         console.log("ERROR: " + err);
                     newUser.id = rows.insertId;
-                    result.render(views.USERS, {message: request.flash('signupMessage')});
+                    view.simpleRender(result, views.USERS);
                 });
         }
     });
 }
 
 function postEdit(request, result) {
-    dbConn.selectWhereClause("users","email",request.body.email, function (err, rows) {
+    dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
         if (err) {
             console.log("ERROR: " + err);
         }
         if (!rows.length) {
-            result.render(views.ERROR, {errorMessage: "That email doesn't exist"});
+            view.renderError(result, "That email doesn't exist");
         } else if (!strongPassRegex.test(request.body.password)) {
-            result.render(views.ERROR, {errorMessage: "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"});
+            view.renderError(result, "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long");
         } else {
             let replacementUser = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
             dbConn.updateWhereClause("users", ["first_name", "last_name", "email", "password", "is_admin"],
@@ -56,7 +59,7 @@ function postEdit(request, result) {
                     if (err)
                         console.log("ERROR: " + err);
                     replacementUser.id = rows.insertId;
-                    result.render(views.USERS, {message: request.flash('signupMessage')});
+                    view.simpleRender(result, views.USERS);
                 });
         }
     });
@@ -68,7 +71,7 @@ function getDelete(request, result) {
             console.log("ERROR: " + err);
         }
         if (!rows.length) {
-            result.render(views.ERROR, {errorMessage: "That email doesn't exist"});
+            view.renderError(result, "That email doesn't exist");
         } else {
             result.render(views.DELETE_USERS, {
                 message: request.flash('signupMessage'),
@@ -77,6 +80,7 @@ function getDelete(request, result) {
         }
     });
 }
+
 //TODO not working to delete user
 function postDelete(request, result) {
     let queryString = "";
@@ -95,7 +99,7 @@ function postDelete(request, result) {
                 console.log("ERROR: " + err);
             }
             if (!rows.length) {
-                result.render(views.ERROR, {errorMessage: "There are no users!"});
+                view.renderError(result, "There are no users!");
             } else {
                 result.render(views.DELETE_USERS, {
                     message: request.flash('signupMessage'),

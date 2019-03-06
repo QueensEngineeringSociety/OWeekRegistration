@@ -30,26 +30,13 @@ function getGeneral(request, result) {
 
 function getNetid(request, result) {
     if (request.query['netid_search']) {
-        let accessFields = con.generalFields;
-        let admin = util.isAdmin(request);
-        if (admin) {
-            accessFields = con.allFields;
-        }
         wufoo.makeQuery(builder.buildNetidQuery(request.query['netid_search']), function (body) {
-            dbConn.query("SELECT * FROM groupData", [], function (err, rows) {
+            dbConn.selectAll("groupData", function (err, rows) {
                 let groupNumbers = [];
                 for (let i in rows) {
                     groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
                 }
-                result.render(views.SEARCH, {
-                    wufoo: body,
-                    groupNumbers: groupNumbers,
-                    operators: con.operators,
-                    fields: accessFields,
-                    headings: con.headings,
-                    isAdmin: admin,
-                    actionPath: routes.NET_ID
-                });
+                view.render(result, views.SEARCH, request, body, groupNumbers, routes.NET_ID);
             });
         });
     }

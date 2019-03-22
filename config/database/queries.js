@@ -24,6 +24,9 @@ exports.connect = function () {
 
 exports.query = function (queryString, params, callback) {
     con.query(queryString, params, function (err, rows) {
+        if (err) {
+            console.log("DB QUERY ERROR: " + err);
+        }
         callback(err, rows);
     });
 };

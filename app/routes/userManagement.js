@@ -18,9 +18,6 @@ exports.post = {
 
 function postSignUp(request, result) {
     dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
-        if (err) {
-            console.log("ERROR: " + err);
-        }
         if (rows.length) {
             view.renderError(result, "That email already exists");
         } else if (!strongPassRegex.test(request.body.password)) {
@@ -33,8 +30,6 @@ function postSignUp(request, result) {
             dbConn.insert("users", ["first_name", "last_name", "email", "password", "created", "is_admin"],
                 [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
                 function (err, rows) {
-                    if (err)
-                        console.log("ERROR: " + err);
                     newUser.id = rows.insertId;
                     view.simpleRender(result, views.USERS);
                 });
@@ -44,9 +39,6 @@ function postSignUp(request, result) {
 
 function postEdit(request, result) {
     dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
-        if (err) {
-            console.log("ERROR: " + err);
-        }
         if (!rows.length) {
             view.renderError(result, "That email doesn't exist");
         } else if (!strongPassRegex.test(request.body.password)) {
@@ -56,8 +48,6 @@ function postEdit(request, result) {
             dbConn.updateWhereClause("users", ["first_name", "last_name", "email", "password", "is_admin"],
                 [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin], "id", rows[0].id,
                 function (err, rows) {
-                    if (err)
-                        console.log("ERROR: " + err);
                     replacementUser.id = rows.insertId;
                     view.simpleRender(result, views.USERS);
                 });
@@ -67,9 +57,6 @@ function postEdit(request, result) {
 
 function getDelete(request, result) {
     dbConn.selectAll("users", function (err, rows) {
-        if (err) {
-            console.log("ERROR: " + err);
-        }
         if (!rows.length) {
             view.renderError(result, "That email doesn't exist");
         } else {
@@ -95,9 +82,6 @@ function postDelete(request, result) {
             console.log("ERROR: " + topErr);
         }
         dbConn.selectAll("users", function (err, rows) {
-            if (err) {
-                console.log("ERROR: " + err);
-            }
             if (!rows.length) {
                 view.renderError(result, "There are no users!");
             } else {

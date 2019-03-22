@@ -1,11 +1,11 @@
 const wufoo = require("../../server/wufoo/wufooApi.js");
 const dbConn = require("../../config/database/queries.js");
-const constants = require("../../server/util");
+const util = require("../../server/util");
 const view = require("./rendering");
 
 const query = wufoo.queries;
-const views = constants.views;
-const routes = constants.routes;
+const views = util.views;
+const routes = util.routes;
 
 exports.get = {
     displayAll: getDisplayAll,
@@ -69,18 +69,10 @@ function getRequest(request, result, query, route){
     let pageNum = getPageNum(request);
     wufoo.makePaginatedQuery(pageNum, query, function (body, nextPageNum, prevPageNum) {
         dbConn.selectAll("groupData", function (err, rows) {
-            let groupNumbers = getGroupNumbers(rows);
+            let groupNumbers = util.getGroupNumbers(rows);
             view.renderPaginated(result, views.FILTER, request, body, groupNumbers, route, nextPageNum, prevPageNum);
         });
     });
-}
-
-function getGroupNumbers(rows) {
-    let groupNumbers = [];
-    for (let i in rows) {
-        groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
-    }
-    return groupNumbers;
 }
 
 function getPageNum(request){

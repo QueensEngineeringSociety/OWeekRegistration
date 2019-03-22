@@ -46,3 +46,11 @@ exports.isAdmin = function (req) {
 exports.valInObj = function (val, obj) {
     return Object.values(obj).indexOf(val) > -1;
 };
+
+exports.getGroupNumbers = function (rows) {
+    let groupNumbers = [];
+    for (let i in rows) {
+        groupNumbers[rows[i].wufooEntryId] = rows[i].groupNum; //i ID is unique
+    }
+    return groupNumbers;
+};

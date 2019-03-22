@@ -82,7 +82,6 @@ function postMaxGroupNum(request, result) {
             }
         });
     } else {
-        console.log("ERROR: No given maximum");
         view.renderError(result, "Not given a maximum group number.");
     }
 }
@@ -259,7 +258,6 @@ function insertNewGroupData(insertIdx, newGroupData) {
                         res();
                     });
                 }
-
             } else {
                 res();
             }

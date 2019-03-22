@@ -6,6 +6,8 @@ const view = require("./rendering");
 const views = constants.views;
 const strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})");
 
+const errPasswordReq = "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long";
+
 exports.get = {
     delete: getDelete,
 };
@@ -17,42 +19,33 @@ exports.post = {
 };
 
 function postSignUp(request, result) {
+    addUserInfo(request, result, dbConn.insert, false, "That email already exists");
+}
+
+function postEdit(request, result) {
+    addUserInfo(request, result, dbConn.updateWhereClause, true, "That email doesn't exist");
+}
+
+function addUserInfo(request, result, dbQuery, rowCond, rowCondErrMessage) {
     dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
-        if (rows.length) {
-            view.renderError(result, "That email already exists");
-        } else if (!strongPassRegex.test(request.body.password)) {
-            view.renderError(result, "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long"
-            )
-            ;
+        if (rowCond ^ rows.length) { //allows rowCond to control if we want rows.length as true or false for this condition
+            view.renderError(result, rowCondErrMessage);
+        } else if (isPasswordNotStrong(request.body.password)) {
+            view.renderError(result, errPasswordReq);
         } else {
-            // if there is no user with that username, then create that user
-            let newUser = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
-            dbConn.insert("users", ["first_name", "last_name", "email", "password", "created", "is_admin"],
-                [newUser.first_name, newUser.last_name, newUser.email, newUser.password, newUser.created, newUser.is_admin],
-                function (err, rows) {
-                    newUser.id = rows.insertId;
-                    view.simpleRender(result, views.USERS);
-                });
+            makeUserQuery(request, result, dbQuery, rows);
         }
     });
 }
 
-function postEdit(request, result) {
-    dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
-        if (!rows.length) {
-            view.renderError(result, "That email doesn't exist");
-        } else if (!strongPassRegex.test(request.body.password)) {
-            view.renderError(result, "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long");
-        } else {
-            let replacementUser = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
-            dbConn.updateWhereClause("users", ["first_name", "last_name", "email", "password", "is_admin"],
-                [replacementUser.first_name, replacementUser.last_name, replacementUser.email, replacementUser.password, replacementUser.is_admin], "id", rows[0].id,
-                function (err, rows) {
-                    replacementUser.id = rows.insertId;
-                    view.simpleRender(result, views.USERS);
-                });
-        }
-    });
+function makeUserQuery(request, result, queryFunction, rows) {
+    let user = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
+    queryFunction("users", ["first_name", "last_name", "email", "password", "is_admin"],
+        [user.first_name, user.last_name, user.email, user.password, user.is_admin], "id", rows[0].id,
+        function (err, rows) {
+            user.id = rows.insertId;
+            view.simpleRender(result, views.USERS);
+        });
 }
 
 function getDelete(request, result) {
@@ -77,10 +70,7 @@ function postDelete(request, result) {
         //just one user, no join
         queryString = "DELETE FROM users WHERE email IN('" + request.body.users + "')";
     }
-    dbConn.query(queryString, [], function (topErr) {
-        if (topErr) {
-            console.log("ERROR: " + topErr);
-        }
+    dbConn.query(queryString, [], function () {
         dbConn.selectAll("users", function (err, rows) {
             if (!rows.length) {
                 view.renderError(result, "There are no users!");
@@ -92,4 +82,8 @@ function postDelete(request, result) {
             }
         });
     });
+}
+
+function isPasswordNotStrong(password) {
+    return !strongPassRegex.test(password);
 }

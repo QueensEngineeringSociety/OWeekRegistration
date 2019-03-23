@@ -55,10 +55,6 @@ exports.updateWhereClause = function (table, columns, values, whereColumn, where
     parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, "update", callback);
 };
 
-exports.insertWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
-    parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, "insert", callback);
-};
-
 function parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, type, callback) {
     let queryString = addOneWhereClause(buildParameterizedQuery(table, columns, values, type, callback), whereColumn);
     values.push(whereValue);

@@ -1,4 +1,4 @@
-var bcrypt = require("bcrypt-nodejs");
+let bcrypt = require("bcrypt-nodejs");
 
 module.exports = User;
 

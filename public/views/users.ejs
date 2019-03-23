@@ -1,17 +1,10 @@
-<!-- views/users.ejs -->
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <title>OWeek Info</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <!-- load fontawesome -->
-    <style>
-        body {
-            padding-top: 80px;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/misc.css" type="text/css">
 </head>
 <body>
 <div class="container">
@@ -20,71 +13,74 @@
         <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
                                                                             class="btn btn-default btn-sm">Logout</a>
             <div style="float: right; display: inline; padding-right: 10px;"><a href="/userdelete"
-                                                                                class="btn btn-default btn-sm">Delete Users</a>
+                                                                                class="btn btn-default btn-sm">Delete
+                    Users</a>
+            </div>
+            <div style="float: right; display: inline; padding-right: 10px;"><a href="/filter"
+                                                                                class="btn btn-default btn-sm">Registration</a>
+            </div>
         </div>
-        <div style="float: right; display: inline; padding-right: 10px;"><a href="/filter"
-                                                                            class="btn btn-default btn-sm">Registration</a>
-        </div>
-    </div>
-    <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-6 col-sm-offset-3">
 
-        <h1><span class="fa fa-sign-in"></span> User Management</h1>
-        <p>Ensure the email field corresponds to the email of the user to be edited, or a new user is added.</p>
+            <h1><span class="fa fa-sign-in"></span> User Management</h1>
+            <p>Ensure the email field corresponds to the email of the user to be edited, or a new user is added.</p>
 
-        <!-- show any messages that come back with authentication -->
-        <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-        <% } %>
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+            <% } %>
 
-        <!-- JS to postEdit action to signup/useredit depending on choice -->
-        <script>
-            function changeAction() {
-                var form = document.getElementById('user_form');
-                if (document.getElementById('new_user').checked) {
-                    form.action = "/signup";
-                } else {
-                    form.action = "/useredit";
+            <!-- JS to postEdit action to signup/useredit depending on choice -->
+            <script>
+                function changeAction() {
+                    let form = document.getElementById('user_form');
+                    if (document.getElementById('new_user').checked) {
+                        form.action = "/signup";
+                    } else {
+                        form.action = "/useredit";
+                    }
                 }
-            }
-        </script>
+            </script>
 
-        <!-- USER ADD FORM -->
-        <form action="/signup" method="post" id="user_form">
-            <div class="form-group">
-                <input type="radio" id="new_user" name="user_mgm" value="new_user" checked>
-                <label for="new_user">New User</label>
-                <input type="radio" id="edit_user" name="user_mgm" value="edit_user">
-                <label for="edit_user">Edit Existing User</label>
-            </div>
-            <div class="form-group">
-                <label>First Name</label>
-                <input type="text" class="form-control" name="first_name">
-            </div>
-            <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" class="form-control" name="last_name">
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="text" class="form-control" name="email">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" name="password">
-            </div>
-            <div class="form-group">
-                <input type="radio" id="user" name="is_admin" value="user" checked>
-                <label for="user">User</label>
-                <input type="radio" id="admin" name="is_admin" value="admin">
-                <label for="admin">Admin</label>
-            </div>
-            <button type="submit" class="btn btn-warning btn-lg" onclick="changeAction()">Submit</button>
-        </form>
-
-        <hr>
-
+            <!-- USER ADD FORM -->
+            <form action="/signup" method="post" id="user_form">
+                <div class="form-group">
+                    <input type="radio" id="new_user" name="user_mgm" value="new_user" checked>
+                    <label for="new_user">New User</label>
+                    <input type="radio" id="edit_user" name="user_mgm" value="edit_user">
+                    <label for="edit_user">Edit Existing User</label>
+                </div>
+                <div class="form-group">
+                    <label>First Name
+                    <input type="text" class="form-control" name="first_name">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Last Name
+                    <input type="text" class="form-control" name="last_name">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Email
+                        <input type="text" class="form-control" name="email">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Password
+                        <input type="password" class="form-control" name="password">
+                    </label>
+                </div>
+                <div class="form-group">
+                    <input type="radio" id="user" name="is_admin" value="user" checked>
+                    <label for="user">User</label>
+                    <input type="radio" id="admin" name="is_admin" value="admin">
+                    <label for="admin">Admin</label>
+                </div>
+                <button type="submit" class="btn btn-warning btn-lg" onclick="changeAction()">Submit</button>
+            </form>
+            <hr>
+        </div>
     </div>
-
 </div>
 </body>
 </html>

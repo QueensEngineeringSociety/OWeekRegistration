@@ -1,17 +1,11 @@
-<!-- views/filter.ejs -->
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <title>OWeek Info</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/table.css" type="text/css">
-    <style>
-        body {
-            padding-top: 80px;
-            word-wrap: break-word;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/table.css" type="text/css">
+    <link rel="stylesheet" href="../css/misc.css" type="text/css">
 </head>
 <body>
 <% if (isAdmin){ %>
@@ -47,15 +41,17 @@
             <a href="/unpaid" class="btn btn-default btn-sm">Unpaid</a>
         </div>
         <form action="/search" method="get" style="display: inline;">
-            <select name="field">
-                <!-- use the key as the value - key is english, value is wufoo API query version-->
-                <% for (var fieldKey in fields){ %>
-                    <% if (headings.hasOwnProperty(fieldKey)){ %>
-                        <option value="<%= fieldKey %>"><%= headings[fieldKey] %></option>
+            <label>
+                <select name="field">
+                    <!-- use the key as the value - key is english, value is wufoo API query version-->
+                    <% for (var fieldKey in fields){ %>
+                        <% if (headings.hasOwnProperty(fieldKey)){ %>
+                            <option value="<%= fieldKey %>"><%= headings[fieldKey] %></option>
+                        <% } %>
                     <% } %>
-                <% } %>
-            </select>
-            <select id="operator" name="operator">
+                </select>
+            </label>
+            <label for="operator"></label><select id="operator" name="operator">
                 <!-- use the key as the value - key is english, value is wufoo API query version-->
                 <% for (var opKey in operators){ %>
                     <% if (operators.hasOwnProperty(opKey)){ %>
@@ -63,7 +59,7 @@
                     <% } %>
                 <% } %>
             </select>
-            <input id="value" type="text" name="value">
+            <label for="value"></label><input id="value" type="text" name="value">
             <input type="submit" value="OK">
             <% var entries = JSON.parse(wufoo) %>
             <div style="float:right">Rows: <%= entries.length %></div>

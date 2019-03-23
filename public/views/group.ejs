@@ -10,19 +10,21 @@
 <body>
 <% if (isAdmin){ %>
 <div style="position: relative;">
-    <div style="float: right; display: inline; padding-right: 10px;"><a href="/usermanagement"
-                                                                        class="btn btn-default btn-sm">User
-            Management</a></div>
-    <div style="float: right; display: inline; padding-right: 10px"><a href="/userdelete"
-                                                                       class="btn btn-default btn-sm">Delete
-            Users</a></div>
-    <div style="float: right; display: inline; padding-right: 10px"><a href="/allgroups"
-                                                                       class="btn btn-default btn-sm">Groups</a></div>
+    <div style="float: right; display: inline; padding-right: 10px;">
+        <button onclick="location.href='/usermanagement'" class="btn btn-default btn-sm">User Management</button>
+    </div>
+    <div style="float: right; display: inline; padding-right: 10px">
+        <button onclick="location.href='/userdelete'" class="btn btn-default btn-sm">Delete Users</button>
+    </div>
+    <div style="float: right; display: inline; padding-right: 10px">
+        <button onclick="location.href='/allgroups'" class="btn btn-default btn-sm">Groups</button>
+    </div>
     <% } %>
-    <div style="float: right; display: inline; padding-right: 10px;"><a href="/filter"
-                                                                        class="btn btn-default btn-sm">All</a></div>
-    <div style="float: right; display: inline; padding-right: 10px;"><a href="/logout"
-                                                                        class="btn btn-default btn-sm">Logout</a>
+    <div style="float: right; display: inline; padding-right: 10px;">
+        <button onclick="location.href='/filter'" class="btn btn-default btn-sm">All</button>
+    </div>
+    <div style="float: right; display: inline; padding-right: 10px;">
+        <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
     </div>
     <div class="page-header text-center">
         <h1><span class="fa"></span>Group <%= groupData.groupNumber + 1 %></h1>

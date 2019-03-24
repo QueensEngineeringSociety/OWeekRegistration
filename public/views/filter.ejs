@@ -10,17 +10,17 @@
 <body>
 <% if (isAdmin){ %>
 <div style="position: relative;">
-    <div style="float: right; display: inline; padding-right: 10px;">
+    <div id="buttonDiv">
         <button onclick="location.href='/usermanagement'" class="btn btn-default btn-sm">User Management</button>
     </div>
-    <div style="float: right; display: inline; padding-right: 10px">
+    <div id="buttonDiv">
         <button onclick="location.href='/userdelete'" class="btn btn-default btn-sm">Delete Users</button>
     </div>
-    <div style="float: right; display: inline; padding-right: 10px">
+    <div id="buttonDiv">
         <button onclick="location.href='/allgroups'" class="btn btn-default btn-sm">Groups</button>
     </div>
     <% } %>
-    <div style="float: right; display: inline; padding-right: 10px;">
+    <div id="buttonDiv">
         <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
     </div>
     <div class="container">
@@ -54,7 +54,7 @@
                        class="btn btn-default btn-sm"/>
             </form>
         <% } %>
-        <form action="/search" method="get" style="display: inline;">
+        <form action="/search" method="get">
             <label>
                 <select name="field">
                     <!-- use the key as the value - key is english, value is wufoo API query version-->

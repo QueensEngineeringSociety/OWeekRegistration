@@ -15,7 +15,7 @@
     <form action="/cleargroups" method="post">
         <input type="submit" name="clear" value="Clear Groups" class="btn btn-default btn-sm"/>
     </form>
-    <form action="updatemaxnum" method="POST">
+    <form action="/updatemaxnum" method="POST">
         <div class="input-group">
             <input type="text" class="form-control" name="updatemax" value="<%= groupMax %>"
                    aria-label="Max number of groups" aria-describedby="basic-addon2">
@@ -26,7 +26,7 @@
             </div>
         </div>
     </form>
-    <div style="float: right; display: inline; padding-right: 10px;">
+    <div id="buttonDiv">
         <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
     </div>
 </div>

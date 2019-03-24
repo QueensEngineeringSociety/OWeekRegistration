@@ -1,11 +1,11 @@
 const wufoo = require("../../server/wufoo/wufooApi.js");
 const builder = require("../../server/wufoo/wufooQueryBuilder");
 const dbConn = require("../../config/database/queries.js");
-const constants = require("../../server/util");
+const util = require("../../server/util");
 const view = require("./rendering");
 
-const routes = constants.routes;
-const views = constants.views;
+const routes = util.routes;
+const views = util.views;
 
 exports.get = {
     general: getGeneral,

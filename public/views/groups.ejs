@@ -33,13 +33,15 @@
 <div class="container">
     <div class="col-sm-6 col-sm-offset-3">
         <% for (var i in groups){ %>
-            <form action="/onegroup" id="group_form" method="post">
-                <h2>Group <%= groups[i].groupNumber + 1 %></h2>
-                Men: <%= groups[i].menCount %>
-                Women: <%= groups[i].womenCount %>
-                Total: <%= groups[i].totalCount %><br>
-                <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">View</button>
-            </form>
+            <% if (groups.hasOwnProperty(i)){ %>
+                <form action="/onegroup" id="group_form" method="post">
+                    <h2>Group <%= groups[i].groupNumber + 1 %></h2>
+                    Men: <%= groups[i].menCount %>
+                    Women: <%= groups[i].womenCount %>
+                    Total: <%= groups[i].totalCount %><br>
+                    <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">View</button>
+                </form>
+            <% } %>
         <% } %>
     </div>
 </div>

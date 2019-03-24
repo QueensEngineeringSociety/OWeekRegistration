@@ -35,7 +35,7 @@
     Total: <%= groupData.totalCount %><br>
     <table id="entryTable">
         <% for (var eachField in fields){ %>
-            <% if (headings.hasOwnProperty(eachField)){ %>
+            <% if (fields.hasOwnProperty(eachField)){ %>
                 <% if (eachField === "payStatus"){ %>
                     <th><%= headings.paymentMethod %></th>
                     <th><%= headings.payStatus %></th>

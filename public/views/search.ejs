@@ -24,7 +24,6 @@
         <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
     </div>
     <div class="container">
-
         <div class="page-header text-center">
             <h1><span class="fa"></span>Registration Information</h1>
             <button onclick="location.href='/filter'" class="btn btn-default btn-sm">All</button>
@@ -46,7 +45,7 @@
                 <select name="field">
                     <!-- use the key as the value - key is english, value is wufoo API query version-->
                     <% for (var fieldKey in fields){ %>
-                        <% if (headings.hasOwnProperty(fieldKey)){ %>
+                        <% if (fields.hasOwnProperty(fieldKey)){ %>
                             <option value="<%= fieldKey %>"><%= headings[fieldKey] %></option>
                         <% } %>
                     <% } %>
@@ -74,7 +73,7 @@
     <table id="entryTable">
         <th>Group Number</th>
         <% for (var eachField in fields){ %>
-            <% if (headings.hasOwnProperty(eachField)){ %>
+            <% if (fields.hasOwnProperty(eachField)){ %>
                 <% if (eachField === "payStatus"){ %>
                     <th><%= headings.paymentMethod %></th>
                     <th><%= headings.payStatus %></th>

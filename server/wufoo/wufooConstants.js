@@ -27,10 +27,10 @@ exports.allFields = {
     primer: 'Field110',
     emergName: 'Field123',
     emergNumber: 'Field124',
+    payStatus: 'Status',
     payOnline: 'Field129',
     payMail: 'Field133',
     payPerson: 'Field134',
-    payStatus: 'Status',
     comment: 'comment'
 };
 

@@ -42,5 +42,3 @@ app.listen(port);
 
 //TODO improve user management
 //TODO improve visuals of /allgroups
-//TODO comments
-//TODO payment output in headings

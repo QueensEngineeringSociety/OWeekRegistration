@@ -88,7 +88,7 @@ The _groupFields_ object is used to reference forms fields that are used to filt
 For example, the age field, so that you can view who needs a specialized driver for Go Nutz.
 
 The order of appearance of the fields in the above objects specify the order in which they appear in the UI. Also,
-the payment and comment fields should always appear last in the order they currently are written.
+the payment status, payment types and comment fields should always appear last in the order they currently are written.
 There are a few other objects in this file, but those only group data for ease of coding, for example sort directions, 
 AND vs. OR grouping, and search operators.
 

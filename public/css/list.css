@@ -1,0 +1,15 @@
+#horizontal_list ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-size: 0;
+    text-align: center;
+}
+#horizontal_list ul li {
+    text-align: center;
+    list-style: none;
+    display: inline-block;
+    width: 25%;
+    font-size: 16px;
+    box-sizing: border-box;
+}

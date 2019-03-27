@@ -1,12 +1,13 @@
-<%include functions.ejs%>
+<% include functions.ejs %>
 <!doctype html>
 <html lang="en">
 <head>
     <title>OWeek Info</title>
     <link rel="stylesheet" href="../css/misc.css" type="text/css">
+    <link rel="stylesheet" href="../css/list.css" type="text/css">
 </head>
 <body>
-<%outputNavigationButtons(true)%>
+<% outputNavigationButtons(true) %>
 <div class="page-header text-center">
     <h1><span class="fa"></span>Groups</h1>
     <form action="/assign" method="post">
@@ -17,30 +18,34 @@
     </form>
     <form action="/updatemaxnum" method="POST">
         <div class="input-group">
-            <input type="text" class="form-control" name="updatemax" value="<%= groupMax %>"
-                   aria-label="Max number of groups" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-default btn-sm" id="updateMaxBut" type="submit"><i
-                            class="fas fa-cart-plus mr-2"></i>Update
-                </button>
-            </div>
+            <label>Maximum Number in Group<input type="text" class="form-control" name="updatemax" value="<%= groupMax %>"
+                          aria-label="Max number of groups" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-default btn-sm" id="updateMaxBut" type="submit">
+                        <i class="fas fa-cart-plus mr-2"></i>Update
+                    </button>
+                </div>
+            </label>
         </div>
     </form>
 </div>
-<div class="container">
-    <div class="col-sm-6 col-sm-offset-3">
+<div id="horizontal_list">
+    <ul>
         <% for (var i in groups){ %>
             <% if (groups.hasOwnProperty(i)){ %>
-                <form action="/onegroup" id="group_form" method="post">
-                    <h2>Group <%= groups[i].groupNumber + 1 %></h2>
-                    Men: <%= groups[i].menCount %>
-                    Women: <%= groups[i].womenCount %>
-                    Total: <%= groups[i].totalCount %><br>
-                    <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">View</button>
-                </form>
+                <li>
+                    <form action="/onegroup" id="group_form" method="post">
+                        <h2>Group <%= groups[i].groupNumber + 1 %></h2>
+                        Men: <%= groups[i].menCount %>
+                        Women: <%= groups[i].womenCount %>
+                        Total: <%= groups[i].totalCount %><br>
+                        <button type="submit" value="<%= groups[i].groupNumber %>" name="groupNumber">View
+                        </button>
+                    </form>
+                </li>
             <% } %>
         <% } %>
-    </div>
+    </ul>
 </div>
 </body>
 </html>

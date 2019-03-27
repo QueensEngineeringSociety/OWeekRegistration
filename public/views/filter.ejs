@@ -22,35 +22,9 @@
                    class="btn btn-default btn-sm"/>
         </form>
     <% } %>
-    <form action="/search" method="get">
-        <label>
-            <select name="field">
-                <!-- use the key as the value - key is english, value is wufoo API query version-->
-                <% for (var fieldKey in fields){ %>
-                    <% if (fields.hasOwnProperty(fieldKey)){ %>
-                        <option value="<%= fieldKey %>"><%= headings[fieldKey] %></option>
-                    <% } %>
-                <% } %>
-            </select>
-        </label>
-        <label for="operator"></label><select id="operator" name="operator">
-            <!-- use the key as the value - key is english, value is wufoo API query version-->
-            <% for (var opKey in operators){ %>
-                <% if (operators.hasOwnProperty(opKey)){ %>
-                    <option value="<%= opKey %>"><%= opKey %></option>
-                <% } %>
-            <% } %>
-        </select>
-        <label for="value"></label><input id="value" type="text" name="value">
-        <input type="submit" value="OK">
-        <% var entries = JSON.parse(wufoo) %>
-        <div style="float:right">Rows: <%= entries.length %></div>
-    </form>
-    <form action="/netid" style="display: inline; padding-left: 50px;">
-        <label for="netid_search"></label><input type="search" id="netid_search" name="netid_search"
-                                                 placeholder="NetID">
-        <button>Search</button>
-    </form>
+    <% var entries = JSON.parse(wufoo) %>
+    <div style="float:right">Rows: <%= entries.length %></div>
+    <%outputSearchFields(fields, headings, operators)%>
 </div>
 <br>
 <% outputRegistrationInfoTable(entries, fields, headings, groupNumbers) %>

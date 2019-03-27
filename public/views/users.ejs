@@ -1,3 +1,4 @@
+<%include functions.ejs%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,18 +8,8 @@
     <link rel="stylesheet" href="../css/misc.css" type="text/css">
 </head>
 <body>
+<%outputNavigationButtons(true)%>
 <div class="container">
-    <div style="position: relative;">
-        <div id="buttonDiv">
-            <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
-        </div>
-        <div id="buttonDiv">
-            <button onclick="location.href='/userdelete'" class="btn btn-default btn-sm">Delete Users</button>
-        </div>
-        <div id="buttonDiv">
-            <button onclick="location.href='/filter'" class="btn btn-default btn-sm">Registration</button>
-        </div>
-    </div>
     <div class="col-sm-6 col-sm-offset-3">
         <h1><span class="fa fa-sign-in"></span> User Management</h1>
         <p>Ensure the email field corresponds to the email of the user to be edited, or a new user is added.</p>

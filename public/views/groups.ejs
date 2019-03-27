@@ -1,3 +1,4 @@
+<%include functions.ejs%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="../css/misc.css" type="text/css">
 </head>
 <body>
+<%outputNavigationButtons(true)%>
 <div class="page-header text-center">
     <h1><span class="fa"></span>Groups</h1>
     <form action="/assign" method="post">
@@ -26,9 +28,6 @@
             </div>
         </div>
     </form>
-    <div id="buttonDiv">
-        <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
-    </div>
 </div>
 <div class="container">
     <div class="col-sm-6 col-sm-offset-3">

@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+<% function outputFilterAdminButtons(){ %>
+    <button onclick="location.href='/food_restrictions'" class="btn btn-default btn-sm">Food Restrictions</button>
+    <button onclick="location.href='/medical'" class="btn btn-default btn-sm">Medical Issues</button>
+    <button onclick="location.href='/pronouns'" class="btn btn-default btn-sm">Non-Binary Pronouns</button>
+    <button onclick="location.href='/accessibility'" class="btn btn-default btn-sm">Accessibility Issues</button>
+    <button onclick="location.href='/primer'" class="btn btn-default btn-sm">Accessibility Primer</button>
+<% } %>
+
+<% outputNavigationButtons=function(isAdmin){ %>
+    <% if (isAdmin){ %>
+    <div style="position: relative;">
+        <div id="buttonDiv">
+            <button onclick="location.href='/usermanagement'" class="btn btn-default btn-sm">User Management</button>
+        </div>
+        <div id="buttonDiv">
+            <button onclick="location.href='/userdelete'" class="btn btn-default btn-sm">Delete Users</button>
+        </div>
+        <div id="buttonDiv">
+            <button onclick="location.href='/allgroups'" class="btn btn-default btn-sm">Groups</button>
+        </div>
+        <% } %>
+        <div id="buttonDiv">
+            <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
+        </div>
+    </div>
+<% } %>
+
+<% outputFilterButtons=function(isAdmin){ %>
+    <div class="page-header text-center">
+        <h1><span class="fa"></span>Registration Information</h1>
+        <button onclick="location.href='/filter'" class="btn btn-default btn-sm">All</button>
+        <button onclick="location.href='/age'" class="btn btn-default btn-sm">Under 18</button>
+        <% if (isAdmin){ %>
+            <% outputFilterAdminButtons() %>
+        <% } %>
+        <button onclick="location.href='/payPerson'" class="btn btn-default btn-sm">Pay in Person</button>
+        <button onclick="location.href='/payMail'" class="btn btn-default btn-sm">Pay by Mail</button>
+        <button onclick="location.href='/payOnline'" class="btn btn-default btn-sm">Pay Online</button>
+        <button onclick="location.href='/unpaid'" class="btn btn-default btn-sm">Unpaid</button>
+    </div>
+<% } %>

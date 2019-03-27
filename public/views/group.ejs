@@ -1,3 +1,4 @@
+<% include functions.ejs %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,75 +9,61 @@
     <link rel="stylesheet" href="../css/misc.css" type="text/css">
 </head>
 <body>
-<% if (isAdmin){ %>
-<div style="position: relative;">
-    <div id="buttonDiv">
-        <button onclick="location.href='/usermanagement'" class="btn btn-default btn-sm">User Management</button>
-    </div>
-    <div id="buttonDiv">
-        <button onclick="location.href='/userdelete'" class="btn btn-default btn-sm">Delete Users</button>
-    </div>
-    <div id="buttonDiv">
-        <button onclick="location.href='/allgroups'" class="btn btn-default btn-sm">Groups</button>
-    </div>
-    <% } %>
-    <div id="buttonDiv">
-        <button onclick="location.href='/filter'" class="btn btn-default btn-sm">All</button>
-    </div>
-    <div id="buttonDiv">
-        <button onclick="location.href='/logout'" class="btn btn-default btn-sm">Logout</button>
-    </div>
-    <div class="page-header text-center">
-        <h1><span class="fa"></span>Group <%= groupData.groupNumber + 1 %></h1>
-    </div>
-    <br>
-    Men: <%= groupData.menCount %>
-    Women: <%= groupData.womenCount %>
-    Total: <%= groupData.totalCount %><br>
-    <table id="entryTable">
-        <% for (var eachField in fields){ %>
-            <% if (fields.hasOwnProperty(eachField)){ %>
-                <% if (eachField === "payStatus"){ %>
-                    <th><%= headings.paymentMethod %></th>
-                    <th><%= headings.payStatus %></th>
-                <% } else { %>
-                    <th><%= headings[eachField] %></th>
-                <% } %>
+<% outputNavigationButtons(true) %>
+<div id="buttonDiv">
+    <button onclick="location.href='/filter'" class="btn btn-default btn-sm">All</button>
+</div>
+<div class="page-header text-center">
+    <h1><span class="fa"></span>Group <%= groupData.groupNumber + 1 %></h1>
+</div>
+<br>
+Men: <%= groupData.menCount %>
+Women: <%= groupData.womenCount %>
+Total: <%= groupData.totalCount %><br>
+<table id="entryTable">
+    <% for (var eachField in fields){ %>
+        <% if (fields.hasOwnProperty(eachField)){ %>
+            <% if (eachField === "payStatus"){ %>
+                <th><%= headings.paymentMethod %></th>
+                <th><%= headings.payStatus %></th>
+            <% } else { %>
+                <th><%= headings[eachField] %></th>
             <% } %>
         <% } %>
-        <% for (var i in peopleInGroup){ %>
-            <% if (peopleInGroup.hasOwnProperty(i)){ %>
-                <% var eachEntry = peopleInGroup[i] %>
-                <tr>
-                    <% for (var valKey in eachEntry){ %>
-                        <% if (eachEntry.hasOwnProperty(valKey)){ %>
-                            <% for (var field in fields){ %>
-                                <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
-                                    <% break; %>
+    <% } %>
+    <% for (var i in peopleInGroup){ %>
+        <% if (peopleInGroup.hasOwnProperty(i)){ %>
+            <% var eachEntry = peopleInGroup[i] %>
+            <tr>
+                <% for (var valKey in eachEntry){ %>
+                    <% if (eachEntry.hasOwnProperty(valKey)){ %>
+                        <% for (var field in fields){ %>
+                            <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
+                                <% break; %>
+                            <% } %>
+                            <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
+                                <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
+                                    <td>Unpaid</td>
+                                <% } else { %>
+                                    <td><%= eachEntry[valKey] %></td>
                                 <% } %>
-                                <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
-                                    <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
-                                        <td>Unpaid</td>
-                                    <% } else { %>
-                                        <td><%= eachEntry[valKey] %></td>
-                                    <% } %>
-                                <% } %>
-                            <% } %>
-                            <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-                                <td>In person</td>
-                            <% } %>
-                            <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-                                <td>By mail</td>
-                            <% } %>
-                            <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-                                <td>Online</td>
                             <% } %>
                         <% } %>
+                        <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                            <td>In person</td>
+                        <% } %>
+                        <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                            <td>By mail</td>
+                        <% } %>
+                        <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
+                            <td>Online</td>
+                        <% } %>
                     <% } %>
-                </tr>
-            <% } %>
+                <% } %>
+            </tr>
         <% } %>
-    </table>
+    <% } %>
+</table>
 </div>
 </body>
 </html>

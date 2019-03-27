@@ -126,3 +126,11 @@ There are prebuilt SELECT queries, one general and one that allows one WHERE cla
 Similarly, there is an UPDATE query that updates any rows with the provided column data, and one that updates rows that satisfy the WHERE clause.
 
 There is an INSERT query as well as a DELETE query that must have one WHERE clause.
+
+## Views
+
+.ejs files are used, which means client-side javascript can be written directly in with the HTML code.
+This also means that any file within /views can be included into any other file in /views. This is done
+with functions.ejs, where any repeated code (output table, search fields, navigation buttons, etc.) is held
+within functions.ejs and then a Javascript function that outputs the HTML with appropriate JS logic is called.
+There should be no duplicity between each .ejs file.

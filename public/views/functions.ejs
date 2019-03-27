@@ -27,10 +27,12 @@
         </div>
     </div>
 <% } %>
-
 <% outputFilterButtons=function(isAdmin){ %>
     <div class="page-header text-center">
         <h1><span class="fa"></span>Registration Information</h1>
+    </div>
+    <div id=buttonDiv>
+        <button onclick="location.href='/filter'" class="btn btn-default btn-sm">All</button>
         <button onclick="location.href='/filter'" class="btn btn-default btn-sm">All</button>
         <button onclick="location.href='/age'" class="btn btn-default btn-sm">Under 18</button>
         <% if (isAdmin){ %>

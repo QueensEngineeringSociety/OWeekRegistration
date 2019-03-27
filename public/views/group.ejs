@@ -20,50 +20,6 @@
 Men: <%= groupData.menCount %>
 Women: <%= groupData.womenCount %>
 Total: <%= groupData.totalCount %><br>
-<table id="entryTable">
-    <% for (var eachField in fields){ %>
-        <% if (fields.hasOwnProperty(eachField)){ %>
-            <% if (eachField === "payStatus"){ %>
-                <th><%= headings.paymentMethod %></th>
-                <th><%= headings.payStatus %></th>
-            <% } else { %>
-                <th><%= headings[eachField] %></th>
-            <% } %>
-        <% } %>
-    <% } %>
-    <% for (var i in peopleInGroup){ %>
-        <% if (peopleInGroup.hasOwnProperty(i)){ %>
-            <% var eachEntry = peopleInGroup[i] %>
-            <tr>
-                <% for (var valKey in eachEntry){ %>
-                    <% if (eachEntry.hasOwnProperty(valKey)){ %>
-                        <% for (var field in fields){ %>
-                            <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
-                                <% break; %>
-                            <% } %>
-                            <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
-                                <% if (valKey === fields.payStatus && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === null){ %>
-                                    <td>Unpaid</td>
-                                <% } else { %>
-                                    <td><%= eachEntry[valKey] %></td>
-                                <% } %>
-                            <% } %>
-                        <% } %>
-                        <% if (valKey === fields.payPerson && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-                            <td>In person</td>
-                        <% } %>
-                        <% if (valKey === fields.payMail && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-                            <td>By mail</td>
-                        <% } %>
-                        <% if (valKey === fields.payOnline && eachEntry.hasOwnProperty(valKey) && eachEntry[valKey] === "Yes"){ %>
-                            <td>Online</td>
-                        <% } %>
-                    <% } %>
-                <% } %>
-            </tr>
-        <% } %>
-    <% } %>
-</table>
-</div>
+<% outputRegistrationInfoTable(peopleInGroup, fields, headings, groupData) //just need filler for last arg, not used %>
 </body>
 </html>

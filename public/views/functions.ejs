@@ -42,3 +42,52 @@
         <button onclick="location.href='/unpaid'" class="btn btn-default btn-sm">Unpaid</button>
     </div>
 <% } %>
+
+<% outputRegistrationInfoTable=function(entries, fields, headings, groupNumbers){ %>
+    <table id="entryTable">
+        <th>Group Number</th>
+        <% for (var eachField in fields){ %>
+            <% if (fields.hasOwnProperty(eachField)){ %>
+                <% if (eachField === "payStatus"){ %>
+                    <th><%= headings.paymentMethod %></th>
+                    <th><%= headings.payStatus %></th>
+                <% } else { %>
+                    <th><%= headings[eachField] %></th>
+                <% } %>
+            <% } %>
+        <% } %>
+        <% for (var i in entries){ %>
+            <% if (entries.hasOwnProperty(i)){ %>
+                <% var eachEntry = entries[i] %>
+                <tr>
+                    <td><%= groupNumbers[eachEntry.EntryId] + 1/*entry ID is key for the groupNum*/ %></td>
+                    <% for (var valKey in eachEntry){ %>
+                        <% if (eachEntry.hasOwnProperty(valKey)){ %>
+                            <% for (var field in fields){ %>
+                                <% if (valKey === fields.payOnline || valKey === fields.payMail || valKey === fields.payPerson){ %>
+                                    <% break; %>
+                                <% } %>
+                                <% if(fields.hasOwnProperty(field) && valKey === fields[field]){ %>
+                                    <% if (valKey === fields.payStatus && eachEntry[valKey] === null){ %>
+                                        <td>Unpaid</td>
+                                    <% } else { %>
+                                        <td><%= eachEntry[valKey] %></td>
+                                    <% } %>
+                                <% } %>
+                            <% } %>
+                            <% if (valKey === fields.payPerson && eachEntry[valKey] === "Yes"){ %>
+                                <td>In person</td>
+                            <% } %>
+                            <% if (valKey === fields.payMail && eachEntry[valKey] === "Yes"){ %>
+                                <td>By mail</td>
+                            <% } %>
+                            <% if (valKey === fields.payOnline && eachEntry[valKey] === "Yes"){ %>
+                                <td>Online</td>
+                            <% } %>
+                        <% } %>
+                    <% } %>
+                </tr>
+            <% } %>
+        <% } %>
+    </table>
+<% } %>

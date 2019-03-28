@@ -20,7 +20,7 @@ exports.routes = {
     NET_ID: "/netid",
     ALL_GROUPS: "/allgroups",
     ONE_GROUP: "/onegroup",
-    UPDATE_MAXNUM: "/updatemaxnum",
+    UPDATE_MAXNUM_GROUPS: "/updatemaxnum",
     ASSIGN: "/assign",
     CLEAR_GROUPS: "/cleargroups",
     ERROR: "/error",

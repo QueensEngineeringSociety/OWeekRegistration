@@ -41,4 +41,3 @@ require('../app/routes/routes.js')(app, passport); // load our routes and pass i
 app.listen(port);
 
 //TODO improve user management
-//TODO check auto assign group num and such

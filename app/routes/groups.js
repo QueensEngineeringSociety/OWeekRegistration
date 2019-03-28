@@ -8,7 +8,7 @@ const routes = constants.routes;
 const views = constants.views;
 const query = wufoo.queries;
 
-let maxNumInGroup = 30;
+let maxNumOfGroups = 30;
 
 exports.get = {
     all: getAll,
@@ -16,25 +16,24 @@ exports.get = {
 
 exports.post = {
     specificOne: postSpecificOne,
-    maxGroupNum: postMaxGroupNum,
+    maxNumGroups: postMaxNumOfGroups,
     assign: postAssign,
     clear: postClear
 };
 
 function getAll(request, result) {
-    dbConn.query("SELECT maxNumInGroup FROM groupMetaData", function (err, rows) {
+    dbConn.query("SELECT maxNumOfGroups FROM groupMetaData", function (err, rows) {
         if (err) {
             view.renderError(result, "Cannot get number of groups.");
         } else {
-            maxNumInGroup = rows[0].maxNumInGroup;
-            console.log(maxNumInGroup);
+            maxNumOfGroups = rows[0].maxNumOfGroups;
             dbConn.selectAll("groups", function (err, rows) {
                 if (err) {
                     view.renderError(result, "No groups");
                 } else {
                     result.render(views.GROUPS, {
                         groups: rows,
-                        groupMax: maxNumInGroup
+                        groupMax: maxNumOfGroups
                     });
                 }
             });
@@ -71,9 +70,9 @@ function postSpecificOne(request, result) {
     });
 }
 
-function postMaxGroupNum(request, result) {
+function postMaxNumOfGroups(request, result) {
     if (request.body.updatemax) {
-        dbConn.updateAllColumns("groupMetaData", ["maxNumInGroup"], [request.body.updatemax], function (err) {
+        dbConn.updateAllColumns("groupMetaData", ["maxNumOfGroups"], [request.body.updatemax], function (err) {
             if (err) {
                 result.render(views.ERROR, {errorMessage: "Couldn't updateAllColumns maximum group number."});
             } else {
@@ -100,7 +99,7 @@ function postAssign(request, result) {
                             assignedFrosh.push(rows[i].wufooEntryId);
                         }
                     }
-                    wufoo.makePaginatedQuery(0, query.all, function (body) {
+                    wufoo.makeQuery(query.all, function (body) {
                         //show updated groups
                         body = JSON.parse(body);
                         let insertions = [];
@@ -214,7 +213,7 @@ function assign(manGroupNum, womanGroupNum, froshToInsert) {
 }
 
 function incGroupNum(num) {
-    return (num + 1) % maxNumInGroup;
+    return (num + 1) % maxNumOfGroups;
 }
 
 function insertFroshToGroup(insertIdx, insertions) {

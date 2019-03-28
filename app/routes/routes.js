@@ -110,8 +110,8 @@ module.exports = function (app, passport) {
         groups.post.specificOne(req, res);
     });
 
-    app.post(routes.UPDATE_MAXNUM, requireAdmin, function (req, res) {
-        groups.post.maxGroupNum(req, res);
+    app.post(routes.UPDATE_MAXNUM_GROUPS, requireAdmin, function (req, res) {
+        groups.post.maxNumGroups(req, res);
     });
 
     app.post(routes.ASSIGN, requireAdmin, function (req, res) {

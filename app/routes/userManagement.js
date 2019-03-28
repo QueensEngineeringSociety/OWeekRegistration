@@ -61,7 +61,6 @@ function getDelete(request, result) {
     });
 }
 
-//TODO not working to delete user
 function postDelete(request, result) {
     let queryString = "";
     if (typeof request.body.users.length === "object") {

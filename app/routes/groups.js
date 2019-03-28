@@ -10,8 +10,6 @@ const query = wufoo.queries;
 
 let maxNumInGroup = 30;
 
-//TODO /onegroup via get after post directs to the get
-
 exports.get = {
     all: getAll,
 };
@@ -29,6 +27,7 @@ function getAll(request, result) {
             view.renderError(result, "Cannot get number of groups.");
         } else {
             maxNumInGroup = rows[0].maxNumInGroup;
+            console.log(maxNumInGroup);
             dbConn.selectAll("groups", function (err, rows) {
                 if (err) {
                     view.renderError(result, "No groups");

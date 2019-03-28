@@ -39,5 +39,3 @@ require('../app/routes/routes.js')(app, passport); // load our routes and pass i
 
 // launch ======================================================================
 app.listen(port);
-
-//TODO improve user management

@@ -10,21 +10,25 @@
 <% outputNavigationButtons(isAdmin) %>
 <div class="container">
     <% outputFilterButtons(isAdmin) %>
-    <% if (prevPage > -1){ %>
-        <form action="<%= actionPath %>" method="get" style="float: left;">
-            <input type="submit" name="prevPage" value="<%= prevPage %>"
-                   class="btn btn-default btn-sm"/>
-        </form>
-    <% } %>
-    <% if (nextPage > 0){ %>
-        <form action="<%= actionPath %>" method="get" style="float:right;">
-            <input type="submit" name="nextPage" value="<%= nextPage %>"
-                   class="btn btn-default btn-sm"/>
-        </form>
-    <% } %>
-    <% var entries = JSON.parse(wufoo) %>
-    <div style="float:right">Rows: <%= entries.length %></div>
-    <%outputSearchFields(fields, headings, operators)%>
+    <div style="padding-top: 50px">
+        <% outputSearchFields(fields, headings, operators) %>
+        <% if (prevPage > -1){ %>
+            <form action="<%= actionPath %>" method="get" style="float: left;">
+                <input type="submit" name="prevPage" value="<%= prevPage %>"
+                       class="btn btn-default btn-sm"/>
+            </form>
+        <% } %>
+        <% if (nextPage > 0){ %>
+            <form action="<%= actionPath %>" method="get" style="float:right;">
+                <input type="submit" name="nextPage" value="<%= nextPage %>"
+                       class="btn btn-default btn-sm"/>
+            </form>
+        <% } %>
+        <% var entries = JSON.parse(wufoo) %>
+        <div style="text-align: center; padding-top: 10px">
+            Rows: <%= entries.length %>
+        </div>
+    </div>
 </div>
 <br>
 <% outputRegistrationInfoTable(entries, fields, headings, groupNumbers) %>

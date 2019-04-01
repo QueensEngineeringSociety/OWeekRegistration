@@ -1,5 +1,6 @@
 // set up ======================================================================
 const express = require('express');
+const secure = require('express-force-https');
 const app = express();
 const port = process.env.PORT || 8080;
 const passport = require('passport');
@@ -31,6 +32,7 @@ app.set('views', path.join(__dirname, '../public/views'));
 app.use(session({secret: properties.get('secret'), resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+app.use(secure);
 require('../config/passport')(passport); // pass passport for configuration
 app.use(flash()); // use connect-flash for flash messages stored in session
 

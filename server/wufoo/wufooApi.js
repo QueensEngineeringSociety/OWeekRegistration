@@ -6,7 +6,7 @@ const query = require("./wufooQueryBuilder.js");
 const properties = PropertiesReader(__dirname + "/../../config/wufoo_properties.ini");
 
 const fields = con.allFields;
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 40;
 
 exports.queries = {
     all: query.buildQuery(),

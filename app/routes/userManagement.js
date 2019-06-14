@@ -75,7 +75,8 @@ function getDelete(request, result) {
 
 function postDelete(request, result) {
     let queryString = "";
-    if (typeof request.body.users.length === "object") {
+    if (typeof request.body.users === "object") {
+        let test = request.body.users.join("','");
         queryString = "DELETE FROM users WHERE email IN('" + request.body.users.join("','") + "')";
     } else {
         //just one user, no join

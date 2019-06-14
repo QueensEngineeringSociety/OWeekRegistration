@@ -26,19 +26,31 @@ function postEdit(request, result) {
     addUserInfo(request, result, dbConn.updateWhereClause, true, "That email doesn't exist");
 }
 
-function addUserInfo(request, result, dbQuery, rowCond, rowCondErrMessage) {
+function addUserInfo(request, result, dbQuery, isEditUser, rowCondErrMessage) {
     dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
-        if (rowCond ^ rows.length) { //allows rowCond to control if we want rows.length as true or false for this condition
+        if (isEditUser ^ rows.length) { //allows isEditUser to control if we want rows.length as true or false for this condition
             view.renderError(result, rowCondErrMessage);
         } else if (isPasswordNotStrong(request.body.password)) {
             view.renderError(result, errPasswordReq);
+        } else if (isEditUser) {
+            makeEditUserQuery(request, result, dbQuery, rows);
         } else {
-            makeUserQuery(request, result, dbQuery, rows);
+            makeCreateUserQuery(request, result, dbQuery);
         }
     });
 }
 
-function makeUserQuery(request, result, queryFunction, rows) {
+function makeCreateUserQuery(request, result, queryFunction) {
+    let user = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
+    queryFunction("users", ["first_name", "last_name", "email", "password", "is_admin"],
+        [user.first_name, user.last_name, user.email, user.password, user.is_admin],
+        function (err, rows) {
+            user.id = rows.insertId;
+            view.simpleRender(result, views.USERS);
+        });
+}
+
+function makeEditUserQuery(request, result, queryFunction, rows) {
     let user = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
     queryFunction("users", ["first_name", "last_name", "email", "password", "is_admin"],
         [user.first_name, user.last_name, user.email, user.password, user.is_admin], "id", rows[0].id,

@@ -22,9 +22,12 @@ exports.queries = {
     pronoun: query.buildPronouns()
 };
 
-exports.makeQuery = function (queryString, callback) {
+exports.makeQuery = function (pageStart, queryString, allEntries, callback) {
+    if (allEntries === undefined || allEntries === null) {
+        allEntries = [];
+    }
     request({
-        uri: properties.get('uri') + queryString,
+        uri: properties.get('uri') + queryString + "&pageSize=100&pageStart=" + pageStart,
         method: properties.get('method'),
         auth: {
             'username': properties.get('username'),
@@ -32,15 +35,22 @@ exports.makeQuery = function (queryString, callback) {
             'sendImmediately': false
         }
     }, function (error, response, body) {
-        let entries = (JSON.parse(body))["Entries"];
-        getComments().then(function (allComments) {
-            for (let i = 0; i < entries.length; ++i) {
-                (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
-            }
-            callback(JSON.stringify(entries)); //make it a string so ejs files don't need to be changed (they expect json string)
-        }).catch(function (err) {
-            console.log("Error getting comments: " + err);
-        });
+        let entries = JSON.parse(body);
+        if (entries["Entries"].length) {
+            allEntries = allEntries.concat(entries["Entries"]);
+            let newPageStart = pageStart + 100;
+            exports.makeQuery(newPageStart, queryString, allEntries, callback);
+        } else {
+            getComments().then(function (allComments) {
+                for (let i = 0; i < allEntries.length; ++i) {
+                    (allEntries[i])["comment"] = getEntryComment((allEntries[i])["EntryId"], allComments);
+                }
+                callback(JSON.stringify(allEntries)); //make it a string so ejs files don't need to be changed (they expect json string)
+            }).catch(function (err) {
+                console.log("Error getting comments: " + err);
+                callback(JSON.stringify(allEntries));
+            });
+        }
     });
 };
 

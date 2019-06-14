@@ -99,7 +99,7 @@ function postAssign(request, result) {
                             assignedFrosh.push(rows[i].wufooEntryId);
                         }
                     }
-                    wufoo.makeQuery(query.all, function (body) {
+                    wufoo.makeQuery(0, query.all, [], function (body) {
                         //show updated groups
                         body = JSON.parse(body);
                         let insertions = [];

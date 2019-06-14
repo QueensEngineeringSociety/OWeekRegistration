@@ -14,7 +14,7 @@ exports.get = {
 
 function getGeneral(request, result) {
     if (request.query['field'] && request.query['operator'] && request.query['value']) {
-        wufoo.makeQuery(builder.customQuery(request.query['field'], request.query['operator'], request.query['value']), function (body) {
+        wufoo.makeQuery(0, builder.customQuery(request.query['field'], request.query['operator'], request.query['value']), [], function (body) {
             handleWufooData(request, result, body, routes.SEARCH);
         });
     }
@@ -22,7 +22,7 @@ function getGeneral(request, result) {
 
 function getNetid(request, result) {
     if (request.query['netid_search']) {
-        wufoo.makeQuery(builder.buildNetidQuery(request.query['netid_search']), function (body) {
+        wufoo.makeQuery(0, builder.buildNetidQuery(request.query['netid_search']), [], function (body) {
             handleWufooData(request, result, body, routes.NET_ID);
         });
     }

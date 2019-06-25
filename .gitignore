@@ -64,3 +64,5 @@ typings/
 .ini
 
 node_modules/*
+
+.idea/*

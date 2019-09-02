@@ -131,5 +131,5 @@ exports.buildEntryIDsQuery = function (ids) {
     for (let i = 0; i < ids.length; i++) {
         partialQueries[i] = exports.buildEquals("EntryId", ids[i]);
     }
-    return exports.buildQuery(partialQueries, con.grouping.or);
+    return exports.buildQuery(partialQueries, con.grouping.or)+"&pageSize=100"; //pageSize 100 will be large enough for any group ever
 };

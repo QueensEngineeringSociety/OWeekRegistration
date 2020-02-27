@@ -102,6 +102,10 @@ module.exports = function (app, passport) {
         search.get.netid(req, res);
     });
 
+    app.get(routes.EXPORT, requireAdmin, function (req, res) {
+        regInfo.get.registrationCsv(req, res);
+    });
+
     app.get(routes.ALL_GROUPS, requireAdmin, function (req, res) {
         groups.get.all(req, res);
     });

@@ -28,7 +28,7 @@ exports.renderError = function (result, message) {
 
 function buildRenderObject(request, wufooData, groupNumbers, actionPath, nextPageNum = -1, prevPageNum = -1) {
     let isAdmin = util.isAdmin(request);
-    renderObject.fields = getAccessibleFields(isAdmin);
+    renderObject.fields = con.getAccessibleFields(isAdmin);
     renderObject.isAdmin = isAdmin;
     renderObject.wufoo = wufooData;
     renderObject.groupNumbers = groupNumbers;
@@ -36,8 +36,4 @@ function buildRenderObject(request, wufooData, groupNumbers, actionPath, nextPag
     renderObject.nextPage = nextPageNum;
     renderObject.prevPage = prevPageNum;
     return renderObject;
-}
-
-function getAccessibleFields(isAdmin) {
-    return isAdmin ? con.allFields : con.generalFields;
 }

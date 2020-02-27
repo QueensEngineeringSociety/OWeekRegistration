@@ -24,7 +24,8 @@ exports.routes = {
     ASSIGN: "/assign",
     CLEAR_GROUPS: "/cleargroups",
     ERROR: "/error",
-    LOGOUT: "/logout"
+    LOGOUT: "/logout",
+    EXPORT: "/export"
 };
 
 exports.views = {

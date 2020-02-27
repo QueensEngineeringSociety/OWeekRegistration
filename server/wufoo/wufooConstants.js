@@ -48,6 +48,10 @@ exports.groupFields = {
     emergNumber: 'Field124'
 };
 
+exports.getAccessibleFields = function (isAdmin) {
+    return isAdmin ? exports.allFields : exports.generalFields;
+};
+
 exports.headings = {
     name: 'Name',
     netid: 'NetID',

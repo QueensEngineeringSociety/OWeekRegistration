@@ -12,10 +12,14 @@
     "express-session": "^1.15.6",
     "method-override": "^2.3.10",
     "moment": "^2.24.0",
-    "mongoose": "^4.13.18",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
+<<<<<<< HEAD
     "npm": "^6.14.0",
+=======
+    "npm": "^6.13.4",
+>>>>>>> 81872af46b36c07a4291fbb8e511de563c8ca235
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",

@@ -1,43 +1,42 @@
-// set up ======================================================================
 const express = require('express');
 const secure = require('express-force-https');
 const app = express();
-const port = process.env.PORT || 8080;
 const passport = require('passport');
 const flash = require('connect-flash');
-const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 const PropertiesReader = require('properties-reader');
+const compression = require("compression");
+const helmet = require("helmet");
+const csrf = require("csurf");
 
-const properties = PropertiesReader(__dirname + "/../config/passport.ini");
-const db = require('../config/database/queries.js');
+const properties = PropertiesReader(__dirname + "/../config/passport.cfg");
+const db = require('../models/database/queries.js');
 
-// configuration ===============================================================
-db.connect(); // connect to our database
-
-// set up our express application
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser.json()); // get information from html forms
-app.use(bodyParser.urlencoded({extended: true})); // get information from html forms
+//miscellaneous
+db.connect();
+app.use(compression()); //compress data to improve performance
+app.use(bodyParser.json()); //parse json body data
+app.use(bodyParser.urlencoded({extended: true})); //parse x-www-form-urlencoded data
 app.use(express.static(path.join(__dirname, '../public')));
-
 app.set('view engine', 'ejs'); // set up ejs for templating
 app.set('views', path.join(__dirname, '../public/views'));
-
-// required for passport
-app.use(session({secret: properties.get('secret'), resave: true, saveUninitialized: true}));
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(secure);
-require('../config/passport')(passport); // pass passport for configuration
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-// routes ======================================================================
-require('../app/routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+//allow authentication and persistent sessions
+app.use(cookieParser());
+app.use(session({secret: properties.get('secret'), resave: true, saveUninitialized: true}));
+app.use(passport.initialize({}));
+app.use(passport.session({}));
 
-// launch ======================================================================
-app.listen(port);
+//security configurations
+app.use(secure);
+app.use(helmet());
+app.use(csrf({cookie: true})); //must be after after cookie parsing and session set
+
+require('./passport')(passport); // pass passport for configuration
+require('./routes.js')(app, passport);
+
+module.exports = app;

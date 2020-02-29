@@ -4,6 +4,7 @@
   "dependencies": {
     "bcrypt-nodejs": "latest",
     "body-parser": "^1.18.3",
+    "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "ejs": "^2.6.1",
@@ -15,11 +16,7 @@
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "mysql": "^2.16.0",
-<<<<<<< HEAD
     "npm": "^6.14.0",
-=======
-    "npm": "^6.13.4",
->>>>>>> 81872af46b36c07a4291fbb8e511de563c8ca235
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
@@ -27,6 +24,9 @@
     "passport-twitter": "^1.0.4",
     "properties-reader": "0.0.16",
     "request": "^2.88.0",
-    "xlsx": "^0.15.5"
+    "xlsx": "latest",
+    "csurf": "^1.11.0",
+    "helmet": "^3.21.3",
+    "winston": "^3.2.1"
   }
 }

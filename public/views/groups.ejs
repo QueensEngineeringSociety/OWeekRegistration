@@ -13,10 +13,10 @@
     <form action="/assign" method="post">
         <input type="submit" name="autoassign" value="Run Auto Assign" class="btn btn-default btn-sm"/>
     </form>
-    <form action="/cleargroups" method="post">
+    <form action="/clear_groups" method="post">
         <input type="submit" name="clear" value="Clear Groups" class="btn btn-default btn-sm"/>
     </form>
-    <form action="/updatemaxnum" method="POST">
+    <form action="/update_max_num" method="POST">
         <div class="input-group">
             <label>Maximum Number of Groups<input type="text" class="form-control" name="updatemax"
                                                   value="<%= groupMax %>" aria-label="Max number of groups"
@@ -33,7 +33,7 @@
         <% for (var i in groups){ %>
             <% if (groups.hasOwnProperty(i)){ %>
                 <li>
-                    <form action="/onegroup" id="group_form" method="post">
+                    <form action="/one_groups" id="group_form" method="post">
                         <h2>Group <%= groups[i].groupNumber + 1 %></h2>
                         Men: <%= groups[i].menCount %>
                         Women: <%= groups[i].womenCount %>

@@ -15,9 +15,9 @@ routes.js defines each get and post request and calls code in other modules to a
 
 /login is the screen where users can login via passport.
 
-/usermanagement is a screen that shows each user and allows adding new ones or editing existing ones. This is admin only.
+/user_management is a screen that shows each user and allows adding new ones or editing existing ones. This is admin only.
 
-/userdelete is a screen where each user is seen and can be deleted. This is admin only.
+/user_delete is a screen where each user is seen and can be deleted. This is admin only.
 
 /filter is a screen that displays registration information of any given individual.
 
@@ -45,7 +45,7 @@ routes.js defines each get and post request and calls code in other modules to a
 
 /netid is a screen that displays registration information of individuals that match the provided netid.
 
-/allgroups is a screen that displays the groups and their men/women/total count. This is admin only.
+/all_groups is a screen that displays the groups and their men/women/total count. This is admin only.
 
 /error is a screen that shows an error message for those that tried to access a screen they don't have the permissions for.
 
@@ -55,19 +55,19 @@ routes.js defines each get and post request and calls code in other modules to a
 
 /login uses passport to authenticate the user. Successful auth redirects to /filter, failure redirects to /login.
 
-/signup adds a new user to the database. They must have a unique email.
+/sign_up adds a new user to the database. They must have a unique email.
 
-/useredit changes the information of a user, identified by email.
+/user_edit changes the information of a user, identified by email.
 
-/userdelete removes a user from the database and refreshes the /userdelete screen.
+/user_delete removes a user from the database and refreshes the /user_delete screen.
 
-/onegroup displays the registration information of each individual in a specified group.
+/one_groups displays the registration information of each individual in a specified group.
 
-/updatemaxnum updates the database with the new maximum number in each group.
+/update_max_num updates the database with the new maximum number in each group.
 
 /assign processes each individual not yet assigned to a group and assigns them based on their identified pronouns to attempt a reasonable gender split in each group.
 
-/cleargroups wipes all group data, except for the maximum number allowed in a group.
+/clear_groups wipes all group data, except for the maximum number allowed in a group.
 
 ## Wufoo
 

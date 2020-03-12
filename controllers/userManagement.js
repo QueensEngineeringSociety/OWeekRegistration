@@ -4,7 +4,8 @@ const constants = require("../server/util");
 const view = require("./rendering");
 
 const views = constants.views;
-const strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})");
+const routes = constants.routes;
+const strongPassRegex = RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^[0-9a-zA-Z])(?=.{8,})");
 
 const errPasswordReq = "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long";
 
@@ -13,20 +14,20 @@ exports.get = {
 };
 
 exports.post = {
-    signUp: postSignUp,
+    sign_up: postSignUp,
     edit: postEdit,
     delete: postDelete
 };
 
 function postSignUp(request, result) {
-    addUserInfo(request, result, dbConn.insert, false, "That email already exists");
+    setUserInfo(request, result, dbConn.insert, false, "That email already exists");
 }
 
 function postEdit(request, result) {
-    addUserInfo(request, result, dbConn.updateWhereClause, true, "That email doesn't exist");
+    setUserInfo(request, result, dbConn.updateWhereClause, true, "That email doesn't exist");
 }
 
-function addUserInfo(request, result, dbQuery, isEditUser, rowCondErrMessage) {
+function setUserInfo(request, result, dbQuery, isEditUser, rowCondErrMessage) {
     dbConn.selectWhereClause("users", "email", request.body.email, function (err, rows) {
         if (isEditUser ^ rows.length) { //allows isEditUser to control if we want rows.length as true or false for this condition
             view.renderError(result, rowCondErrMessage);
@@ -46,7 +47,7 @@ function makeCreateUserQuery(request, result, queryFunction) {
         [user.first_name, user.last_name, user.email, user.password, user.isAdmin],
         function (err, rows) {
             user.id = rows.insertId;
-            view.simpleRender(result, views.USERS);
+            result.redirect(routes.USER_MANAGEMENT);
         });
 }
 
@@ -56,17 +57,17 @@ function makeEditUserQuery(request, result, queryFunction, rows) {
         [user.first_name, user.last_name, user.email, user.password, user.isAdmin], "id", rows[0].id,
         function (err, rows) {
             user.id = rows.insertId;
-            view.simpleRender(result, views.USERS);
+            result.redirect(routes.USER_MANAGEMENT);
         });
 }
 
 function getDelete(request, result) {
-    dbConn.selectAll("users", function (err, rows) {
+    dbConn.selectAllUsers(function (err, rows) {
         if (!rows.length) {
             view.renderError(result, "That email doesn't exist");
         } else {
-            result.render(views.DELETE_USERS, {
-                message: request.flash('signupMessage'),
+            result.render(views.MANAGE_USERS, {
+                message: request.flash('sign_upMessage'),
                 users: rows
             });
         }
@@ -74,21 +75,14 @@ function getDelete(request, result) {
 }
 
 function postDelete(request, result) {
-    let queryString = "";
-    if (typeof request.body.users === "object") {
-        let test = request.body.users.join("','");
-        queryString = "DELETE FROM users WHERE email IN('" + request.body.users.join("','") + "')";
-    } else {
-        //just one user, no join
-        queryString = "DELETE FROM users WHERE email IN('" + request.body.users + "')";
-    }
-    dbConn.query(queryString, [], function () {
+    let queryString = "DELETE FROM users WHERE email=?";
+    dbConn.query(queryString, [request.body.email], function () {
         dbConn.selectAll("users", function (err, rows) {
             if (!rows.length) {
                 view.renderError(result, "There are no users!");
             } else {
-                result.render(views.DELETE_USERS, {
-                    message: request.flash('signupMessage'),
+                result.render(views.MANAGE_USERS, {
+                    message: request.flash('sign_upMessage'),
                     users: rows
                 });
             }

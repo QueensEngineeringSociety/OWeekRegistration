@@ -10,13 +10,7 @@
 <div class="container">
     <div class="col-sm-6 col-sm-offset-3">
         <h1><span class="fa fa-sign-in"></span>Add User</h1>
-        <form action="/signup" method="post" id="user_form">
-            <div class="form-group">
-                <input type="radio" id="new_user" name="user_mgm" value="new_user" checked>
-                <label for="new_user">New User</label>
-                <input type="radio" id="edit_user" name="user_mgm" value="edit_user">
-                <label for="edit_user">Edit Existing User</label>
-            </div>
+        <form action="/sign_up" method="post" id="user_form">
             <div class="form-group">
                 <label>First Name
                     <input type="text" class="form-control" name="first_name">

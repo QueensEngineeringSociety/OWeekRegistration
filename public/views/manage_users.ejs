@@ -1,31 +1,110 @@
 <% include functions.ejs %>
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>OWeek Info</title>
-    <link rel="stylesheet" href="../css/misc.css">
+    <link rel="stylesheet" href="../css/table.css" type="text/css">
+    <link rel="stylesheet" href="../css/misc.css" type="text/css">
+    <link rel="stylesheet" href="../css/modal-edit-form.css" type="text/css">
 </head>
 <body>
+<% outputNavigationButtons(true) %>
 <div class="container">
-    <div style="position: relative;">
-        <% outputNavigationButtons(true) %>
+    <div class="col-sm-6 col-sm-offset-3">
+        <h1><span class="fa fa-sign-in"></span>User Management</h1>
+        <table id="entryTable">
+            <tr>
+                <th>Edit</th>
+                <% for(let h in users[0]){ %>
+                    <th><%= h %></th>
+                <% } %>
+                <th>Delete</th>
+            </tr>
+            <% for (let user of users){ %>
+                <tr>
+                </tr>
+                <tr id="<%= user.id %>">
+                    <td>
+                        <button onclick="showEditForm(<%= user.id %>)">Edit</button>
+                    </td>
+                    <% for(let u in user){ %>
+                        <td id="<%= u %>"><%= user[u] %></td>
+                    <% } %>
+                    <td>
+                        <button onclick="deleteUser(<%= user.id %>,false)">Delete</button>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
     </div>
 </div>
-<div class="col-sm-6 col-sm-offset-3">
-    <h1><span class="fa fa-sign-in"></span> Delete Users</h1>
-    <p>Do not delete yourself!</p>
-    <!-- show any messages that come back with authentication -->
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %>
-    <form action="/userdelete" method="post" id="user_form">
-        <% for (var i = 0; i < users.length; ++i){ %>
-            <label>
-                <input type="checkbox" name="users" value="<%= users[i].email %>">
-            </label><%= users[i].email %><br>
-        <% } %>
-        <input type="submit" value="Submit">
-    </form>
+<style>
+
+</style>
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close" id="close">&times;</span>
+        <form action="/user_edit" method="post">
+            <h1>Edit User</h1>
+            <label for="email"><b>First Name</b>
+                <br>
+                <input type="text" id="first_name-form" name="first_name" required>
+            </label>
+            <br>
+            <label for="email"><b>Last Name</b>
+                <br>
+                <input type="text" id="last_name-form" name="last_name" required>
+            </label>
+            <br>
+            <label for="email"><b>Email</b>
+                <br>
+                <input type="text" id="email-form" name="email" required>
+            </label>
+            <br>
+            <label for="psw"><b>Password</b>
+                <br>
+                <input type="password" placeholder="Enter Password" name="password" required>
+            </label>
+            <br>
+            <label for="psw"><b>Is Admin</b>
+                <br>
+                <a>0 means not an admin, 1 means is an admin</a>
+                <br>
+                <input type="text" id="isAdmin-form" name="isAdmin" required>
+            </label>
+            <br>
+            <br>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
 </div>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script>
+    function deleteUser(rowId) {
+        let row = document.getElementById(rowId);
+        let userObj = {};
+        for (let tr of row.cells) {
+            userObj[tr.id] = tr.innerText;
+        }
+        $.post("/user_delete", userObj, function () {
+            location.reload();
+        });
+    }
+
+    function showEditForm(rowId) {
+        let row = document.getElementById(rowId);
+        for (let tr of row.cells) {
+            let formField = document.getElementById(tr.id + "-form");
+            if (formField) {
+                formField.value = tr.innerText;
+            }
+        }
+        document.getElementById("modal").style.display = "block";
+    }
+
+    document.getElementsByClassName("close")[0].onclick = function () {
+        document.getElementById("modal").style.display = "none";
+    }
+</script>
 </body>
 </html>

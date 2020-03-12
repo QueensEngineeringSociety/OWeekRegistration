@@ -27,24 +27,24 @@ module.exports = function (app, passport) {
         failureFlash: true
     }));
 
-    app.get(routes.USER_MANAGEMENT, requireAdmin, function (req, res) {
-        res.render(views.USERS, {message: req.flash('signupMessage')});
+    app.get(routes.USER_ADD, requireAdmin, function (req, res) {
+        res.render(views.ADD_USER, {message: req.flash('sign_upMessage')});
     });
 
     app.post(routes.SIGN_UP, requireAdmin, function (req, res) {
-        controllers.userManagement.post.signUp(req, res);
+        controllers.user_management.post.sign_up(req, res);
     });
 
     app.post(routes.USER_EDIT, requireAdmin, function (req, res) {
-        controllers.userManagement.post.edit(req, res);
+        controllers.user_management.post.edit(req, res);
     });
 
-    app.get(routes.USER_DELETE, requireAdmin, function (req, res) {
-        controllers.userManagement.get.delete(req, res);
+    app.get(routes.USER_MANAGEMENT, requireAdmin, function (req, res) {
+        controllers.user_management.get.delete(req, res);
     });
 
     app.post(routes.USER_DELETE, requireAdmin, function (req, res) {
-        controllers.userManagement.post.delete(req, res);
+        controllers.user_management.post.delete(req, res);
     });
 
     app.get(routes.FILTER, isLoggedIn, function (req, res) {
@@ -111,7 +111,7 @@ module.exports = function (app, passport) {
         controllers.groups.post.specificOne(req, res);
     });
 
-    app.post(routes.UPDATE_MAXNUM_GROUPS, requireAdmin, function (req, res) {
+    app.post(routes.UPDATE_MAX_NUM_GROUPS, requireAdmin, function (req, res) {
         controllers.groups.post.maxNumGroups(req, res);
     });
 

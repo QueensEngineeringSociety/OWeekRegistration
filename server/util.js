@@ -3,10 +3,11 @@ const wufooCon = require("../models/wufoo/wufooConstants");
 exports.routes = {
     HOME: "/",
     LOGIN: "/login",
-    USER_MANAGEMENT: "/usermanagement",
-    SIGN_UP: "/signup",
-    USER_EDIT: "/useredit",
-    USER_DELETE: "/userdelete",
+    USER_MANAGEMENT: "/user_management",
+    USER_ADD: "/user_add",
+    SIGN_UP: "/sign_up",
+    USER_EDIT: "/user_edit",
+    USER_DELETE: "/user_delete",
     FILTER: "/filter",
     AGE: "/age",
     FOOD_RESTRICTIONS: "/food_restrictions",
@@ -20,11 +21,11 @@ exports.routes = {
     UNPAID: "/unpaid",
     SEARCH: "/search",
     NET_ID: "/netid",
-    ALL_GROUPS: "/allgroups",
-    ONE_GROUP: "/onegroup",
-    UPDATE_MAXNUM_GROUPS: "/updatemaxnum",
+    ALL_GROUPS: "/all_groups",
+    ONE_GROUP: "/one_groups",
+    UPDATE_MAX_NUM_GROUPS: "/update_max_num",
     ASSIGN: "/assign",
-    CLEAR_GROUPS: "/cleargroups",
+    CLEAR_GROUPS: "/clear_groups",
     ERROR: "/error",
     LOGOUT: "/logout",
     EXPORT: "/export",
@@ -33,14 +34,14 @@ exports.routes = {
 
 exports.views = {
     INDEX: "index.ejs",
-    DELETE_USERS: "deleteusers.ejs",
+    MANAGE_USERS: "manage_users.ejs",
     ERROR: "error.ejs",
     FILTER: "filter.ejs",
     GROUP: "group.ejs",
     GROUPS: "groups.ejs",
     LOGIN: "login.ejs",
     SEARCH: "search.ejs",
-    USERS: "users.ejs"
+    ADD_USER: "add_user.ejs"
 };
 
 exports.isAdmin = function (req) {

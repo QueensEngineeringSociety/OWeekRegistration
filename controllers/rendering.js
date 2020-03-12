@@ -1,6 +1,6 @@
 const con = require("../models/wufoo/wufooConstants");
 const util = require("../server/util");
-const log = require("../server/logger");
+const log = require("../server/logger")(__filename);
 
 const views = util.views;
 

@@ -35,6 +35,10 @@ exports.selectAll = function (table, callback) {
     query(buildSimpleTableQuery(queries.SELECT_ALL, table), table, [], callback);
 };
 
+exports.selectAllUsers = function (callback) {
+    query(buildSimpleTableQuery("SELECT id, first_name, last_name, email, isAdmin FROM", "users"), "users", [], callback);
+};
+
 exports.selectWhereClause = function (table, whereColumn, whereValue, callback) {
     simpleTableWhereQuery(table, whereColumn, whereValue, queries.SELECT_ALL, callback);
 };

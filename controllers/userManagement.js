@@ -41,9 +41,9 @@ function addUserInfo(request, result, dbQuery, isEditUser, rowCondErrMessage) {
 }
 
 function makeCreateUserQuery(request, result, queryFunction) {
-    let user = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
-    queryFunction("users", ["first_name", "last_name", "email", "password", "is_admin"],
-        [user.first_name, user.last_name, user.email, user.password, user.is_admin],
+    let user = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.isAdmin === "admin");
+    queryFunction("users", ["first_name", "last_name", "email", "password", "isAdmin"],
+        [user.first_name, user.last_name, user.email, user.password, user.isAdmin],
         function (err, rows) {
             user.id = rows.insertId;
             view.simpleRender(result, views.USERS);
@@ -51,9 +51,9 @@ function makeCreateUserQuery(request, result, queryFunction) {
 }
 
 function makeEditUserQuery(request, result, queryFunction, rows) {
-    let user = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.is_admin === "admin");
-    queryFunction("users", ["first_name", "last_name", "email", "password", "is_admin"],
-        [user.first_name, user.last_name, user.email, user.password, user.is_admin], "id", rows[0].id,
+    let user = new User(request.body.first_name, request.body.last_name, request.body.email, request.body.password, request.body.isAdmin === "admin");
+    queryFunction("users", ["first_name", "last_name", "email", "password", "isAdmin"],
+        [user.first_name, user.last_name, user.email, user.password, user.isAdmin], "id", rows[0].id,
         function (err, rows) {
             user.id = rows.insertId;
             view.simpleRender(result, views.USERS);

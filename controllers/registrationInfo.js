@@ -121,9 +121,10 @@ function clean(person) {
 function getRequest(request, result, query, route) {
     let pageNum = getPageNum(request);
     wufoo.makePaginatedQuery(pageNum, query, function (body, nextPageNum, prevPageNum) {
+        let entries = util.pruneDuplicateFrosh(JSON.parse(body));
         dbConn.selectAll("groupData", function (err, rows) {
             let groupNumbers = util.getGroupNumbers(rows);
-            view.renderPaginated(result, views.FILTER, request, body, groupNumbers, route, nextPageNum, prevPageNum);
+            view.renderPaginated(result, views.FILTER, request, JSON.stringify(entries), groupNumbers, route, nextPageNum, prevPageNum);
         });
     });
 }

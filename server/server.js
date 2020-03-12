@@ -34,7 +34,7 @@ app.use(passport.session({}));
 //security configurations
 app.use(secure);
 app.use(helmet());
-app.use(csrf({cookie: true})); //must be after after cookie parsing and session set
+//app.use(csrf({cookie: true})); //must be after after cookie parsing and session set TODO
 
 require('./passport')(passport); // pass passport for configuration
 require('./routes.js')(app, passport);

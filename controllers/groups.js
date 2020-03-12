@@ -3,6 +3,7 @@ const con = require("../models/wufoo/wufooConstants");
 const wufoo = require("../models/wufoo/wufooApi.js");
 const constants = require("../server/util");
 const view = require("./rendering");
+const util = require("../server/util");
 
 const routes = constants.routes;
 const views = constants.views;
@@ -42,26 +43,28 @@ function getAll(request, result) {
 }
 
 function postSpecificOne(request, result) {
-    dbConn.selectWhereClause("groupData", "groupNum", request.body.groupNumber, function (err, rows) {
-        if (!rows.length) {
+    dbConn.selectWhereClause("groupData", "groupNum", request.body.groupNumber, function (err, groupDataRows) {
+        if (!groupDataRows.length) {
             view.renderError(result, "No groups");
         } else {
             let entryIds = [];
-            for (let i = 0; i < rows.length; i++) {
-                entryIds[i] = rows[i].wufooEntryId;
+            for (let i = 0; i < groupDataRows.length; i++) {
+                entryIds[i] = groupDataRows[i].wufooEntryId;
             }
             wufoo.getEntriesById(entryIds, function (body) {
                 body = JSON.parse(body);
                 dbConn.selectWhereClause("groups", "groupNumber", request.body.groupNumber, function (err, rows) {
                     if (!rows.length) {
-                        view.renderError(result, "No groups");
+                        view.renderError(result, `Group ${request.body.groupNumber} doesn't exist`);
                     } else {
+                        let groupNumbers = util.getGroupNumbers(groupDataRows);
                         result.render(views.GROUP, {
                             isAdmin: true,
                             groupData: rows[0], //only one group with that group number
                             peopleInGroup: body,
                             fields: con.groupFields,
-                            headings: con.headings
+                            headings: con.headings,
+                            groupNumbers: groupNumbers
                         });
                     }
                 });
@@ -101,7 +104,7 @@ function postAssign(request, result) {
                     }
                     wufoo.makeQuery(0, query.all, [], function (body) {
                         //show updated groups
-                        body = JSON.parse(body);
+                        body = util.pruneDuplicateFrosh(JSON.parse(body));
                         let insertions = [];
                         for (let i in body) {
                             if (!inArr(assignedFrosh, body[i].EntryId)) {

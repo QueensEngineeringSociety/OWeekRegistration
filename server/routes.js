@@ -1,17 +1,17 @@
 const controllers = require("../controllers");
 const constants = require("./util");
+const logger = require("./logger")(__filename);
 const routes = constants.routes;
 const views = constants.views;
 
 module.exports = function (app, passport) {
     app.get(routes.HOME, function (req, res) {
-            if (req.user) {
-                res.redirect(routes.FILTER);
-            } else {
-                res.render(views.INDEX);
-            }
+        if (req.user) {
+            res.redirect(routes.FILTER);
+        } else {
+            res.render(views.INDEX);
         }
-    );
+    });
 
     app.get(routes.LOGIN, function (req, res) {
         if (req.user) {
@@ -135,18 +135,23 @@ module.exports = function (app, passport) {
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
+        logger.info(req.user.email + " going to " + req.originalUrl);
         return next();
     } else {
-        res.redirect(routes.HOME);
+        logger.warn("User attempted access to " + req.originalUrl + " without session");
+        res.redirect("/login");
     }
 }
 
 function requireAdmin(req, res, next) {
     if (!req.isAuthenticated()) {
-        res.redirect(routes.HOME);
-    } else if (req.user && req.user.is_admin) {
+        logger.warn("User attempted to access privileged " + req.originalUrl + " without session");
+        res.redirect("/login");
+    } else if (req.user && req.user.isAdmin) {
+        logger.info(req.user.email + " going to " + req.originalUrl + " with admin privileges");
         return next();
     } else {
-        res.redirect(routes.ERROR);
+        logger.warn("User attempted to access privileged " + req.originalUrl + " without admin privileges");
+        res.redirect("/error");
     }
 }

@@ -1,3 +1,5 @@
+const wufooCon = require("../models/wufoo/wufooConstants");
+
 exports.routes = {
     HOME: "/",
     LOGIN: "/login",
@@ -25,7 +27,8 @@ exports.routes = {
     CLEAR_GROUPS: "/cleargroups",
     ERROR: "/error",
     LOGOUT: "/logout",
-    EXPORT: "/export"
+    EXPORT: "/export",
+    PRUNE: "/prune_frosh"
 };
 
 exports.views = {
@@ -41,7 +44,7 @@ exports.views = {
 };
 
 exports.isAdmin = function (req) {
-    return req.user.is_admin;
+    return req.user.isAdmin;
 };
 
 exports.valInObj = function (val, obj) {
@@ -55,3 +58,34 @@ exports.getGroupNumbers = function (rows) {
     }
     return groupNumbers;
 };
+
+exports.pruneDuplicateFrosh = function (entries) {
+    let savedEntries = {};
+    let netidKey = wufooCon.allFields.netid;
+    for (let entry of entries) {
+        if (savedEntries[entry[netidKey]]) {
+            let savedEntry = savedEntries[entry[netidKey]];
+            if (keepSavedEntry(savedEntry, entry)) {
+            } else {
+                savedEntries[savedEntry[netidKey]] = entry;
+            }
+        } else {
+            savedEntries[entry[netidKey]] = entry;
+        }
+    }
+    return Object.values(savedEntries);
+};
+
+function keepSavedEntry(savedEntry, curEntry) {
+    let paidKey = wufooCon.allFields.payStatus;
+    if (savedEntry[paidKey] !== curEntry[paidKey]) {
+        if (savedEntry[paidKey] && savedEntry[paidKey].toLowerCase() === "paid") {
+            return savedEntry;
+        } else if (curEntry[paidKey]) {
+            return curEntry;
+        }
+    }
+    let savedCreatedDate = new Date(savedEntry["DateCreated"]);
+    let curCreatedDate = new Date(curEntry["DateCreated"]);
+    return savedCreatedDate >= curCreatedDate;
+}

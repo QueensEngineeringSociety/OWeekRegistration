@@ -27,6 +27,10 @@
         <% var entries = JSON.parse(wufoo) %>
         <div style="text-align: center; padding-top: 10px">
             Rows: <%= entries.length %>
+            <% if (nextPage > 0){ %>
+                <br>
+                Page: <%= nextPage - 1 %>
+            <% } %>
         </div>
     </div>
 </div>

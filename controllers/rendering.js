@@ -1,5 +1,6 @@
 const con = require("../models/wufoo/wufooConstants");
 const util = require("../server/util");
+const log = require("../server/logger");
 
 const views = util.views;
 
@@ -23,6 +24,7 @@ exports.renderPaginated = function (result, view, request, wufooData, groupNumbe
 };
 
 exports.renderError = function (result, message) {
+    log.error(message);
     result.render(views.ERROR, {errorMessage: message});
 };
 

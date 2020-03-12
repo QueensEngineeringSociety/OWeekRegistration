@@ -3,7 +3,7 @@ const PropertiesReader = require('properties-reader');
 const constants = require("./dbConstants");
 const util = require("../../server/util");
 
-//TODO finish building pre-made queries
+//TODO finish building pre-made queries, put queries into model
 
 const tables = constants.tables;
 const queries = constants.queries;

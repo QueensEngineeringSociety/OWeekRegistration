@@ -51,6 +51,7 @@
 
 <% outputRegistrationInfoTable=function(entries, fields, headings, groupNumbers){ %>
     <table id="entryTable">
+        <th>Edit Group Number</th>
         <th>Group Number</th>
         <% for (var eachField in fields){ %>
             <% if (fields.hasOwnProperty(eachField)){ %>
@@ -67,8 +68,11 @@
         <% for (var i in entries){ %>
             <% if (entries.hasOwnProperty(i)){ %>
                 <% var eachEntry = entries[i] %>
-                <tr>
-                    <td><%= groupNumbers[eachEntry.EntryId] + 1/*entry ID is key for the groupNum*/ %></td>
+                <tr id="<%= eachEntry.EntryId %>">
+                    <td>
+                        <button onclick="showEditForm(<%= eachEntry.EntryId %>)">Edit</button>
+                    </td>
+                    <td id="groupNumber"><%= groupNumbers[eachEntry.EntryId] + 1/*entry ID is key for the groupNum*/ %></td>
                     <% for (var valKey in eachEntry){ %>
                         <% if (eachEntry.hasOwnProperty(valKey)){ %>
                             <% for (var field in fields){ %>
@@ -79,7 +83,7 @@
                                     <% if (valKey === fields.payStatus && eachEntry[valKey] === null){ %>
                                         <td>Unpaid</td>
                                     <% } else { %>
-                                        <td><%= eachEntry[valKey] %></td>
+                                    <td id="<%= valKey %>"><%= eachEntry[valKey] %></td>
                                     <% } %>
                                 <% } %>
                             <% } %>

@@ -19,7 +19,8 @@ exports.post = {
     specificOne: postSpecificOne,
     maxNumGroups: postMaxNumOfGroups,
     assign: postAssign,
-    clear: postClear
+    clear: postClear,
+    numberChange: postNumberChange
 };
 
 function getAll(request, result) {
@@ -294,5 +295,37 @@ function postClear(request, result) {
                 }
             });
         }
+    });
+}
+
+function postNumberChange(request, result) {
+    let newDbGroupNumber = request.body.new_group_number - 1;
+    let oldDbGroupNumber = request.body.old_group_number - 1;
+    let man = isMan(request.body.pronouns);
+    dbConn.updateWhereClause("groupData", ["groupNum"], [newDbGroupNumber], "wufooEntryId", request.body.wufooEntryId, function () {
+        setNewCount(oldDbGroupNumber, true, man, function () {
+            setNewCount(newDbGroupNumber, false, man, function () {
+                result.redirect(util.routes.FILTER);
+            });
+        });
+    });
+}
+
+function setNewCount(groupNumber, isOldGroup, isMan, callback) {
+    dbConn.selectWhereClause("groups", "groupNumber", groupNumber, function (err, rows) {
+        let group = rows[0];
+        let newManCount = group.menCount;
+        let newWomanCount = group.womenCount;
+        let change = 1;
+        if (isOldGroup) {
+            change = -1;
+        }
+        if (isMan) {
+            newManCount += change;
+        } else {
+            newWomanCount += change;
+        }
+        dbConn.updateWhereClause("groups", ["menCount", "womenCount", "totalCount"],
+            [newManCount, newWomanCount, newManCount + newWomanCount], "groupNumber", groupNumber, callback);
     });
 }

@@ -29,7 +29,7 @@ exports.routes = {
     ERROR: "/error",
     LOGOUT: "/logout",
     EXPORT: "/export",
-    PRUNE: "/prune_frosh"
+    GROUP_NUMBER_EDIT: "/group_number_edit"
 };
 
 exports.views = {

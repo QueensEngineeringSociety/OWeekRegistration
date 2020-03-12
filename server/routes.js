@@ -127,6 +127,10 @@ module.exports = function (app, passport) {
         res.render(views.ERROR, {errorMessage: "You don't have the privileges to see this."});
     });
 
+    app.post(routes.GROUP_NUMBER_EDIT, requireAdmin, function (req, res) {
+        controllers.groups.post.numberChange(req, res);
+    });
+
     app.get(routes.LOGOUT, function (req, res) {
         req.logout();
         res.redirect(routes.HOME);

@@ -5,6 +5,7 @@
     <title>OWeek Info</title>
     <link rel="stylesheet" href="../css/table.css" type="text/css">
     <link rel="stylesheet" href="../css/misc.css" type="text/css">
+    <link rel="stylesheet" href="../css/modal-edit-form.css" type="text/css">
 </head>
 <body>
 <% outputNavigationButtons(isAdmin) %>
@@ -36,5 +37,46 @@
 </div>
 <br>
 <% outputRegistrationInfoTable(entries, fields, headings, groupNumbers) %>
+
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <span class="close" id="close">&times;</span>
+        <form action="/group_number_edit" method="post">
+            <h1>Edit User</h1>
+            <input type="hidden" id="wufooEntryId-form" name="wufooEntryId">
+            <input type="hidden" id="groupNumber-form" name="old_group_number">
+            <input type="hidden" id="Field137-form" name="pronouns">
+            <label for="newGroupNumber-form"><b>New Group Number</b>
+                <br>
+                <input type="text" id="newGroupNumber-form" name="new_group_number" required>
+            </label>
+            <br>
+            <label for="Field1-form"><b>Name</b>
+                <br>
+                <input type="text" id="Field1-form" name="name" required>
+            </label>
+            <br>
+            <br>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+</div>
 </body>
+<script>
+    function showEditForm(rowId) {
+        let row = document.getElementById(rowId);
+        for (let tr of row.cells) {
+            let formField = document.getElementById(tr.id + "-form");
+            if (formField) {
+                formField.value = tr.innerText;
+            }
+        }
+        document.getElementById("wufooEntryId-form").value = rowId;
+        document.getElementById("modal").style.display = "block";
+    }
+
+    document.getElementsByClassName("close")[0].onclick = function () {
+        document.getElementById("modal").style.display = "none";
+    }
+</script>
 </html>

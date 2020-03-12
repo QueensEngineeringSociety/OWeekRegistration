@@ -9,19 +9,7 @@
 <%outputNavigationButtons(true)%>
 <div class="container">
     <div class="col-sm-6 col-sm-offset-3">
-        <h1><span class="fa fa-sign-in"></span> User Management</h1>
-        <p>Ensure the email field corresponds to the email of the user to be edited, or a new user is added.</p>
-        <script>
-            function changeAction() {
-                let form = document.getElementById('user_form');
-                if (document.getElementById('new_user').checked) {
-                    form.action = "/signup";
-                } else {
-                    form.action = "/useredit";
-                }
-            }
-        </script>
-
+        <h1><span class="fa fa-sign-in"></span>Add User</h1>
         <form action="/signup" method="post" id="user_form">
             <div class="form-group">
                 <input type="radio" id="new_user" name="user_mgm" value="new_user" checked>
@@ -55,9 +43,9 @@
                 <input type="radio" id="admin" name="is_admin" value="admin">
                 <label for="admin">Admin</label>
             </div>
-            <button type="submit" class="btn btn-warning btn-lg" onclick="changeAction()">Submit</button>
+            <input type="submit" class="btn btn-warning btn-lg" value="Submit">
         </form>
-        <hr>
+        <br>
     </div>
 </div>
 </body>

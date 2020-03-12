@@ -96,8 +96,8 @@ function getRegistrationExcel(req, res) {
 
             }
             xlsx.writeFile(workbook, "Exported-Group-Data.xlsx");
-            res.download(__dirname + "/../../server/Exported-Group-Data.xlsx", function () {
-                fs.unlink(__dirname + "/../../server/Exported-Group-Data.xlsx", (err) => {
+            res.download(__dirname + "/../server/Exported-Group-Data.xlsx", function () {
+                fs.unlink(__dirname + "/../server/Exported-Group-Data.xlsx", (err) => {
                     if (err) throw err;
                 });
             });

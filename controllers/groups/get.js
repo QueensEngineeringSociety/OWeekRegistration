@@ -19,17 +19,16 @@ exports.one = async function (request, result) {
     for (let i = 0; i < groupDataRows.length; i++) {
         entryIds[i] = groupDataRows[i].wufooEntryId;
     }
-    wufoo.getEntriesById(entryIds, async function (body) {
-        body = JSON.parse(body);
-        let rows = await db.selectWhereClause("groups", "groupNumber", request.body.groupNumber);
-        let groupNumbers = util.getGroupNumbers(groupDataRows);
-        result.render(util.views.GROUP, {
-            isAdmin: true,
-            groupData: rows[0], //only one group with that group number
-            peopleInGroup: body,
-            fields: con.groupFields,
-            headings: con.headings,
-            groupNumbers: groupNumbers
-        });
+    let body = await wufoo.getEntriesById(entryIds);
+    body = JSON.parse(body);
+    let rows = await db.selectWhereClause("groups", "groupNumber", request.body.groupNumber);
+    let groupNumbers = util.getGroupNumbers(groupDataRows);
+    result.render(util.views.GROUP, {
+        isAdmin: true,
+        groupData: rows[0], //only one group with that group number
+        peopleInGroup: body,
+        fields: con.groupFields,
+        headings: con.headings,
+        groupNumbers: groupNumbers
     });
 };

@@ -22,89 +22,57 @@ exports.queries = {
     pronoun: query.buildPronouns()
 };
 
-exports.makeQuery = function (pageStart, queryString, allEntries, callback) {
+exports.makeQuery = async function (pageStart, queryString, allEntries) {
     if (allEntries === undefined || allEntries === null) {
         allEntries = [];
     }
-    request({
-        uri: properties.get('uri') + queryString + "&pageSize=100&pageStart=" + pageStart,
-        method: properties.get('method'),
-        auth: {
-            'username': properties.get('username'),
-            'password': properties.get('password'),
-            'sendImmediately': false
+    let body = await callApi(properties.get('uri') + queryString + "&pageSize=100&pageStart=" + pageStart);
+    let entries = JSON.parse(body);
+    if (entries["Entries"].length) {
+        allEntries = allEntries.concat(entries["Entries"]);
+        let newPageStart = pageStart + 100;
+        return await exports.makeQuery(newPageStart, queryString, allEntries);
+    } else {
+        try {
+            let allComments = await getComments();
+            for (let i = 0; i < allEntries.length; ++i) {
+                (allEntries[i])["comment"] = getEntryComment((allEntries[i])["EntryId"], allComments);
+            }
+            return JSON.stringify(allEntries);
+        } catch (e) {
+            console.log("Error getting comments: " + e); //TODO proper log
+            return JSON.stringify(allEntries);
         }
-    }, function (error, response, body) {
-        let entries = JSON.parse(body);
-        if (entries["Entries"].length) {
-            allEntries = allEntries.concat(entries["Entries"]);
-            let newPageStart = pageStart + 100;
-            exports.makeQuery(newPageStart, queryString, allEntries, callback);
-        } else {
-            getComments().then(function (allComments) {
-                for (let i = 0; i < allEntries.length; ++i) {
-                    (allEntries[i])["comment"] = getEntryComment((allEntries[i])["EntryId"], allComments);
-                }
-                callback(JSON.stringify(allEntries)); //make it a string so ejs files don't need to be changed (they expect json string)
-            }).catch(function (err) {
-                console.log("Error getting comments: " + err);
-                callback(JSON.stringify(allEntries));
-            });
-        }
-    });
+    }
 };
 
-exports.makePaginatedQuery = function (pageNum, queryString, callback) {
+exports.makePaginatedQuery = async function (pageNum, queryString) {
     let pageStart = pageNum * PAGE_SIZE;
-    request({
-        uri: properties.get('uri') + queryString + "&pageSize=" + PAGE_SIZE + "&pageStart=" + pageStart,
-        method: properties.get('method'),
-        auth: {
-            'username': properties.get('username'),
-            'password': properties.get('password'),
-            'sendImmediately': false
-        }
-    }, function (error, response, body) {
-        let entries = (JSON.parse(body))["Entries"];
-        getComments().then(function (allComments) {
-            for (let i = 0; i < entries.length; ++i) {
-                (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
-            }
-            let nextPageNum = entries.length < 1 ? -1 : pageNum + 1;
-            let prevPageNum = pageNum > 0 ? pageNum - 1 : -1;
-            callback(JSON.stringify(entries), nextPageNum, prevPageNum); //make it a string so ejs files don't need to be changed (they expect json string)
-        }).catch(function (err) {
-            console.log("Error getting comments: " + err);
-        });
-    });
+    let body = await callApi(properties.get('uri') + queryString + "&pageSize=" + PAGE_SIZE + "&pageStart=" + pageStart);
+    let entries = (JSON.parse(body))["Entries"];
+    let allComments = await getComments();
+    for (let i = 0; i < entries.length; ++i) {
+        (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
+    }
+    let nextPageNum = entries.length < 1 ? -1 : pageNum + 1;
+    let prevPageNum = pageNum > 0 ? pageNum - 1 : -1;
+    return [JSON.stringify(entries), nextPageNum, prevPageNum];
 };
 
-exports.getEntriesById = function (ids, callback) {
-    request({
-        uri: properties.get('uri') + query.buildEntryIDsQuery(ids),
-        method: properties.get('method'),
-        auth: {
-            'username': properties.get('username'),
-            'password': properties.get('password'),
-            'sendImmediately': false
-        }
-    }, function (error, response, body) {
-        let entries = (JSON.parse(body))["Entries"];
-        getComments().then(function (allComments) {
-            for (let i = 0; i < entries.length; ++i) {
-                (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
-            }
-            callback(JSON.stringify(entries)); //make it a string so ejs files don't need to be changed (they expect json string)
-        }).catch(function (err) {
-            console.log("Error getting comments: " + err);
-        });
-    });
+exports.getEntriesById = async function (ids) {
+    let body = await callApi(properties.get('uri') + query.buildEntryIDsQuery(ids));
+    let entries = (JSON.parse(body))["Entries"];
+    let allComments = await getComments();
+    for (let i = 0; i < entries.length; ++i) {
+        (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
+    }
+    return JSON.stringify(entries);
 };
 
-function getComments() {
-    return new Promise(function (res) {
+function callApi(uri) {
+    return new Promise(((resolve, reject) => {
         request({
-            uri: properties.get('comments_uri'),
+            uri: uri,
             method: properties.get('method'),
             auth: {
                 'username': properties.get('username'),
@@ -112,9 +80,17 @@ function getComments() {
                 'sendImmediately': false
             }
         }, function (error, response, body) {
-            return res(body);
+            if (error) {
+                reject(error);
+            } else {
+                resolve(body); //TODO check if can run json parse here - comments may not allow?
+            }
         });
-    });
+    }));
+}
+
+async function getComments() {
+    return await callApi(properties.get("comments_uri"));
 }
 
 function getEntryComment(entryId, allComments) {

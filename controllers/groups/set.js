@@ -35,25 +35,24 @@ exports.all = async function (request, result) {
             assignedFrosh.push(rows[i].wufooEntryId);
         }
     }
-    wufoo.makeQuery(0, util.query.all, [], async function (body) {
-        //show updated groups
-        body = util.pruneDuplicateFrosh(JSON.parse(body));
-        let insertions = [];
-        for (let i in body) {
-            if (!util.isInArr(assignedFrosh, body[i].EntryId)) {
-                insertions.push({
-                    "id": body[i].EntryId,
-                    "genderIsMan": isMan((body[i])[con.allFields.pronouns])
-                });
-            }
+    let body = await wufoo.makeQuery(0, util.query.all, []);
+    //show updated groups
+    body = util.pruneDuplicateFrosh(JSON.parse(body));
+    let insertions = [];
+    for (let i in body) {
+        if (!util.isInArr(assignedFrosh, body[i].EntryId)) {
+            insertions.push({
+                "id": body[i].EntryId,
+                "genderIsMan": isMan((body[i])[con.allFields.pronouns])
+            });
         }
-        if (insertions.length) {
-            await assign(manGroupNum, womanGroupNum, insertions);
-            result.redirect("back"); //refresh
-        } else {
-            result.redirect("back");
-        }
-    });
+    }
+    if (insertions.length) {
+        await assign(manGroupNum, womanGroupNum, insertions);
+        result.redirect("back"); //refresh
+    } else {
+        result.redirect("back");
+    }
 };
 
 function isMan(text) {

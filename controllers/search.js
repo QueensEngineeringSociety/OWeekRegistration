@@ -8,28 +8,23 @@ const controllerUtil = require("./controllerUtil");
 const routes = util.routes;
 const views = util.views;
 
-exports.get = {
-    general: getGeneral,
-    netid: getNetid
+exports.get = {};
+
+exports.get.general = async function (request, result) {
+    if (request.query['field'] && request.query['operator'] && request.query['value']) {
+        let body = await wufoo.makeQuery(0, builder.customQuery(request.query['field'], request.query['operator'], request.query['value']), []);
+        let entries = controllerUtil.pruneDuplicateFrosh(JSON.parse(body));
+        await handleWufooData(request, result, JSON.stringify(entries), routes.SEARCH);
+    }
 };
 
-function getGeneral(request, result) {
-    if (request.query['field'] && request.query['operator'] && request.query['value']) {
-        wufoo.makeQuery(0, builder.customQuery(request.query['field'], request.query['operator'], request.query['value']), [], async function (body) {
-            let entries = controllerUtil.pruneDuplicateFrosh(JSON.parse(body));
-            await handleWufooData(request, result, JSON.stringify(entries), routes.SEARCH);
-        });
-    }
-}
-
-function getNetid(request, result) {
+exports.get.netid = async function (request, result) {
     if (request.query['netid_search']) {
-        wufoo.makeQuery(0, builder.buildNetidQuery(request.query['netid_search']), [], async function (body) {
-            let entries = controllerUtil.pruneDuplicateFrosh(JSON.parse(body));
-            await handleWufooData(request, result, JSON.stringify(entries), routes.NET_ID);
-        });
+        let body = await wufoo.makeQuery(0, builder.buildNetidQuery(request.query['netid_search']), []);
+        let entries = controllerUtil.pruneDuplicateFrosh(JSON.parse(body));
+        await handleWufooData(request, result, JSON.stringify(entries), routes.NET_ID);
     }
-}
+};
 
 async function handleWufooData(request, result, body, route) {
     let rows = dbConn.selectAll("groupData");

@@ -91,16 +91,16 @@ module.exports = function (app, passport) {
         await controllers.registrationData.get.unpaid(req, res);
     });
 
-    app.get(routes.SEARCH, isLoggedIn, function (req, res) {
-        controllers.search.get.general(req, res);
+    app.get(routes.SEARCH, isLoggedIn, async function (req, res) {
+        await controllers.search.get.general(req, res);
     });
 
-    app.get(routes.NET_ID, isLoggedIn, function (req, res) {
-        controllers.search.get.netid(req, res);
+    app.get(routes.NET_ID, isLoggedIn, async function (req, res) {
+        await controllers.search.get.netid(req, res);
     });
 
-    app.get(routes.EXPORT, requireAdmin, function (req, res) {
-        controllers.registrationData.get.excelFile(req, res);
+    app.get(routes.EXPORT, requireAdmin, async function (req, res) {
+        await controllers.registrationData.get.excelFile(req, res);
     });
 
     app.get(routes.ALL_GROUPS, requireAdmin, async function (req, res) {
@@ -120,7 +120,7 @@ module.exports = function (app, passport) {
     });
 
     app.post(routes.CLEAR_GROUPS, requireAdmin, async function (req, res) {
-       await controllers.groups.delete.all(req, res);
+        await controllers.groups.delete.all(req, res);
     });
 
     app.get(routes.ERROR, isLoggedIn, function (req, res) {

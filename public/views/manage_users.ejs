@@ -43,27 +43,24 @@
         <span class="close" id="close">&times;</span>
         <form action="/user_edit" method="post">
             <h1>Edit User</h1>
-            <label for="email"><b>First Name</b>
+            <input type="hidden" id="email-form" name="email">
+            <label for="first_name-form"><b>First Name</b>
                 <br>
                 <input type="text" id="first_name-form" name="first_name" required>
             </label>
             <br>
-            <label for="email"><b>Last Name</b>
+            <label for="last_name-form"><b>Last Name</b>
                 <br>
                 <input type="text" id="last_name-form" name="last_name" required>
             </label>
             <br>
-            <label for="email"><b>Email</b>
-                <br>
-                <input type="text" id="email-form" name="email" required>
-            </label>
             <br>
             <label for="password"><b>Password</b>
                 <br>
                 <input type="password" placeholder="Enter Password" name="password" required>
             </label>
             <br>
-            <label for="isAdmin"><b>Is Admin</b>
+            <label for="isAdmin-form"><b>Is Admin</b>
                 <br>
                 <a>0 means not an admin, 1 means is an admin</a>
                 <br>

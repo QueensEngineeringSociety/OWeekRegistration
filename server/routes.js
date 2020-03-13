@@ -31,64 +31,64 @@ module.exports = function (app, passport) {
         res.render(views.ADD_USER, {message: req.flash('sign_upMessage')});
     });
 
-    app.post(routes.SIGN_UP, requireAdmin, function (req, res) {
-        controllers.user.set.new(req, res);
+    app.post(routes.SIGN_UP, requireAdmin, async function (req, res) {
+        await controllers.user.set.new(req, res);
     });
 
-    app.post(routes.USER_EDIT, requireAdmin, function (req, res) {
-        controllers.user.set.existing(req, res);
+    app.post(routes.USER_EDIT, requireAdmin, async function (req, res) {
+        await controllers.user.set.existing(req, res);
     });
 
-    app.get(routes.USER_MANAGEMENT, requireAdmin, function (req, res) {
-        controllers.user.get.all(req, res);
+    app.get(routes.USER_MANAGEMENT, requireAdmin, async function (req, res) {
+        await controllers.user.get.all(req, res);
     });
 
-    app.post(routes.USER_DELETE, requireAdmin, function (req, res) {
-        controllers.user.delete.one(req, res);
+    app.post(routes.USER_DELETE, requireAdmin, async function (req, res) {
+        await controllers.user.delete.one(req, res);
     });
 
-    app.get(routes.FILTER, isLoggedIn, function (req, res) {
-        controllers.registrationData.get.all(req, res);
+    app.get(routes.FILTER, isLoggedIn, async function (req, res) {
+        await controllers.registrationData.get.all(req, res);
     });
 
-    app.get(routes.AGE, isLoggedIn, function (req, res) {
-        controllers.registrationData.get.age(req, res);
+    app.get(routes.AGE, isLoggedIn, async function (req, res) {
+        await controllers.registrationData.get.age(req, res);
     });
 
-    app.get(routes.FOOD_RESTRICTIONS, requireAdmin, function (req, res) {
-        controllers.registrationData.get.food(req, res);
+    app.get(routes.FOOD_RESTRICTIONS, requireAdmin, async function (req, res) {
+        await controllers.registrationData.get.food(req, res);
     });
 
-    app.get(routes.PRIMER, requireAdmin, function (req, res) {
-        controllers.registrationData.get.primer(req, res);
+    app.get(routes.PRIMER, requireAdmin, async function (req, res) {
+        await controllers.registrationData.get.primer(req, res);
     });
 
-    app.get(routes.MEDICAL, requireAdmin, function (req, res) {
-        controllers.registrationData.get.medical(req, res);
+    app.get(routes.MEDICAL, requireAdmin, async function (req, res) {
+        await controllers.registrationData.get.medical(req, res);
     });
 
-    app.get(routes.PRONOUNS, requireAdmin, function (req, res) {
-        controllers.registrationData.get.pronouns(req, res);
+    app.get(routes.PRONOUNS, requireAdmin, async function (req, res) {
+        await controllers.registrationData.get.pronouns(req, res);
     });
 
-    app.get(routes.ACCESSIBILITY, requireAdmin, function (req, res) {
-        controllers.registrationData.get.accessibility(req, res);
+    app.get(routes.ACCESSIBILITY, requireAdmin, async function (req, res) {
+        await controllers.registrationData.get.accessibility(req, res);
     });
 
-    app.get(routes.PAY_PERSON, isLoggedIn, function (req, res) {
-        controllers.registrationData.get.payPerson(req, res);
+    app.get(routes.PAY_PERSON, isLoggedIn, async function (req, res) {
+        await controllers.registrationData.get.payPerson(req, res);
     });
 
-    app.get(routes.PAY_MAIL, isLoggedIn, function (req, res) {
-        controllers.registrationData.get.payMail(req, res);
+    app.get(routes.PAY_MAIL, isLoggedIn, async function (req, res) {
+        await controllers.registrationData.get.payMail(req, res);
     });
 
-    app.get(routes.PAY_ONLINE, isLoggedIn, function (req, res) {
-        controllers.registrationData.get.payOnline(req, res);
+    app.get(routes.PAY_ONLINE, isLoggedIn, async function (req, res) {
+        await controllers.registrationData.get.payOnline(req, res);
     });
 
-    app.get(routes.UNPAID, isLoggedIn, function (req, res) {
-        controllers.registrationData.get.unpaid(req, res);
+    app.get(routes.UNPAID, isLoggedIn, async function (req, res) {
+        await controllers.registrationData.get.unpaid(req, res);
     });
 
     app.get(routes.SEARCH, isLoggedIn, function (req, res) {
@@ -103,32 +103,32 @@ module.exports = function (app, passport) {
         controllers.registrationData.get.excelFile(req, res);
     });
 
-    app.get(routes.ALL_GROUPS, requireAdmin, function (req, res) {
-        controllers.groups.get.all(req, res);
+    app.get(routes.ALL_GROUPS, requireAdmin, async function (req, res) {
+        await controllers.groups.get.all(req, res);
     });
 
-    app.post(routes.ONE_GROUP, requireAdmin, function (req, res) {
-        controllers.groups.get.one(req, res);
+    app.post(routes.ONE_GROUP, requireAdmin, async function (req, res) {
+        await controllers.groups.get.one(req, res);
     });
 
-    app.post(routes.UPDATE_MAX_NUM_GROUPS, requireAdmin, function (req, res) {
-        controllers.groups.set.number(req, res);
+    app.post(routes.UPDATE_MAX_NUM_GROUPS, requireAdmin, async function (req, res) {
+        await controllers.groups.set.number(req, res);
     });
 
-    app.post(routes.ASSIGN, requireAdmin, function (req, res) {
-        controllers.groups.set.all(req, res);
+    app.post(routes.ASSIGN, requireAdmin, async function (req, res) {
+        await controllers.groups.set.all(req, res);
     });
 
-    app.post(routes.CLEAR_GROUPS, requireAdmin, function (req, res) {
-        controllers.groups.delete.all(req, res);
+    app.post(routes.CLEAR_GROUPS, requireAdmin, async function (req, res) {
+       await controllers.groups.delete.all(req, res);
     });
 
     app.get(routes.ERROR, isLoggedIn, function (req, res) {
         res.render(views.ERROR, {errorMessage: "You don't have the privileges to see this."});
     });
 
-    app.post(routes.GROUP_NUMBER_EDIT, requireAdmin, function (req, res) {
-        controllers.groups.set.one(req, res);
+    app.post(routes.GROUP_NUMBER_EDIT, requireAdmin, async function (req, res) {
+        await controllers.groups.set.one(req, res);
     });
 
     app.get(routes.LOGOUT, function (req, res) {

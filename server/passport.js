@@ -9,10 +9,9 @@ module.exports = function (passport) {
         done(null, user.id);
     });
 
-    passport.deserializeUser(function (id, done) {
-        dbConn.query("select * from users where id = ?", [id], function (err, rows) {
-            done(err, rows[0]);
-        });
+    passport.deserializeUser(async function (id, done) {
+        let rows = await dbConn.query("select * from users where id = ?", [id]);
+        done(null, rows[0]);
     });
 
     passport.use(
@@ -23,15 +22,12 @@ module.exports = function (passport) {
                 passwordField: 'password',
                 passReqToCallback: true
             },
-            function (req, email, password, done) {
-                dbConn.query("SELECT * FROM users WHERE email = ?", [email], function (err, rows) {
-                    if (err)
-                        return done(err);
-                    if (!rows.length || !bcrypt.compareSync(password, rows[0].password)) {
-                        return done(null, false, req.flash('loginMessage', 'Incorrect login info.')); // req.flash is the way to set flash data using connect-flash
-                    }
-                    return done(null, rows[0]);
-                });
+            async function (req, email, password, done) {
+                let rows = await dbConn.query("SELECT * FROM users WHERE email = ?", [email]);
+                if (!rows.length || !bcrypt.compareSync(password, rows[0].password)) {
+                    return done(null, false, req.flash('loginMessage', 'Incorrect login info.'));
+                }
+                return done(null, rows[0]);
             })
     );
 };

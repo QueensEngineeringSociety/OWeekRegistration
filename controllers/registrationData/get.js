@@ -5,80 +5,81 @@ const db = util.db;
 const view = util.view;
 const wufoo = util.wufoo;
 
-exports.all = function (request, result) {
-    getRequest(request, result, util.query.all, util.routes.FILTER);
+exports.all = async function (request, result) {
+    await getRequest(request, result, util.query.all, util.routes.FILTER);
 };
 
-exports.age = function (request, result) {
-    getRequest(request, result, util.query.age, util.routes.AGE);
+exports.age = async function (request, result) {
+    await getRequest(request, result, util.query.age, util.routes.AGE);
 };
 
-exports.food = function (request, result) {
-    getRequest(request, result, util.query.foodRestrictions, util.routes.FOOD_RESTRICTIONS);
+exports.food = async function (request, result) {
+    await getRequest(request, result, util.query.foodRestrictions, util.routes.FOOD_RESTRICTIONS);
 };
 
-exports.primer = function (request, result) {
-    getRequest(request, result, util.query.wantPrimer, util.routes.PRIMER);
+exports.primer = async function (request, result) {
+    await getRequest(request, result, util.query.wantPrimer, util.routes.PRIMER);
 };
 
-exports.medical = function (request, result) {
-    getRequest(request, result, util.query.medicalConcerns, util.routes.MEDICAL);
+exports.medical = async function (request, result) {
+    await getRequest(request, result, util.query.medicalConcerns, util.routes.MEDICAL);
 };
 
-exports.pronouns = function (request, result) {
-    getRequest(request, result, util.query.pronoun, util.routes.PRONOUNS);
+exports.pronouns = async function (request, result) {
+    await getRequest(request, result, util.query.pronoun, util.routes.PRONOUNS);
 };
 
-exports.accessibility = function (request, result) {
-    getRequest(request, result, util.query.accessibilityConcerns, util.routes.ACCESSIBILITY);
+exports.accessibility = async function (request, result) {
+    await getRequest(request, result, util.query.accessibilityConcerns, util.routes.ACCESSIBILITY);
 };
 
-exports.payPerson = function (request, result) {
-    getRequest(request, result, util.query.payInPerson, util.routes.PAY_PERSON);
+exports.payPerson = async function (request, result) {
+    await getRequest(request, result, util.query.payInPerson, util.routes.PAY_PERSON);
 };
 
-exports.payMail = function (request, result) {
-    getRequest(request, result, util.query.payByMail, util.routes.PAY_MAIL);
+exports.payMail = async function (request, result) {
+    await getRequest(request, result, util.query.payByMail, util.routes.PAY_MAIL);
 };
 
-exports.payOnline = function (request, result) {
-    getRequest(request, result, util.query.payOnline, util.routes.PAY_ONLINE);
+exports.payOnline = async function (request, result) {
+    await getRequest(request, result, util.query.payOnline, util.routes.PAY_ONLINE);
 };
 
-exports.unpaid = function (request, result) {
-    getRequest(request, result, util.query.unpaid, util.routes.UNPAID);
+exports.unpaid = async function (request, result) {
+    await getRequest(request, result, util.query.unpaid, util.routes.UNPAID);
 };
 
 exports.excelFile = function (req, res) {
-    wufoo.makeQuery(0, util.query.all, [], function (entries) {
+    wufoo.makeQuery(0, util.query.all, [], async function (entries) {
         entries = JSON.parse(entries);
         let workbook = xlsx.utils.book_new();
         let groups = {};
-        db.selectAll("groupData", function (err, rows) {
-            let groupNumbers = util.getGroupNumbers(rows);
-            for (let entry of entries) {
-                let num = groupNumbers[entry.EntryId] + 1;
-                if (groups[num]) {
-                    groups[num].members = groups[num].members.concat(entry);
-                } else {
-                    groups[num] = {members: [entry]};
-                }
+        let rows = await db.selectAll("groupData");
+        let groupNumbers = util.getGroupNumbers(rows);
+        for (let entry of entries) {
+            let num = groupNumbers[entry.EntryId] + 1;
+            if (groups[num]) {
+                groups[num].members = groups[num].members.concat(entry);
+            } else {
+                groups[num] = {members: [entry]};
             }
-            for (let groupNum in groups) {
-                let dirtyPeople = groups[groupNum].members;
-                let cleanPeople = [];
-                for (let person of dirtyPeople) {
-                    cleanPeople.push(clean(person));
-                }
-                let workSheet = xlsx.utils.json_to_sheet(cleanPeople);
-                xlsx.utils.book_append_sheet(workbook, workSheet, "Group " + groupNum);
+        }
+        for (let groupNum in groups) {
+            let dirtyPeople = groups[groupNum].members;
+            let cleanPeople = [];
+            for (let person of dirtyPeople) {
+                cleanPeople.push(clean(person));
+            }
+            let workSheet = xlsx.utils.json_to_sheet(cleanPeople);
+            xlsx.utils.book_append_sheet(workbook, workSheet, "Group " + groupNum);
 
-            }
-            xlsx.writeFile(workbook, "Exported-Group-Data.xlsx");
-            res.download(__dirname + "/../../server/Exported-Group-Data.xlsx", function () {
-                fs.unlink(__dirname + "/../../server/Exported-Group-Data.xlsx", (err) => {
-                    if (err) throw err;
-                });
+        }
+        let filename = "Exported-Group-Data.xlsx";
+        let filePath = __dirname + "/../../server/" + filename;
+        xlsx.writeFile(workbook, filename);
+        res.download(filePath, function () {
+            fs.unlink(filePath, (err) => {
+                if (err) throw err;
             });
         });
     });
@@ -97,14 +98,13 @@ function clean(person) {
     return cleanedPerson;
 }
 
-function getRequest(request, result, query, route) {
+async function getRequest(request, result, query, route) {
     let pageNum = getPageNum(request);
-    wufoo.makePaginatedQuery(pageNum, query, function (body, nextPageNum, prevPageNum) {
+    wufoo.makePaginatedQuery(pageNum, query, async function (body, nextPageNum, prevPageNum) {
         let entries = util.pruneDuplicateFrosh(JSON.parse(body));
-        db.selectAll("groupData", function (err, rows) {
-            let groupNumbers = util.getGroupNumbers(rows);
-            view.renderPaginated(result, util.views.FILTER, request, JSON.stringify(entries), groupNumbers, route, nextPageNum, prevPageNum);
-        });
+        let rows = await db.selectAll("groupData");
+        let groupNumbers = util.getGroupNumbers(rows);
+        view.renderPaginated(result, util.views.FILTER, request, JSON.stringify(entries), groupNumbers, route, nextPageNum, prevPageNum);
     });
 }
 

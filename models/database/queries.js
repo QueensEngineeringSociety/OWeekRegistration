@@ -1,15 +1,13 @@
 const mysql = require('mysql');
 const PropertiesReader = require('properties-reader');
 const constants = require("./dbConstants");
-const util = require("../../server/util");
 
 //TODO finish building pre-made queries, put queries into model
 
-const tables = constants.tables;
 const queries = constants.queries;
 const properties = PropertiesReader(__dirname + "/../../config/db_properties.cfg");
 
-let con = mysql.createConnection({
+let connection = mysql.createConnection({
     host: properties.get('host'),
     user: properties.get('user'),
     password: properties.get('password'),
@@ -17,64 +15,73 @@ let con = mysql.createConnection({
 });
 
 exports.connect = function () {
-    con.connect(function (err) {
+    connection.connect(function (err) {
         if (err) throw err;
     });
 };
 
-exports.query = function (queryString, params, callback) {
-    con.query(queryString, params, function (err, rows) {
-        if (err) {
-            console.log("DB QUERY ERROR: " + err);
-        }
-        callback(err, rows);
+//TODO remove
+exports.query = async function (queryString, params) {
+    return await innerQuery(queryString, params);
+};
+
+function innerQuery(queryString, params) {
+    return new Promise(function (resolve, reject) {
+        connection.query(queryString, params, function (err, rows) {
+            if (err) {
+                console.log(err); //TODO log
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
     });
-};
-
-exports.selectAll = function (table, callback) {
-    query(buildSimpleTableQuery(queries.SELECT_ALL, table), table, [], callback);
-};
-
-exports.selectAllUsers = function (callback) {
-    query(buildSimpleTableQuery("SELECT id, first_name, last_name, email, isAdmin FROM", "users"), "users", [], callback);
-};
-
-exports.selectWhereClause = function (table, whereColumn, whereValue, callback) {
-    simpleTableWhereQuery(table, whereColumn, whereValue, queries.SELECT_ALL, callback);
-};
-
-exports.deleteWhereClause = function (table, whereColumn, whereValue, callback) {
-    simpleTableWhereQuery(table, whereColumn, whereValue, queries.DELETE_ALL, callback);
-};
-
-exports.insert = function (table, columns, values, callback) {
-    query(buildParameterizedQuery(table, columns, values, "insert", callback), table, values, callback);
-};
-
-exports.updateAllColumns = function (table, columns, values, callback) {
-    query(buildParameterizedQuery(table, columns, values, "update", callback), table, values, callback);
-};
-
-exports.updateWhereClause = function (table, columns, values, whereColumn, whereValue, callback) {
-    parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, "update", callback);
-};
-
-function parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, type, callback) {
-    let queryString = addOneWhereClause(buildParameterizedQuery(table, columns, values, type, callback), whereColumn);
-    values.push(whereValue);
-    query(queryString, table, values, callback);
 }
 
-function simpleTableWhereQuery(table, whereColumn, whereValue, queryString, callback) {
+exports.selectAll = async function (table) {
+    return await innerQuery(buildSimpleTableQuery(queries.SELECT_ALL, table), table, []);
+};
+
+exports.selectAllUsers = async function () {
+    return await innerQuery(buildSimpleTableQuery("SELECT id, first_name, last_name, email, isAdmin FROM", "users"), "users", []);
+};
+
+exports.selectWhereClause = async function (table, whereColumn, whereValue) {
+    return await simpleTableWhereQuery(table, whereColumn, whereValue, queries.SELECT_ALL);
+};
+
+exports.deleteWhereClause = async function (table, whereColumn, whereValue) {
+    return await simpleTableWhereQuery(table, whereColumn, whereValue, queries.DELETE_ALL);
+};
+
+exports.insert = async function (table, columns, values) {
+    return await innerQuery(buildParameterizedQuery(table, columns, values, "insert"), values);
+};
+
+exports.updateAllColumns = async function (table, columns, values) {
+    return await innerQuery(buildParameterizedQuery(table, columns, values, "update"), values);
+};
+
+exports.updateWhereClause = async function (table, columns, values, whereColumn, whereValue) {
+    return await parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, "update");
+};
+
+async function parameterizedWhereQuery(table, columns, values, whereColumn, whereValue, type) {
+    let queryString = addOneWhereClause(buildParameterizedQuery(table, columns, values, type), whereColumn);
+    values.push(whereValue);
+    return await innerQuery(queryString, values);
+}
+
+async function simpleTableWhereQuery(table, whereColumn, whereValue, queryString) {
     queryString = addOneWhereClause(buildSimpleTableQuery(queryString, table), whereColumn);
-    query(queryString, table, [whereValue], callback);
+    return await innerQuery(queryString, [whereValue]);
 }
 
 function addOneWhereClause(queryString, column) {
     return queryString + " WHERE " + column + "=?";
 }
 
-function buildParameterizedQuery(table, columns, values, type, callback) {
+function buildParameterizedQuery(table, columns, values, type) {
     if (columns instanceof Array && values instanceof Array && columns.length === values.length) {
         switch (type) {
             case "update":
@@ -82,10 +89,10 @@ function buildParameterizedQuery(table, columns, values, type, callback) {
             case "insert":
                 return buildInsertQuery(table, columns);
             default:
-                callback("Parameterized query failure: " + type + " is not a parameterized query");
+                throw new Error("Parameterized query failure: " + type + " is not a parameterized query");
         }
     } else {
-        callback("Parameterized query failed: poorly formed columns and values")
+        throw new Error("Parameterized query failed: poorly formed columns and values")
     }
 }
 
@@ -120,18 +127,4 @@ function buildInsertQuery(table, columns) {
 
 function buildSimpleTableQuery(query, table) {
     return query + " " + table;
-}
-
-function query(queryString, table, params, callback) {
-    if (util.valInObj(table, tables)) {
-        makeQuery(queryString, params, callback);
-    } else {
-        callback("Query failed: " + table + " is not a table in the database");
-    }
-}
-
-function makeQuery(queryString, params, callback) {
-    con.query(queryString, params, function (err, rows) {
-        callback(err, rows);
-    });
 }

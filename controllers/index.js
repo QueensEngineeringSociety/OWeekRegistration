@@ -1,4 +1,4 @@
 exports.groups = require("./groups");
-exports.registrationInfo = require("./registrationInfo");
+exports.registrationData = require("./registrationData");
 exports.search = require("./search");
-exports.user_management = require("./userManagement");
+exports.user = require("./user");

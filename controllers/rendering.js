@@ -28,6 +28,7 @@ exports.renderError = function (result, message) {
     result.render(views.ERROR, {errorMessage: message});
 };
 
+//TODO standardize renderObject into model so ejs files can use it properly?
 function buildRenderObject(request, wufooData, groupNumbers, actionPath, nextPageNum = -1, prevPageNum = -1) {
     let isAdmin = util.isAdmin(request);
     renderObject.fields = con.getAccessibleFields(isAdmin);

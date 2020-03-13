@@ -61,7 +61,7 @@ routes.js defines each get and post request and calls code in other modules to a
 
 /user_delete removes a user from the database and refreshes the /user_delete screen.
 
-/one_groups displays the registration information of each individual in a specified group.
+/one_group displays the registration information of each individual in a specified group.
 
 /update_max_num updates the database with the new maximum number in each group.
 

@@ -32,63 +32,63 @@ module.exports = function (app, passport) {
     });
 
     app.post(routes.SIGN_UP, requireAdmin, function (req, res) {
-        controllers.user_management.post.sign_up(req, res);
+        controllers.user.set.new(req, res);
     });
 
     app.post(routes.USER_EDIT, requireAdmin, function (req, res) {
-        controllers.user_management.post.edit(req, res);
+        controllers.user.set.existing(req, res);
     });
 
     app.get(routes.USER_MANAGEMENT, requireAdmin, function (req, res) {
-        controllers.user_management.get.delete(req, res);
+        controllers.user.get.all(req, res);
     });
 
     app.post(routes.USER_DELETE, requireAdmin, function (req, res) {
-        controllers.user_management.post.delete(req, res);
+        controllers.user.delete.one(req, res);
     });
 
     app.get(routes.FILTER, isLoggedIn, function (req, res) {
-        controllers.registrationInfo.get.displayAll(req, res);
+        controllers.registrationData.get.all(req, res);
     });
 
     app.get(routes.AGE, isLoggedIn, function (req, res) {
-        controllers.registrationInfo.get.displayAge(req, res);
+        controllers.registrationData.get.age(req, res);
     });
 
     app.get(routes.FOOD_RESTRICTIONS, requireAdmin, function (req, res) {
-        controllers.registrationInfo.get.displayFood(req, res);
+        controllers.registrationData.get.food(req, res);
     });
 
     app.get(routes.PRIMER, requireAdmin, function (req, res) {
-        controllers.registrationInfo.get.displayPrimer(req, res);
+        controllers.registrationData.get.primer(req, res);
     });
 
     app.get(routes.MEDICAL, requireAdmin, function (req, res) {
-        controllers.registrationInfo.get.displayMedical(req, res);
+        controllers.registrationData.get.medical(req, res);
     });
 
     app.get(routes.PRONOUNS, requireAdmin, function (req, res) {
-        controllers.registrationInfo.get.displayPronouns(req, res);
+        controllers.registrationData.get.pronouns(req, res);
     });
 
     app.get(routes.ACCESSIBILITY, requireAdmin, function (req, res) {
-        controllers.registrationInfo.get.displayAccessibility(req, res);
+        controllers.registrationData.get.accessibility(req, res);
     });
 
     app.get(routes.PAY_PERSON, isLoggedIn, function (req, res) {
-        controllers.registrationInfo.get.displayPayPerson(req, res);
+        controllers.registrationData.get.payPerson(req, res);
     });
 
     app.get(routes.PAY_MAIL, isLoggedIn, function (req, res) {
-        controllers.registrationInfo.get.displayPayMail(req, res);
+        controllers.registrationData.get.payMail(req, res);
     });
 
     app.get(routes.PAY_ONLINE, isLoggedIn, function (req, res) {
-        controllers.registrationInfo.get.displayPayOnline(req, res);
+        controllers.registrationData.get.payOnline(req, res);
     });
 
     app.get(routes.UNPAID, isLoggedIn, function (req, res) {
-        controllers.registrationInfo.get.displayUnpaid(req, res);
+        controllers.registrationData.get.unpaid(req, res);
     });
 
     app.get(routes.SEARCH, isLoggedIn, function (req, res) {
@@ -100,7 +100,7 @@ module.exports = function (app, passport) {
     });
 
     app.get(routes.EXPORT, requireAdmin, function (req, res) {
-        controllers.registrationInfo.get.registrationCsv(req, res);
+        controllers.registrationData.get.excelFile(req, res);
     });
 
     app.get(routes.ALL_GROUPS, requireAdmin, function (req, res) {
@@ -108,19 +108,19 @@ module.exports = function (app, passport) {
     });
 
     app.post(routes.ONE_GROUP, requireAdmin, function (req, res) {
-        controllers.groups.post.specificOne(req, res);
+        controllers.groups.get.one(req, res);
     });
 
     app.post(routes.UPDATE_MAX_NUM_GROUPS, requireAdmin, function (req, res) {
-        controllers.groups.post.maxNumGroups(req, res);
+        controllers.groups.set.number(req, res);
     });
 
     app.post(routes.ASSIGN, requireAdmin, function (req, res) {
-        controllers.groups.post.assign(req, res);
+        controllers.groups.set.all(req, res);
     });
 
     app.post(routes.CLEAR_GROUPS, requireAdmin, function (req, res) {
-        controllers.groups.post.clear(req, res);
+        controllers.groups.delete.all(req, res);
     });
 
     app.get(routes.ERROR, isLoggedIn, function (req, res) {
@@ -128,7 +128,7 @@ module.exports = function (app, passport) {
     });
 
     app.post(routes.GROUP_NUMBER_EDIT, requireAdmin, function (req, res) {
-        controllers.groups.post.numberChange(req, res);
+        controllers.groups.set.one(req, res);
     });
 
     app.get(routes.LOGOUT, function (req, res) {

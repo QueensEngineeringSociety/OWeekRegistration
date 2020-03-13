@@ -2,11 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/controllers/controllerUtil.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/groups/delete.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/groups/get.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/groups/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/groups/set.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/registrationData/get.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/registrationData/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/user/delete.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/user/get.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/user/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/user/set.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/groups.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/views/filter.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/filter.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/groups.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/registrationInfo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/rendering.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/rendering.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/search.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/userManagement.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/oweek_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/oweek_schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/views/functions.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/functions.ejs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/views/manage_users.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/manage_users.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/views/groups.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/groups.ejs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/util.js" afterDir="false" />
     </list>
@@ -193,7 +211,8 @@
       <workItem from="1583021220060" duration="283000" />
       <workItem from="1583160329597" duration="835000" />
       <workItem from="1583606958543" duration="10000" />
-      <workItem from="1584037295324" duration="17489000" />
+      <workItem from="1584037295324" duration="17652000" />
+      <workItem from="1584128054671" duration="5344000" />
     </task>
     <servers />
   </component>
@@ -223,6 +242,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
+    <state x="6866" y="536" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1584128211654">
+      <screen x="5760" y="0" width="2880" height="1560" />
+    </state>
+    <state x="6866" y="536" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1584128211654" />
     <state x="6871" y="483" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1582938753815">
       <screen x="5760" y="0" width="2880" height="1560" />
     </state>
@@ -251,11 +274,15 @@
       <screen x="5760" y="0" width="2880" height="1560" />
     </state>
     <state x="6910" y="650" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1020/5760.0.2880.1560/2880.0.2880.1560@5760.0.2880.1560" timestamp="1584054597312" />
-    <state x="6608" y="367" width="1115" height="950" key="find.popup" timestamp="1584055049156">
+    <state x="6740" y="366" width="920" height="828" key="find.popup" timestamp="1584133232301">
       <screen x="5760" y="0" width="2880" height="1560" />
     </state>
-    <state x="6740" y="366" width="920" height="828" key="find.popup/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1582766909729" />
+    <state x="6740" y="366" width="920" height="828" key="find.popup/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1584133232301" />
     <state x="6608" y="367" width="1115" height="950" key="find.popup/0.0.1920.1020/5760.0.2880.1560/2880.0.2880.1560@5760.0.2880.1560" timestamp="1584055049156" />
+    <state x="6684" y="352" key="run.anything.popup" timestamp="1584132088926">
+      <screen x="5760" y="0" width="2880" height="1560" />
+    </state>
+    <state x="6684" y="352" key="run.anything.popup/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1584132088926" />
     <state x="6693" y="88" width="1009" height="1470" key="search.everywhere.popup" timestamp="1584055068909">
       <screen x="5760" y="0" width="2880" height="1560" />
     </state>

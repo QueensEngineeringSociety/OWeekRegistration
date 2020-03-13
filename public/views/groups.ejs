@@ -33,7 +33,7 @@
         <% for (var i in groups){ %>
             <% if (groups.hasOwnProperty(i)){ %>
                 <li>
-                    <form action="/one_groups" id="group_form" method="post">
+                    <form action="/one_group" id="group_form" method="post">
                         <h2>Group <%= groups[i].groupNumber + 1 %></h2>
                         Men: <%= groups[i].menCount %>
                         Women: <%= groups[i].womenCount %>

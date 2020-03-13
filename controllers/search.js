@@ -3,6 +3,7 @@ const builder = require("../models/wufoo/wufooQueryBuilder");
 const dbConn = require("../models/database/queries.js");
 const util = require("../server/util");
 const view = require("./rendering");
+const controllerUtil = require("./controllerUtil");
 
 const routes = util.routes;
 const views = util.views;
@@ -15,7 +16,7 @@ exports.get = {
 function getGeneral(request, result) {
     if (request.query['field'] && request.query['operator'] && request.query['value']) {
         wufoo.makeQuery(0, builder.customQuery(request.query['field'], request.query['operator'], request.query['value']), [], function (body) {
-            let entries = util.pruneDuplicateFrosh(JSON.parse(body));
+            let entries = controllerUtil.pruneDuplicateFrosh(JSON.parse(body));
             handleWufooData(request, result, JSON.stringify(entries), routes.SEARCH);
         });
     }
@@ -24,7 +25,7 @@ function getGeneral(request, result) {
 function getNetid(request, result) {
     if (request.query['netid_search']) {
         wufoo.makeQuery(0, builder.buildNetidQuery(request.query['netid_search']), [], function (body) {
-            let entries = util.pruneDuplicateFrosh(JSON.parse(body));
+            let entries = controllerUtil.pruneDuplicateFrosh(JSON.parse(body));
             handleWufooData(request, result, JSON.stringify(entries), routes.NET_ID);
         });
     }
@@ -32,7 +33,7 @@ function getNetid(request, result) {
 
 function handleWufooData(request, result, body, route) {
     dbConn.selectAll("groupData", function (err, rows) {
-        let groupNumbers = util.getGroupNumbers(rows);
+        let groupNumbers = controllerUtil.getGroupNumbers(rows);
         view.render(result, views.SEARCH, request, body, groupNumbers, route);
     });
 }

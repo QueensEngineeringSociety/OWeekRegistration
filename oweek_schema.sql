@@ -35,3 +35,4 @@ PRIMARY KEY(`groupNumber`)
 );
 
 INSERT INTO `groupMetaData`(`manGroupNum`,`womanGroupNum`,`maxNumOfGroups`) VALUES(0,0,26);
+INSERT INTO `groups`(`groupNumber`,`menCount`,`womenCount`,`totalCount`) VALUES(0,0,0,0);

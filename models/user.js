@@ -1,4 +1,4 @@
-let bcrypt = require("bcrypt-nodejs");
+let bcrypt = require("bcryptjs");
 
 class User {
     constructor(firstName, lastName, email, password, isAdmin) {

@@ -23,13 +23,13 @@ module.exports = function (app, passport) {
 
     app.post(routes.SIGN_UP, requireAdmin, async function (req, res) {
         await executeRequest(req, res, async function () {
-            return await controllers.user.set.new(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.isAdmin === "admin");
+            return await controllers.user.set.new(req.body.first_name, req.body.last_name, req.body.username, req.body.password, req.body.isAdmin === "admin");
         });
     });
 
     app.post(routes.USER_EDIT, requireAdmin, async function (req, res) {
         await executeRequest(req, res, async function () {
-            return await controllers.user.set.existing(req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.isAdmin === "admin");
+            return await controllers.user.set.existing(req.body.first_name, req.body.last_name, req.body.username, req.body.password, req.body.isAdmin === "admin");
         });
     });
 
@@ -41,7 +41,7 @@ module.exports = function (app, passport) {
 
     app.post(routes.USER_DELETE, requireAdmin, async function (req, res) {
         await executeRequest(req, res, async function () {
-            return await controllers.user.delete.one(req.body.email);
+            return await controllers.user.delete.one(req.user.username, req.body.username);
         });
     });
 
@@ -182,7 +182,7 @@ module.exports = function (app, passport) {
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
-        logger.info(req.user.email + " going to " + req.originalUrl);
+        logger.info(req.user.username + " going to " + req.originalUrl);
         return next();
     } else {
         logger.warn("User attempted access to " + req.originalUrl + " without session");
@@ -195,7 +195,7 @@ function requireAdmin(req, res, next) {
         logger.warn("User attempted to access privileged " + req.originalUrl + " without session");
         res.redirect(routes.LOGIN);
     } else if (req.user && req.user.isAdmin) {
-        logger.info(req.user.email + " going to " + req.originalUrl + " with admin privileges");
+        logger.info(req.user.username + " going to " + req.originalUrl + " with admin privileges");
         return next();
     } else {
         logger.warn("User attempted to access privileged " + req.originalUrl + " without admin privileges");

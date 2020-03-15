@@ -43,7 +43,7 @@ exports.selectAll = async function (table) {
 };
 
 exports.selectAllUsers = async function () {
-    return await innerQuery(buildSimpleTableQuery("SELECT id, first_name, last_name, email, isAdmin FROM", "users"), "users", []);
+    return await innerQuery(buildSimpleTableQuery("SELECT first_name, last_name, username, isAdmin FROM", "users"), "users", []);
 };
 
 exports.selectWhereClause = async function (table, whereColumn, whereValue) {

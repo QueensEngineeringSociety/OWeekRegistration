@@ -6,24 +6,23 @@ const dbConn = require('../../models/database/queries.js');
 module.exports = function (passport) {
 
     passport.serializeUser(function (user, done) {
-        done(null, user.id);
+        done(null, user.username);
     });
 
-    passport.deserializeUser(async function (id, done) {
-        let rows = await dbConn.query("select * from users where id = ?", [id]);
+    passport.deserializeUser(async function (username, done) {
+        let rows = await dbConn.query("select * from users where username = ?", [username]);
         done(null, rows[0]);
     });
 
     passport.use(
         'local-login',
         new LocalStrategy({
-                // by default, local strategy uses username and password, we will override with email
-                usernameField: 'email',
+                usernameField: 'username',
                 passwordField: 'password',
                 passReqToCallback: true
             },
-            async function (req, email, password, done) {
-                let rows = await dbConn.query("SELECT * FROM users WHERE email = ?", [email]);
+            async function (req, username, password, done) {
+                let rows = await dbConn.query("SELECT * FROM users WHERE username = ?", [username]);
                 if (!rows.length || !bcrypt.compareSync(password, rows[0].password)) {
                     return done(null, false);
                 }

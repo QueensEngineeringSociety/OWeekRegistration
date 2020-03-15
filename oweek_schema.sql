@@ -3,13 +3,12 @@ CREATE DATABASE `oweek`;
 USE oweek;
 
 CREATE TABLE `users` (
-id integer NOT NULL AUTO_INCREMENT,
 first_name varchar(20) NOT NULL,
 last_name varchar(20) NOT NULL,
-email varchar(65) NOT NULL,
+username varchar(65) NOT NULL,
 password varchar(65) NOT NULL,
 isAdmin smallint NOT NULL,
-PRIMARY KEY(`id`)
+PRIMARY KEY(`username`)
 );
 
 CREATE TABLE `groupData` (

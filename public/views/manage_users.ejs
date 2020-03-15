@@ -24,15 +24,15 @@
             <% for (let user of users){ %>
                 <tr>
                 </tr>
-                <tr id="<%= user.id %>">
+                <tr id="<%= user.username %>">
                     <td>
-                        <button onclick="showEditForm(<%= user.id %>)">Edit</button>
+                        <button onclick="showEditForm(<%= user.username %>)">Edit</button>
                     </td>
                     <% for(let u in user){ %>
                         <td id="<%= u %>"><%= user[u] %></td>
                     <% } %>
                     <td>
-                        <button onclick="deleteUser(<%= user.id %>,false)">Delete</button>
+                        <button onclick="deleteUser(<%= user.username %>,false)">Delete</button>
                     </td>
                 </tr>
             <% } %>
@@ -45,7 +45,7 @@
         <form action="/user_edit" method="post">
             <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
             <h1>Edit User</h1>
-            <input type="hidden" id="email-form" name="email">
+            <input type="hidden" id="username-form" name="username">
             <label for="first_name-form"><b>First Name</b>
                 <br>
                 <input type="text" id="first_name-form" name="first_name" required>
@@ -76,8 +76,7 @@
 </div>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
 <script>
-    function deleteUser(rowId) {
-        let row = document.getElementById(rowId);
+    function deleteUser(row) {
         let userObj = {};
         for (let tr of row.cells) {
             userObj[tr.id] = tr.innerText;
@@ -88,8 +87,7 @@
         });
     }
 
-    function showEditForm(rowId) {
-        let row = document.getElementById(rowId);
+    function showEditForm(row) {
         for (let tr of row.cells) {
             let formField = document.getElementById(tr.id + "-form");
             if (formField) {

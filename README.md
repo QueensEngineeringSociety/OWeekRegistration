@@ -55,9 +55,9 @@ routes.js defines each get and post request and calls code in other modules to a
 
 /login uses passport to authenticate the user. Successful auth redirects to /filter, failure redirects to /login.
 
-/sign_up adds a new user to the database. They must have a unique email.
+/sign_up adds a new user to the database. They must have a unique username.
 
-/user_edit changes the information of a user, identified by email.
+/user_edit changes the information of a user, identified by username.
 
 /user_delete removes a user from the database and refreshes the /user_delete screen.
 

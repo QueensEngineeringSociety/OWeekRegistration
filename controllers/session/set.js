@@ -9,7 +9,6 @@ exports.cleared = async function (request) {
 exports.authenticate = function (passport,req,res,next) {
     passport.authenticate('local-login', {
         successRedirect: util.routes.FILTER,
-        failureRedirect: util.routes.LOGIN,
-        failureFlash: true //TODO session controller
+        failureRedirect: util.routes.LOGIN
     })(req,res,next);
 };

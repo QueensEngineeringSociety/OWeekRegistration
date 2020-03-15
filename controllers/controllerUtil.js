@@ -1,7 +1,6 @@
 const logger = require("../server/logger")(__filename);
 exports.db = require("../models/database/queries");
 exports.wufoo = require("../models/wufoo/wufooApi");
-exports.view = require("./rendering");
 const wufooCon = require("../models/wufoo/wufooConstants");
 exports.con = wufooCon;
 const constants = require("../server/util");
@@ -34,8 +33,9 @@ exports.execute = async function (action, identifier, isView, target, executorFu
         renderObject.info = result.data;
         return renderObject;
     } catch (e) {
+        //TODO improve error string shown to user
         if (e.stack) {
-            logger.error(`${action} ${identifier} : ${e}: ${e.stack}`);
+            logger.error(`${action} ${identifier} : ${e.stack}`);
         } else {
             logger.error(`${action} ${identifier} ; ${e}`);
         }

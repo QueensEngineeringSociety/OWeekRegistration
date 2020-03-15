@@ -1,4 +1,5 @@
 <% include functions.ejs %>
+<% include assignments.ejs %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,7 +8,12 @@
     <link rel="stylesheet" href="../css/list.css" type="text/css">
 </head>
 <body>
-<% outputNavigationButtons(true) %>
+<%
+groups = info.groups;
+groupMax = info.groupMax;
+isAdmin = display.isAdmin;
+%>
+<% outputNavigationButtons(isAdmin) %>
 <div class="page-header text-center">
     <h1><span class="fa"></span>Groups</h1>
     <form action="/assign" method="post">

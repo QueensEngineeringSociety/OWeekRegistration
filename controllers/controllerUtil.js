@@ -1,3 +1,4 @@
+const logger = require("../server/logger")(__filename);
 exports.db = require("../models/database/queries");
 exports.wufoo = require("../models/wufoo/wufooApi");
 exports.view = require("./rendering");
@@ -7,6 +8,40 @@ const constants = require("../server/util");
 exports.routes = constants.routes;
 exports.views = constants.views;
 exports.query = exports.wufoo.queries;
+
+exports.execute = async function (action, identifier, isView, target, executorFunction) {
+    try {
+        let result = await executorFunction();
+        if (!result) {
+            result = {}
+        }
+        let renderObject = {};
+        renderObject.target = target;
+        renderObject.isView = isView;
+        //TODO make model for render object?
+        renderObject.nav = {
+            nextPage: result.nextPage,
+            prevPage: result.prevPage,
+            actionPath: result.actionPath
+        };
+        renderObject.display = {
+            operators: wufooCon.operators,
+            headings: wufooCon.headings,
+            allFields: wufooCon.allFields,
+            generalFields: wufooCon.generalFields,
+            groupNumbers: result.groupNumbers
+        };
+        renderObject.info = result.data;
+        return renderObject;
+    } catch (e) {
+        if (e.stack) {
+            logger.error(`${action} ${identifier} : ${e}: ${e.stack}`);
+        } else {
+            logger.error(`${action} ${identifier} ; ${e}`);
+        }
+        return {error: `${action} ${identifier}`};
+    }
+};
 
 exports.getGroupNumbers = function (rows) {
     let groupNumbers = [];

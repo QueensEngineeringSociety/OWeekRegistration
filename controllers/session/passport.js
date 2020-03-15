@@ -1,7 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcryptjs");
 
-const dbConn = require('../models/database/queries.js');
+const dbConn = require('../../models/database/queries.js');
 
 module.exports = function (passport) {
 
@@ -25,7 +25,7 @@ module.exports = function (passport) {
             async function (req, email, password, done) {
                 let rows = await dbConn.query("SELECT * FROM users WHERE email = ?", [email]);
                 if (!rows.length || !bcrypt.compareSync(password, rows[0].password)) {
-                    return done(null, false, req.flash('loginMessage', 'Incorrect login info.'));
+                    return done(null, false);
                 }
                 return done(null, rows[0]);
             })

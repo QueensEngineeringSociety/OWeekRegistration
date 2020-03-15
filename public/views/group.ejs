@@ -1,4 +1,5 @@
 <% include functions.ejs %>
+<% include assignments.ejs %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,7 +8,7 @@
     <link rel="stylesheet" href="../css/misc.css" type="text/css">
 </head>
 <body>
-<% outputNavigationButtons(true) %>
+<% outputNavigationButtons(isAdmin) %>
 <div class="page-header text-center">
     <h1><span class="fa"></span>Group <%= groupData.groupNumber + 1 %></h1>
 </div>
@@ -15,6 +16,6 @@
 Men: <%= groupData.menCount %>
 Women: <%= groupData.womenCount %>
 Total: <%= groupData.totalCount %><br>
-<% outputRegistrationInfoTable(peopleInGroup, fields, headings, groupNumbers) //just need filler for last arg, not used %>
+<% outputRegistrationInfoTable(peopleInGroup, fields, headings, groupNumbers) //just need filler for last arg, not used  %>
 </body>
 </html>

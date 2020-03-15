@@ -1,4 +1,5 @@
-<%include functions.ejs%>
+<% include functions.ejs %>
+<% include assignments.ejs %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +7,7 @@
     <link rel="stylesheet" href="../css/misc.css" type="text/css">
 </head>
 <body>
-<%outputNavigationButtons(true)%>
+<% outputNavigationButtons(isAdmin) %>
 <div class="container">
     <div class="col-sm-6 col-sm-offset-3">
         <h1><span class="fa fa-sign-in"></span>Add User</h1>

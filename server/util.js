@@ -1,7 +1,6 @@
 const wufooCon = require("../models/wufoo/wufooConstants");
 
 exports.routes = {
-    HOME: "/",
     LOGIN: "/login",
     USER_MANAGEMENT: "/user",
     USER_ADD: "/user_add",
@@ -33,7 +32,6 @@ exports.routes = {
 };
 
 exports.views = {
-    INDEX: "index.ejs",
     MANAGE_USERS: "manage_users.ejs",
     ERROR: "error.ejs",
     FILTER: "filter.ejs",

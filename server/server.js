@@ -17,9 +17,9 @@ const db = require('../models/database/queries.js');
 
 //miscellaneous
 db.connect();
-app.use(compression()); //compress data to improve performance
-app.use(bodyParser.json()); //parse json body data
-app.use(bodyParser.urlencoded({extended: true})); //parse x-www-form-urlencoded data
+app.use(compression()); //compress renderData to improve performance
+app.use(bodyParser.json()); //parse json body renderData
+app.use(bodyParser.urlencoded({extended: true})); //parse x-www-form-urlencoded renderData
 app.use(express.static(path.join(__dirname, '../public')));
 app.set('view engine', 'ejs'); // set up ejs for templating
 app.set('views', path.join(__dirname, '../public/views'));
@@ -36,7 +36,7 @@ app.use(secure);
 app.use(helmet());
 //app.use(csrf({cookie: true})); //must be after after cookie parsing and session set TODO
 
-require('./passport')(passport); // pass passport for configuration
+require('../controllers/session/passport')(passport); // pass passport for configuration
 require('./routes.js')(app, passport);
 
 module.exports = app;

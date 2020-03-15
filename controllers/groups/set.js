@@ -4,61 +4,58 @@ const view = util.view;
 const wufoo = util.wufoo;
 const con = util.con;
 
-exports.one = async function (request, result) {
-    let newDbGroupNumber = request.body.new_group_number - 1;
-    let oldDbGroupNumber = request.body.old_group_number - 1;
-    let man = isMan(request.body.pronouns);
-    await db.updateWhereClause("groupData", ["groupNum"], [newDbGroupNumber], "wufooEntryId", request.body.wufooEntryId);
-    await setNewCount(oldDbGroupNumber, true, man);
-    await setNewCount(newDbGroupNumber, false, man);
-    result.redirect(util.routes.FILTER);
+exports.one = async function (newGroupNumber, oldGroupNumber, pronouns, wufooEntryId) {
+    return await util.execute("set", "one group", false, util.routes.FILTER, async function () {
+        let newDbGroupNumber = newGroupNumber - 1;
+        let oldDbGroupNumber = oldGroupNumber - 1;
+        let man = isMan(pronouns);
+        await db.updateWhereClause("groupData", ["groupNum"], [newDbGroupNumber], "wufooEntryId", wufooEntryId);
+        await setNewCount(oldDbGroupNumber, true, man);
+        await setNewCount(newDbGroupNumber, false, man);
+    });
 };
 
-exports.number = async function (request, result) {
-    if (request.body.updatemax) {
-        await db.updateAllColumns("groupMetaData", ["maxNumOfGroups"], [request.body.updatemax]);
-        result.redirect(util.routes.ALL_GROUPS);
-    } else {
-        view.renderError(result, "Not given a maximum group number.");
-    }
+exports.number = async function (newMaxNumber) {
+    return await util.execute("set", "number of groups", false, util.routes.ALL_GROUPS, async function () {
+        await db.updateAllColumns("groupMetaData", ["maxNumOfGroups"], [newMaxNumber]);
+    });
 };
 
-exports.all = async function (request, result) {
-    let groupMetaDataRows = await db.selectAll("groupMetaData");
-    let manGroupNum = groupMetaDataRows[0].manGroupNum;
-    let womanGroupNum = groupMetaDataRows[0].womanGroupNum;
-    //get frosh already in a group
-    let rows = await db.selectAll("groupData");
-    let assignedFrosh = [];
-    if (rows.length) {
-        for (let i in rows) {
-            assignedFrosh.push(rows[i].wufooEntryId);
+exports.all = async function () {
+    return await util.execute("set", "all groups", false, util.routes.ALL_GROUPS, async function () {
+        let groupMetaDataRows = await db.selectAll("groupMetaData");
+        let manGroupNum = groupMetaDataRows[0].manGroupNum;
+        let womanGroupNum = groupMetaDataRows[0].womanGroupNum;
+        //get frosh already in a group
+        let rows = await db.selectAll("groupData");
+        let assignedFrosh = [];
+        if (rows.length) {
+            for (let i in rows) {
+                assignedFrosh.push(rows[i].wufooEntryId);
+            }
         }
-    }
-    let body = await wufoo.makeQuery(0, util.query.all, []);
-    //show updated groups
-    body = util.pruneDuplicateFrosh(JSON.parse(body));
-    let insertions = [];
-    for (let i in body) {
-        if (!util.isInArr(assignedFrosh, body[i].EntryId)) {
-            insertions.push({
-                "id": body[i].EntryId,
-                "genderIsMan": isMan((body[i])[con.allFields.pronouns])
-            });
+        let body = await wufoo.makeQuery(0, util.query.all, []);
+        //show updated groups
+        body = util.pruneDuplicateFrosh(JSON.parse(body));
+        let insertions = [];
+        for (let i in body) {
+            if (!util.isInArr(assignedFrosh, body[i].EntryId)) {
+                insertions.push({
+                    "id": body[i].EntryId,
+                    "genderIsMan": isMan((body[i])[con.allFields.pronouns])
+                });
+            }
         }
-    }
-    if (insertions.length) {
-        await assign(manGroupNum, womanGroupNum, insertions);
-        result.redirect("back"); //refresh
-    } else {
-        result.redirect("back");
-    }
+        if (insertions.length) {
+            await assign(manGroupNum, womanGroupNum, insertions);
+        }
+    });
 };
 
-function isMan(text) {
+function isMan(pronouns) {
     //if doesn't use she or her as pronoun, assume man
-    text = text.toLowerCase();
-    return text.indexOf("she") === -1 && text.indexOf("her") === -1;
+    pronouns = pronouns.toLowerCase();
+    return pronouns.indexOf("she") === -1 && pronouns.indexOf("her") === -1;
 }
 
 async function assign(manGroupNum, womanGroupNum, froshToInsert) {
@@ -105,10 +102,10 @@ async function assign(manGroupNum, womanGroupNum, froshToInsert) {
     //updateAllColumns running counter for man and woman group numbers
     await db.updateAllColumns("groupMetaData", ["manGroupNum", "womanGroupNum"],
         [manGroupNum, womanGroupNum]);
-    //get the old group data, then add on new group data and updateAllColumns
+    //get the old group renderData, then add on new group renderData and updateAllColumns
     let rows = await db.selectAll("groups");
     if (rows.length) {
-        //previous groups, combine new with old data
+        //previous groups, combine new with old renderData
         for (let i = 0; i < rows.length; i++) {
             let newData = newGroupData[rows[i].groupNumber];
             if (newData) {

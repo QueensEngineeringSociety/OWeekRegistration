@@ -1,4 +1,5 @@
 <% include functions.ejs %>
+<% include assignments.ejs %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,7 +13,6 @@
     <div class="page-header text-center">
         <% outputFilterButtons(isAdmin) %>
     </div>
-    <% var entries = JSON.parse(wufoo) %>
     <div style="float:right">Rows: <%= entries.length %></div>
     <% outputSearchFields(fields, headings, operators) %>
 </div>

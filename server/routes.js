@@ -17,7 +17,7 @@ module.exports = function (app, passport) {
 
     app.get(routes.USER_ADD, requireAdmin, async function (req, res) {
         await executeRequest(req, res, async function () {
-            return await controllers.session.display.add();
+            return await controllers.user.display.add();
         })
     });
 
@@ -212,6 +212,7 @@ async function executeRequest(req, res, executorFunction) {
             renderObject.display.isAdmin = req.user ? req.user.isAdmin : false;
             renderObject.display.fields = renderObject.display.isAdmin ? renderObject.display.allFields : renderObject.display.generalFields;
             if (renderObject.isView) {
+                renderObject.csrfToken = req.csrfToken();
                 res.render(renderObject.target, renderObject);
             } else if (renderObject.isView !== null) {
                 res.redirect(renderObject.target);

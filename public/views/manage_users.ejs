@@ -43,6 +43,7 @@
     <div class="modal-content">
         <span class="close" id="close">&times;</span>
         <form action="/user_edit" method="post">
+            <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
             <h1>Edit User</h1>
             <input type="hidden" id="email-form" name="email">
             <label for="first_name-form"><b>First Name</b>
@@ -81,6 +82,7 @@
         for (let tr of row.cells) {
             userObj[tr.id] = tr.innerText;
         }
+        userObj._csrf = document.getElementById("csrf").value;
         $.post("/user_delete", userObj, function () {
             location.reload();
         });

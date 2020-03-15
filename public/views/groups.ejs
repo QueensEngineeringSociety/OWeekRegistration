@@ -17,12 +17,15 @@ isAdmin = display.isAdmin;
 <div class="page-header text-center">
     <h1><span class="fa"></span>Groups</h1>
     <form action="/assign" method="post">
+        <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
         <input type="submit" name="autoassign" value="Run Auto Assign" class="btn btn-default btn-sm"/>
     </form>
     <form action="/clear_groups" method="post">
+        <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
         <input type="submit" name="clear" value="Clear Groups" class="btn btn-default btn-sm"/>
     </form>
     <form action="/update_max_num" method="POST">
+        <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
         <div class="input-group">
             <label>Maximum Number of Groups<input type="text" class="form-control" name="updatemax"
                                                   value="<%= groupMax %>" aria-label="Max number of groups"
@@ -40,6 +43,7 @@ isAdmin = display.isAdmin;
             <% if (groups.hasOwnProperty(i)){ %>
                 <li>
                     <form action="/one_group" id="group_form" method="post">
+                        <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
                         <h2>Group <%= groups[i].groupNumber + 1 %></h2>
                         Men: <%= groups[i].menCount %>
                         Women: <%= groups[i].womenCount %>

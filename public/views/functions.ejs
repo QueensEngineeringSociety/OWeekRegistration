@@ -107,6 +107,7 @@
 <% outputSearchFields=function(fields, headings, operators){ %>
     <div>
         <form action="/search" method="get">
+            <input type="hidden" id="csrf" name="_csrf" value="<%=csrfToken%>">
             <label>
                 <select name="field">
                     <!-- use the key as the value - key is english, value is wufoo API query version-->
@@ -129,6 +130,7 @@
             <input type="submit" value="OK">
         </form>
         <form action="/netid" style="display: inline; padding-left: 50px;">
+            <input type="hidden" id="csrf" name="_csrf" value="<%=csrfToken%>">
             <label for="netid_search"></label><input type="search" id="netid_search" name="netid_search"
                                                      placeholder="NetID">
             <button>Search</button>

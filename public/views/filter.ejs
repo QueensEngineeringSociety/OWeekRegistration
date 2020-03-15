@@ -16,6 +16,7 @@
         <% outputSearchFields(fields, headings, operators) %>
         <% if (prevPage && prevPage > -1){ %>
             <form action="<%= actionPath %>" method="get" style="float: left;">
+                <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
                 <input type="submit" name="prevPage" value="<%= prevPage %>"
                        class="btn btn-default btn-sm"/>
             </form>
@@ -42,6 +43,7 @@
     <div class="modal-content">
         <span class="close" id="close">&times;</span>
         <form action="/group_number_edit" method="post">
+            <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
             <h1>Edit User</h1>
             <input type="hidden" id="wufooEntryId-form" name="wufooEntryId">
             <input type="hidden" id="groupNumber-form" name="old_group_number">

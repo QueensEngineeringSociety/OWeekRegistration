@@ -12,6 +12,7 @@
     <div class="col-sm-6 col-sm-offset-3">
         <h1><span class="fa fa-sign-in"></span>Add User</h1>
         <form action="/sign_up" method="post" id="user_form">
+            <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
             <div class="form-group">
                 <label>First Name
                     <input type="text" class="form-control" name="first_name">

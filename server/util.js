@@ -1,5 +1,3 @@
-const wufooCon = require("../models/wufoo/wufooConstants");
-
 exports.routes = {
     LOGIN: "/login",
     USER_MANAGEMENT: "/user",

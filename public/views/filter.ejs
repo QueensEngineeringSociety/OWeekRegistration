@@ -14,14 +14,14 @@
     <% outputFilterButtons(isAdmin) %>
     <div style="padding-top: 50px">
         <% outputSearchFields(fields, headings, operators) %>
-        <% if (prevPage && prevPage > -1){ %>
+        <% if (prevPage > -1){ %>
             <form action="<%= actionPath %>" method="get" style="float: left;">
                 <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
                 <input type="submit" name="prevPage" value="<%= prevPage %>"
                        class="btn btn-default btn-sm"/>
             </form>
         <% } %>
-        <% if (nextPage && nextPage > 0){ %>
+        <% if (nextPage > 0){ %>
             <form action="<%= actionPath %>" method="get" style="float:right;">
                 <input type="submit" name="nextPage" value="<%= nextPage %>"
                        class="btn btn-default btn-sm"/>

@@ -102,6 +102,48 @@
             <% } %>
         <% } %>
     </table>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close" id="close">&times;</span>
+            <form action="/group_number_edit" method="post">
+                <input type="hidden" id="csrf" name="_csrf" value="<%= csrfToken %>">
+                <h1>Edit User</h1>
+                <input type="hidden" id="wufooEntryId-form" name="wufooEntryId">
+                <input type="hidden" id="groupNumber-form" name="old_group_number">
+                <input type="hidden" id="Field137-form" name="pronouns">
+                <label for="newGroupNumber-form"><b>New Group Number</b>
+                    <br>
+                    <input type="text" id="newGroupNumber-form" name="new_group_number" required>
+                </label>
+                <br>
+                <label for="Field1-form"><b>Name</b>
+                    <br>
+                    <input type="text" id="Field1-form" name="name" required>
+                </label>
+                <br>
+                <br>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function showEditForm(rowId) {
+            let row = document.getElementById(rowId);
+            for (let tr of row.cells) {
+                let formField = document.getElementById(tr.id + "-form");
+                if (formField) {
+                    formField.value = tr.innerText;
+                }
+            }
+            document.getElementById("wufooEntryId-form").value = rowId;
+            document.getElementById("modal").style.display = "block";
+        }
+
+        document.getElementsByClassName("close")[0].onclick = function () {
+            document.getElementById("modal").style.display = "none";
+        }
+    </script>
 <% } %>
 
 <% outputSearchFields=function(fields, headings, operators){ %>

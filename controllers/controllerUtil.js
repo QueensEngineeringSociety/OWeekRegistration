@@ -1,12 +1,11 @@
 const logger = require("../server/logger")(__filename);
-exports.db = require("../models/database");
-exports.wufoo = require("../models/wufoo/wufooApi");
-const wufooCon = require("../models/wufoo/wufooConstants");
+exports.db = require("./database");
+exports.wufoo = require("./wufoo/wufooApi");
+const wufooCon = require("./wufoo/wufooConstants");
 exports.con = wufooCon;
 const constants = require("../server/util");
 exports.routes = constants.routes;
 exports.views = constants.views;
-exports.query = exports.wufoo.queries;
 
 exports.execute = async function (action, identifier, isView, target, executorFunction) {
     try {

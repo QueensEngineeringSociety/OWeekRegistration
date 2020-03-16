@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const logger = require("../../server/logger")(__filename);
 const PropertiesReader = require('properties-reader');
 exports.table = require("./dbTables").tables;
 const properties = PropertiesReader(__dirname + "/../../config/db_properties.cfg");
@@ -21,7 +22,7 @@ exports.query = function (queryString, params) {
     return new Promise(function (resolve, reject) {
         connection.query(queryString, params, function (err, rows) {
             if (err) {
-                console.log(err); //TODO log
+                logger.error(err);
                 reject(err);
             } else {
                 resolve(rows);

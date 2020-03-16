@@ -19,10 +19,9 @@ exports.one = async function (groupNumber) {
         for (let i = 0; i < groupDataRows.length; i++) {
             entryIds[i] = groupDataRows[i].wufooEntryId;
         }
-        let body = await wufoo.getEntriesById(entryIds);
-        body = JSON.parse(body); //TODO wufoo should return parsed, ejs accepts parsed
-        let rows = await db.get.group(groupNumber);
+        let entries = await wufoo.entryId(entryIds);
+        let group = await db.get.group(groupNumber);
         let groupNumbers = util.getGroupNumbers(groupDataRows);
-        return {fields: con.groupFields, groupNumbers: groupNumbers, data: {groupData: rows[0], peopleInGroup: body}};
+        return {fields: con.groupFields, groupNumbers: groupNumbers, data: {groupData: group, peopleInGroup: entries}};
     });
 };

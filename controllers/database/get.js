@@ -14,11 +14,13 @@ exports.allGroups = async function () {
 };
 
 exports.group = async function (groupNumber) {
-    return await util.query(util.build.select("*", util.table.GROUPS, model.Group.keyField()), [groupNumber]);
+    let rows = await util.query(util.build.select("*", util.table.GROUPS, model.Group.keyField()), [groupNumber]);
+    return model.Group.fromDb(rows);
 };
 
 exports.membersOfGroup = async function (groupNumber) {
-    return await util.query(util.build.select("*", util.table.GROUP_DATA, model.GroupData.keyField()), [groupNumber]);
+    let rows = await util.query(util.build.select("*", util.table.GROUP_DATA, "groupNum"), [groupNumber]);
+    return model.GroupData.fromDb(rows);
 };
 
 exports.allGroupData = async function () {

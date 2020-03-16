@@ -2,31 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/models/database/dbTables.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/database/dbUtil.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/database/delete.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/database/get.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/database/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/database/queryBuilder.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/database/set.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/group.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/groupData.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/groupMetaData.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/modelUtil.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/wufoo/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/controllers/wufoo/wufooQueryBuilder.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/controllerUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/controllerUtil.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/groups/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/delete.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/groups/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/get.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/groups/set.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/set.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/registrationData/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/registrationData/get.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/search/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/search/get.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/session/passport.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/session/passport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/user/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user/delete.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/user/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user/get.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/user/set.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user/set.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/queries.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/dbConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/dbConstants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/dbTables.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/dbTables.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/dbUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/dbUtil.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/delete.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/get.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/queryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/queryBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/database/set.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/set.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/wufoo/wufooApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/wufoo/wufooApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/wufoo/wufooConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/wufoo/wufooConstants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/wufoo/wufooQueryBuilder.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -84,15 +79,15 @@
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2018.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration\server" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration\controllers" />
       <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration\controllers\session" />
       <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration\controllers\search" />
       <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration" />
       <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration\app\models" />
-      <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration\app" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\cookc\Desktop\Queens\Prez\OWeekRegistration\server" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -219,7 +214,7 @@
       <workItem from="1584148104322" duration="5044000" />
       <workItem from="1584288157640" duration="6799000" />
       <workItem from="1584303462340" duration="6719000" />
-      <workItem from="1584315846536" duration="8027000" />
+      <workItem from="1584315846536" duration="22076000" />
     </task>
     <servers />
   </component>
@@ -284,10 +279,14 @@
       <screen x="0" y="0" width="1920" height="1020" />
     </state>
     <state x="-37" y="-14" width="1942" height="1142" maximized="true" key="dock-window-1/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1584316120515" />
-    <state x="6741" y="366" width="920" height="828" key="find.popup" timestamp="1584323745532">
+    <state x="5618" y="-23" width="2543" height="1062" maximized="true" key="dock-window-2" timestamp="1584331064664">
       <screen x="5760" y="0" width="2880" height="1560" />
     </state>
-    <state x="6741" y="366" width="920" height="828" key="find.popup/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1584323745532" />
+    <state x="5618" y="-23" width="2543" height="1062" maximized="true" key="dock-window-2/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1584331064664" />
+    <state x="6741" y="366" width="920" height="828" key="find.popup" timestamp="1584338428515">
+      <screen x="5760" y="0" width="2880" height="1560" />
+    </state>
+    <state x="6741" y="366" width="920" height="828" key="find.popup/0.0.1920.1020/2880.0.2880.1560/5760.0.2880.1560@5760.0.2880.1560" timestamp="1584338428515" />
     <state x="6608" y="367" width="1115" height="950" key="find.popup/0.0.1920.1020/5760.0.2880.1560/2880.0.2880.1560@5760.0.2880.1560" timestamp="1584055049156" />
     <state x="6684" y="352" key="run.anything.popup" timestamp="1584132088926">
       <screen x="5760" y="0" width="2880" height="1560" />

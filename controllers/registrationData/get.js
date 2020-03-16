@@ -4,54 +4,55 @@ const util = require("../controllerUtil");
 const db = util.db;
 const wufoo = util.wufoo;
 
+const filename = "Exported-Group-Data.xlsx";
+
 exports.all = async function (nextPage, prevPage) {
-    return await getRequest("all registration", nextPage, prevPage, util.query.all, util.routes.FILTER);
+    return await getRequest("all registration", nextPage, prevPage, wufoo.all, util.routes.FILTER);
 };
 
 exports.age = async function (nextPage, prevPage) {
-    return await getRequest("age registration", nextPage, prevPage, util.query.age, util.routes.AGE);
+    return await getRequest("age registration", nextPage, prevPage, wufoo.age, util.routes.AGE);
 };
 
 exports.food = async function (nextPage, prevPage) {
-    return await getRequest("food registration", nextPage, prevPage, util.query.foodRestrictions, util.routes.FOOD_RESTRICTIONS);
+    return await getRequest("food registration", nextPage, prevPage, wufoo.foodRestrictions, util.routes.FOOD_RESTRICTIONS);
 };
 
 exports.primer = async function (nextPage, prevPage) {
-    return await getRequest("primer registration", nextPage, prevPage, util.query.wantPrimer, util.routes.PRIMER);
+    return await getRequest("primer registration", nextPage, prevPage, wufoo.wantPrimer, util.routes.PRIMER);
 };
 
 exports.medical = async function (nextPage, prevPage) {
-    return await getRequest("medical registration", nextPage, prevPage, util.query.medicalConcerns, util.routes.MEDICAL);
+    return await getRequest("medical registration", nextPage, prevPage, wufoo.medicalConcerns, util.routes.MEDICAL);
 };
 
 exports.pronouns = async function (nextPage, prevPage) {
-    return await getRequest("pronouns registration", nextPage, prevPage, util.query.pronoun, util.routes.PRONOUNS);
+    return await getRequest("pronouns registration", nextPage, prevPage, wufoo.pronoun, util.routes.PRONOUNS);
 };
 
 exports.accessibility = async function (nextPage, prevPage) {
-    return await getRequest("accessibility registration", nextPage, prevPage, util.query.accessibilityConcerns, util.routes.ACCESSIBILITY);
+    return await getRequest("accessibility registration", nextPage, prevPage, wufoo.accessibilityConcerns, util.routes.ACCESSIBILITY);
 };
 
 exports.payPerson = async function (nextPage, prevPage) {
-    return await getRequest("pay person registration", nextPage, prevPage, util.query.payInPerson, util.routes.PAY_PERSON);
+    return await getRequest("pay person registration", nextPage, prevPage, wufoo.payInPerson, util.routes.PAY_PERSON);
 };
 
 exports.payMail = async function (nextPage, prevPage) {
-    return await getRequest("pay mail registration", nextPage, prevPage, util.query.payByMail, util.routes.PAY_MAIL);
+    return await getRequest("pay mail registration", nextPage, prevPage, wufoo.payByMail, util.routes.PAY_MAIL);
 };
 
 exports.payOnline = async function (nextPage, prevPage) {
-    return await getRequest("pay online registration", nextPage, prevPage, util.query.payOnline, util.routes.PAY_ONLINE);
+    return await getRequest("pay online registration", nextPage, prevPage, wufoo.payOnline, util.routes.PAY_ONLINE);
 };
 
 exports.unpaid = async function (nextPage, prevPage) {
-    return await getRequest("unpaid registration", nextPage, prevPage, util.query.unpaid, util.routes.UNPAID);
+    return await getRequest("unpaid registration", nextPage, prevPage, wufoo.unpaid, util.routes.UNPAID);
 };
 
 exports.excelFile = async function (response) {
     return await util.execute("get", "excel file", null, "", async function () {
-        let entries = await wufoo.makeQuery(0, util.query.all, []);
-        entries = JSON.parse(entries);
+        let entries = await wufoo.all();
         let workbook = xlsx.utils.book_new();
         let groups = {};
         let rows = await db.get.allGroupData();
@@ -74,7 +75,6 @@ exports.excelFile = async function (response) {
             xlsx.utils.book_append_sheet(workbook, workSheet, "Group " + groupNum);
 
         }
-        let filename = "Exported-Group-Data.xlsx";
         let filePath = __dirname + "/../../server/" + filename;
         xlsx.writeFile(workbook, filename);
         return new Promise(function (resolve, reject) {
@@ -103,11 +103,11 @@ function clean(person) {
     return cleanedPerson;
 }
 
-async function getRequest(action, nextPage, prevPage, query, actionPath) {
+async function getRequest(action, nextPage, prevPage, wufooApiCall, actionPath) {
     return await util.execute("get", action, true, util.views.FILTER, async function () {
         let pageNum = getPageNum(nextPage, prevPage);
-        let [body, nextPageNum, prevPageNum] = await wufoo.makePaginatedQuery(pageNum, query);
-        let entries = util.pruneDuplicateFrosh(JSON.parse(body));
+        let [body, nextPageNum, prevPageNum] = await wufooApiCall(pageNum, true);
+        let entries = util.pruneDuplicateFrosh(body);
         let rows = await db.get.allGroupData();
         let groupNumbers = util.getGroupNumbers(rows);
         return {

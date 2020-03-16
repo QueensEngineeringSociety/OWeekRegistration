@@ -5,7 +5,11 @@ exports.user = async function (user) {
     return await execute(user, util.table.USERS);
 };
 
-exports.group = async function (groupData) {
+exports.group = async function (group) {
+    return await execute(group, util.table.GROUPS);
+};
+
+exports.groupMember = async function (groupData) {
     return await execute(groupData, util.table.GROUP_DATA);
 };
 
@@ -14,11 +18,7 @@ exports.groupNumberCounters = async function (newManNum, newWomanNum) {
 };
 
 exports.maxNumberOfGroups = async function (newMaxNum) {
-    return await util.query(util.build.update(util.table.GROUP_META_DATA, ["maxNumOfGroups"], model.GroupMetaData.keyField()), [1, newMaxNum]);
-};
-
-exports.groups = async function (groups) {
-    return await execute(groups, util.table.GROUPS);
+    return await util.query(util.build.update(util.table.GROUP_META_DATA, ["maxNumOfGroups"], model.GroupMetaData.keyField()), [newMaxNum, 1]); //only one row, ID is 1
 };
 
 async function execute(model, table) {

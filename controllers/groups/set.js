@@ -11,7 +11,7 @@ exports.one = async function (newGroupNumber, oldGroupNumber, pronouns, wufooEnt
         let oldDbGroupNumber = oldGroupNumber - 1;
         let man = isMan(pronouns);
         let groupData = new model.GroupData(wufooEntryId, newDbGroupNumber);
-        await db.set.group(groupData);
+        await db.set.groupMember(groupData);
         await setNewCount(oldDbGroupNumber, true, man);
         await setNewCount(newDbGroupNumber, false, man);
     });
@@ -36,9 +36,9 @@ exports.all = async function () {
                 assignedFrosh.push(rows[i].wufooEntryId);
             }
         }
-        let body = await wufoo.makeQuery(0, util.query.all, []);
+        let body = await wufoo.all();
         //show updated groups
-        body = util.pruneDuplicateFrosh(JSON.parse(body));
+        body = util.pruneDuplicateFrosh(body);
         let insertions = [];
         for (let i in body) {
             if (!util.isInArr(assignedFrosh, body[i].EntryId)) {
@@ -129,7 +129,7 @@ function incGroupNum(num, maxNumOfGroups) {
 async function insertFroshToGroup(insertIdx, insertions) {
     if (insertIdx < insertions.length) {
         let groupData = new model.GroupData(insertions[insertIdx].wufooEntryId, insertions[insertIdx].groupNum);
-        await db.set.group(groupData);
+        await db.set.groupMember(groupData);
         await insertFroshToGroup(insertIdx + 1, insertions);
     }
 }
@@ -148,8 +148,7 @@ async function insertNewGroupData(insertIdx, newGroupData) {
 }
 
 async function setNewCount(groupNumber, isOldGroup, isMan) {
-    let rows = await db.get.group(groupNumber);
-    let group = rows[0];
+    let group = await db.get.group(groupNumber);
     let newManCount = group.menCount;
     let newWomanCount = group.womenCount;
     let change = 1;
@@ -161,6 +160,6 @@ async function setNewCount(groupNumber, isOldGroup, isMan) {
     } else {
         newWomanCount += change;
     }
-    let groupDataModel = new model.GroupData(groupNumber, newManCount, newWomanCount, newManCount + newWomanCount);
-    await db.set.group(groupDataModel);
+    let newGroup = new model.Group(groupNumber, newManCount, newWomanCount, newManCount + newWomanCount);
+    await db.set.group(newGroup);
 }

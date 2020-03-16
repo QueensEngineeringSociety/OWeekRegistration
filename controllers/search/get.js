@@ -3,7 +3,7 @@ const db = require("../database");
 const util = require("../controllerUtil");
 
 exports.general = async function (field, operator, value) {
-    return await util.execute("get", "search general", true, util.views.SEARCH, async function () {
+    return await util.execute(`Could not search by ${field}`, true, util.views.SEARCH, async function () {
         let body = await wufoo.search(field, operator, value);
         let entries = util.pruneDuplicateFrosh(body);
         return await handleWufooData(entries);
@@ -11,7 +11,7 @@ exports.general = async function (field, operator, value) {
 };
 
 exports.netid = async function (netid) {
-    return await util.execute("get", "search netid", true, util.views.SEARCH, async function () {
+    return await util.execute("Could not search by netid", true, util.views.SEARCH, async function () {
         let body = await wufoo.netid(netid);
         let entries = util.pruneDuplicateFrosh(body);
         return await handleWufooData(entries);

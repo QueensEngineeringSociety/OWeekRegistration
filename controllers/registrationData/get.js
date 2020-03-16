@@ -104,7 +104,7 @@ function clean(person) {
 }
 
 async function getRequest(action, nextPage, prevPage, wufooApiCall, actionPath) {
-    return await util.execute("get", action, true, util.views.FILTER, async function () {
+    return await util.execute(`Could not get ${action}`, true, util.views.FILTER, async function () {
         let pageNum = getPageNum(nextPage, prevPage);
         let [body, nextPageNum, prevPageNum] = await wufooApiCall(pageNum, true);
         let entries = util.pruneDuplicateFrosh(body);

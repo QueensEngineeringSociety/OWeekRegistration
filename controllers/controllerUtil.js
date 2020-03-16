@@ -8,7 +8,7 @@ const constants = require("../server/util");
 exports.routes = constants.routes;
 exports.views = constants.views;
 
-exports.execute = async function (action, identifier, isView, target, executorFunction) {
+exports.execute = async function (errMessage, isView, target, executorFunction) {
     try {
         let result = await executorFunction();
         if (!result) {
@@ -20,13 +20,12 @@ exports.execute = async function (action, identifier, isView, target, executorFu
         renderObject.setInfo(result.data);
         return renderObject;
     } catch (e) {
-        //TODO improve error string shown to user
         if (e.stack) {
-            logger.error(`${action} ${identifier} : ${e.stack}`);
+            logger.error(`${errMessage} : ${e.stack}`);
         } else {
-            logger.error(`${action} ${identifier} ; ${e}`);
+            logger.error(`${errMessage} : ${e}`);
         }
-        return {error: `${action} ${identifier}`};
+        return {error: errMessage};
     }
 };
 

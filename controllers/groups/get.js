@@ -4,7 +4,7 @@ const wufoo = util.wufoo;
 const con = util.con;
 
 exports.all = async function () {
-    return await util.execute("get", "groups", true, util.views.GROUPS, async function () {
+    return await util.execute("Could not get all groups", true, util.views.GROUPS, async function () {
         let groupMetaData = await db.get.groupMetaData();
         let maxNumOfGroups = groupMetaData.maxNumOfGroups;
         let rows = await db.get.allGroups();
@@ -13,7 +13,7 @@ exports.all = async function () {
 };
 
 exports.one = async function (groupNumber) {
-    return await util.execute("get", "group", true, util.views.GROUP, async function () {
+    return await util.execute(`Could not get group ${groupNumber}`, true, util.views.GROUP, async function () {
         let groupDataRows = await db.get.membersOfGroup(groupNumber);
         let entryIds = [];
         for (let i = 0; i < groupDataRows.length; i++) {

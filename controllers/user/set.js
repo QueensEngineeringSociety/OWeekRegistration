@@ -6,13 +6,13 @@ const strongPassRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^[0-
 const errPasswordReq = "That password doesn't match the requirements: 1 lowercase, uppercase, number, special character and at least 8 characters long";
 
 exports.new = async function (firstName, lastName, username, password, isAdmin) {
-    return await util.execute("set", "new user", false, util.routes.USER_MANAGEMENT, async function () {
+    return await util.execute(`Could not add new user ${username}`, false, util.routes.USER_MANAGEMENT, async function () {
         await setUserInfo(false, "That username already exists", firstName, lastName, username, password, isAdmin);
     });
 };
 
 exports.existing = async function (firstName, lastName, username, password, isAdmin) {
-    return await util.execute("set", "edit user", false, util.routes.USER_MANAGEMENT, async function () {
+    return await util.execute(`Could not edit ${username}`, false, util.routes.USER_MANAGEMENT, async function () {
         await setUserInfo(true, "That username doesn't exist", firstName, lastName, username, password, isAdmin);
     });
 };

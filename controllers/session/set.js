@@ -1,7 +1,7 @@
 const util = require("../controllerUtil");
 
 exports.cleared = async function (request) {
-    return await util.execute("set", "clear session", false, util.routes.LOGIN, async function () {
+    return await util.execute("Could not logout", false, util.routes.LOGIN, async function () {
         request.logout();
     });
 };

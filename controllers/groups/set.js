@@ -1,12 +1,11 @@
 const util = require("../controllerUtil");
 const db = util.db;
-const view = util.view;
 const wufoo = util.wufoo;
 const con = util.con;
 const model = require("../../models");
 
 exports.one = async function (newGroupNumber, oldGroupNumber, pronouns, wufooEntryId) {
-    return await util.execute("set", "one group", false, util.routes.FILTER, async function () {
+    return await util.execute(`Could not change member from group ${newGroupNumber} to ${oldGroupNumber}`, false, util.routes.FILTER, async function () {
         let newDbGroupNumber = newGroupNumber - 1;
         let oldDbGroupNumber = oldGroupNumber - 1;
         let man = isMan(pronouns);
@@ -18,13 +17,13 @@ exports.one = async function (newGroupNumber, oldGroupNumber, pronouns, wufooEnt
 };
 
 exports.number = async function (newMaxNumber) {
-    return await util.execute("set", "number of groups", false, util.routes.ALL_GROUPS, async function () {
+    return await util.execute(`Could not set number of groups to ${newMaxNumber}`, false, util.routes.ALL_GROUPS, async function () {
         await db.set.maxNumberOfGroups(newMaxNumber);
     });
 };
 
 exports.all = async function () {
-    return await util.execute("set", "all groups", false, util.routes.ALL_GROUPS, async function () {
+    return await util.execute("Could not set all groups", false, util.routes.ALL_GROUPS, async function () {
         let gropMetaData = await db.get.groupMetaData();
         let manGroupNum = gropMetaData.manGroupNum;
         let womanGroupNum = gropMetaData.womanGroupNum;

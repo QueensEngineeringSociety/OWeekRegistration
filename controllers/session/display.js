@@ -9,7 +9,7 @@ exports.login = async function (user) {
 };
 
 async function execute(isView, target) {
-    return await util.execute("display", "login page", isView, target, async () => {
+    return await util.execute("Could not display login page", isView, target, async () => {
         return {data: {message: ""}};
     });
 }

@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/controllers/database/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/delete.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/database/queryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/queryBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/groups/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/delete.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/groups/set.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/set.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/user/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user/delete.js" afterDir="false" />
-    </list>
+    <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -198,7 +192,7 @@
       <workItem from="1584148104322" duration="5044000" />
       <workItem from="1584288157640" duration="6799000" />
       <workItem from="1584303462340" duration="6719000" />
-      <workItem from="1584315846536" duration="22677000" />
+      <workItem from="1584315846536" duration="23036000" />
     </task>
     <servers />
   </component>

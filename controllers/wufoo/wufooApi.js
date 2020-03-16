@@ -89,9 +89,9 @@ async function makeQuery(pageStart, queryString, allEntries) {
         allEntries = [];
     }
     let body = await callApi(properties.get('uri') + queryString + build.makePaginated(pageStart));
-    let entries = JSON.parse(body);
-    if (entries["Entries"].length) {
-        allEntries = allEntries.concat(entries["Entries"]);
+    let entries = body["Entries"];
+    if (entries.length) {
+        allEntries = allEntries.concat(entries);
         let newPageStart = pageStart + build.PAGE_SIZE;
         return await makeQuery(newPageStart, queryString, allEntries);
     } else {
@@ -110,7 +110,7 @@ async function makeQuery(pageStart, queryString, allEntries) {
 
 async function makePaginatedQuery(pageNum, queryString) {
     let body = await callApi(properties.get('uri') + queryString + build.makePaginated(pageNum * build.PAGE_SIZE));
-    let entries = (JSON.parse(body))["Entries"];
+    let entries = body["Entries"];
     let allComments = await getComments();
     for (let i = 0; i < entries.length; ++i) {
         (entries[i])["comment"] = getEntryComment((entries[i])["EntryId"], allComments);
@@ -134,7 +134,7 @@ function callApi(uri) {
             if (error) {
                 reject(error);
             } else {
-                resolve(body); //TODO check if can run json parse here - comments may not allow?
+                resolve(JSON.parse(body));
             }
         });
     }));
@@ -145,7 +145,7 @@ async function getComments() {
 }
 
 function getEntryComment(entryId, allComments) {
-    let comments = (JSON.parse(allComments))['Comments'];
+    let comments = allComments['Comments'];
     for (let i = 0; i < comments.length; ++i) {
         if ((comments[i])["EntryId"] === parseInt(entryId)) {
             return (comments[i])["Text"];

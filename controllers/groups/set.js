@@ -3,13 +3,15 @@ const db = util.db;
 const view = util.view;
 const wufoo = util.wufoo;
 const con = util.con;
+const model = require("../../models");
 
 exports.one = async function (newGroupNumber, oldGroupNumber, pronouns, wufooEntryId) {
     return await util.execute("set", "one group", false, util.routes.FILTER, async function () {
         let newDbGroupNumber = newGroupNumber - 1;
         let oldDbGroupNumber = oldGroupNumber - 1;
         let man = isMan(pronouns);
-        await db.updateWhereClause("groupData", ["groupNum"], [newDbGroupNumber], "wufooEntryId", wufooEntryId);
+        let groupData = new model.GroupData(wufooEntryId, newDbGroupNumber);
+        await db.set.group(groupData);
         await setNewCount(oldDbGroupNumber, true, man);
         await setNewCount(newDbGroupNumber, false, man);
     });
@@ -17,17 +19,17 @@ exports.one = async function (newGroupNumber, oldGroupNumber, pronouns, wufooEnt
 
 exports.number = async function (newMaxNumber) {
     return await util.execute("set", "number of groups", false, util.routes.ALL_GROUPS, async function () {
-        await db.updateAllColumns("groupMetaData", ["maxNumOfGroups"], [newMaxNumber]);
+        await db.set.maxNumberOfGroups(newMaxNumber);
     });
 };
 
 exports.all = async function () {
     return await util.execute("set", "all groups", false, util.routes.ALL_GROUPS, async function () {
-        let groupMetaDataRows = await db.selectAll("groupMetaData");
-        let manGroupNum = groupMetaDataRows[0].manGroupNum;
-        let womanGroupNum = groupMetaDataRows[0].womanGroupNum;
+        let gropMetaData = await db.get.groupMetaData();
+        let manGroupNum = gropMetaData.manGroupNum;
+        let womanGroupNum = gropMetaData.womanGroupNum;
         //get frosh already in a group
-        let rows = await db.selectAll("groupData");
+        let rows = await db.get.allGroupData();
         let assignedFrosh = [];
         if (rows.length) {
             for (let i in rows) {
@@ -100,10 +102,9 @@ async function assign(manGroupNum, womanGroupNum, froshToInsert) {
         }
     }
     //updateAllColumns running counter for man and woman group numbers
-    await db.updateAllColumns("groupMetaData", ["manGroupNum", "womanGroupNum"],
-        [manGroupNum, womanGroupNum]);
+    await db.set.groupNumberCounters(manGroupNum, womanGroupNum);
     //get the old group renderData, then add on new group renderData and updateAllColumns
-    let rows = await db.selectAll("groups");
+    let rows = await db.get.allGroups();
     if (rows.length) {
         //previous groups, combine new with old renderData
         for (let i = 0; i < rows.length; i++) {
@@ -127,9 +128,8 @@ function incGroupNum(num, maxNumOfGroups) {
 
 async function insertFroshToGroup(insertIdx, insertions) {
     if (insertIdx < insertions.length) {
-        let id = insertions[insertIdx].wufooEntryId;
-        let num = insertions[insertIdx].groupNum;
-        await db.insert("groupData", ["wufooEntryId", "groupNum"], [id, num]);
+        let groupData = new model.GroupData(insertions[insertIdx].wufooEntryId, insertions[insertIdx].groupNum);
+        await db.set.group(groupData);
         await insertFroshToGroup(insertIdx + 1, insertions);
     }
 }
@@ -148,7 +148,7 @@ async function insertNewGroupData(insertIdx, newGroupData) {
 }
 
 async function setNewCount(groupNumber, isOldGroup, isMan) {
-    let rows = await db.selectWhereClause("groups", "groupNumber", groupNumber);
+    let rows = await db.get.group(groupNumber);
     let group = rows[0];
     let newManCount = group.menCount;
     let newWomanCount = group.womenCount;
@@ -161,6 +161,6 @@ async function setNewCount(groupNumber, isOldGroup, isMan) {
     } else {
         newWomanCount += change;
     }
-    await db.updateWhereClause("groups", ["menCount", "womenCount", "totalCount"],
-        [newManCount, newWomanCount, newManCount + newWomanCount], "groupNumber", groupNumber);
+    let groupDataModel = new model.GroupData(groupNumber, newManCount, newWomanCount, newManCount + newWomanCount);
+    await db.set.group(groupDataModel);
 }

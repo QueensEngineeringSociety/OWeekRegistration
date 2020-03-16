@@ -1,6 +1,6 @@
 const wufoo = require("../../models/wufoo/wufooApi.js");
 const builder = require("../../models/wufoo/wufooQueryBuilder");
-const db = require("../../models/database/queries.js");
+const db = require("../../models/database");
 const util = require("../controllerUtil");
 
 exports.general = async function (field, operator, value) {
@@ -20,7 +20,7 @@ exports.netid = async function (netid) {
 };
 
 async function handleWufooData(body) {
-    let rows = await db.selectAll("groupData");
+    let rows = await db.get.allGroupData();
     let groupNumbers = util.getGroupNumbers(rows);
     return {data: {entries: body}, groupNumbers: groupNumbers};
 }

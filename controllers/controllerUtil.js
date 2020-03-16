@@ -1,5 +1,5 @@
 const logger = require("../server/logger")(__filename);
-exports.db = require("../models/database/queries");
+exports.db = require("../models/database");
 exports.wufoo = require("../models/wufoo/wufooApi");
 const wufooCon = require("../models/wufoo/wufooConstants");
 exports.con = wufooCon;

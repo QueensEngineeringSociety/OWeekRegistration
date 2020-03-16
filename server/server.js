@@ -12,7 +12,7 @@ const helmet = require("helmet");
 const csrf = require("csurf");
 
 const properties = PropertiesReader(__dirname + "/../config/passport.cfg");
-const db = require('../models/database/queries.js');
+const db = require('../models/database');
 
 //miscellaneous
 db.connect();

@@ -54,7 +54,7 @@ exports.excelFile = async function (response) {
         entries = JSON.parse(entries);
         let workbook = xlsx.utils.book_new();
         let groups = {};
-        let rows = await db.selectAll("groupData");
+        let rows = await db.get.allGroupData();
         let groupNumbers = util.getGroupNumbers(rows);
         for (let entry of entries) {
             let num = groupNumbers[entry.EntryId] + 1;
@@ -108,7 +108,7 @@ async function getRequest(action, nextPage, prevPage, query, actionPath) {
         let pageNum = getPageNum(nextPage, prevPage);
         let [body, nextPageNum, prevPageNum] = await wufoo.makePaginatedQuery(pageNum, query);
         let entries = util.pruneDuplicateFrosh(JSON.parse(body));
-        let rows = await db.selectAll("groupData");
+        let rows = await db.get.allGroupData();
         let groupNumbers = util.getGroupNumbers(rows);
         return {
             actionPath: actionPath, nextPage: nextPageNum, prevPage: prevPageNum, groupNumbers: groupNumbers,

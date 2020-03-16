@@ -1,16 +1,14 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require("bcryptjs");
-
-const dbConn = require('../../models/database/queries.js');
+const db = require("../../models/database");
 
 module.exports = function (passport) {
-
     passport.serializeUser(function (user, done) {
         done(null, user.username);
     });
 
     passport.deserializeUser(async function (username, done) {
-        let rows = await dbConn.query("select * from users where username = ?", [username]);
+        let rows = await db.get.user(username);
         done(null, rows[0]);
     });
 
@@ -22,7 +20,7 @@ module.exports = function (passport) {
                 passReqToCallback: true
             },
             async function (req, username, password, done) {
-                let rows = await dbConn.query("SELECT * FROM users WHERE username = ?", [username]);
+                let rows = await db.get.user(username);
                 if (!rows.length || !bcrypt.compareSync(password, rows[0].password)) {
                     return done(null, false);
                 }

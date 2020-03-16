@@ -8,7 +8,7 @@ exports.one = async function (curUsername, toDeleteUsername) {
         }
         let queryString = "DELETE FROM users WHERE username=?";
         await db.query(queryString, [toDeleteUsername]);
-        let rows = await db.selectAll("users");
+        let rows = await db.get.allUsers();
         if (!rows.length) {
             throw new Error("There are no users!");
         }

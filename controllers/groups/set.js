@@ -65,8 +65,8 @@ async function assign(manGroupNum, womanGroupNum, froshToInsert) {
     let insertions = [];
     let newGroupData = []; //index will be group number, holds object with the man/woman count
 
-    let groupMetaDataRows = await db.query("SELECT maxNumOfGroups FROM groupMetaData");
-    let maxNumOfGroups = groupMetaDataRows[0].maxNumOfGroups;
+    let groupMetaDataRows = await db.get.groupMetaData();
+    let maxNumOfGroups = groupMetaDataRows.maxNumOfGroups;
     for (let i = 0; i < froshToInsert.length; i++) {
         let newData = {
             "menCount": 0,
@@ -138,8 +138,8 @@ async function insertNewGroupData(insertIdx, newGroupData) {
     if (insertIdx < newGroupData.length) {
         let data = newGroupData[insertIdx];
         if (data) {
-            await db.query("INSERT groups VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE menCount=VALUES(menCount),womenCount=VALUES(womenCount),totalCount=VALUES(totalCount)",
-                [insertIdx, data.menCount, data.womenCount, data.totalCount]);
+            let group = new model.Group(insertIdx, data.menCount, data.womenCount, data.totalCount);
+            await db.set.group(group);
             await insertNewGroupData(insertIdx + 1, newGroupData);
         } else {
             await insertNewGroupData(insertIdx + 1, newGroupData);

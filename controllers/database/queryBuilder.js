@@ -61,10 +61,16 @@ exports.update = function (tableName, fields, whereFieldEqual) {
 };
 
 exports.delete = function (table, filterFields) {
-    let q = "DELETE FROM " + table + " WHERE ";
-    for (let i = 0; i < filterFields.length - 1; i++) {
-        q += filterFields[i] + "=? AND ";
+    let q = "DELETE FROM " + table;
+    if (filterFields) {
+        if (!Array.isArray(filterFields)) {
+            filterFields = [filterFields];
+        }
+        q += " WHERE ";
+        for (let i = 0; i < filterFields.length - 1; i++) {
+            q += filterFields[i] + "=? AND ";
+        }
+        q += filterFields[filterFields.length - 1] + "=?";
     }
-    q += filterFields[filterFields.length - 1] + "=?";
     return q;
 };

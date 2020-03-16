@@ -2,27 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/controllers/wufoo/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/wufoo/wufooQueryBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/controllerUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/controllerUtil.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/groups/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/get.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/database/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/delete.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/database/queryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/queryBuilder.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/groups/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/delete.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/groups/set.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/groups/set.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/registrationData/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/registrationData/get.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/search/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/search/get.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/session/passport.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/session/passport.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/dbConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/dbConstants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/dbTables.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/dbTables.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/dbUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/dbUtil.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/delete.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/get.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/queryBuilder.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/queryBuilder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/database/set.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/database/set.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/wufoo/wufooApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/wufoo/wufooApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/wufoo/wufooConstants.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/wufoo/wufooConstants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/wufoo/wufooQueryBuilder.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/user/delete.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/user/delete.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -214,7 +198,7 @@
       <workItem from="1584148104322" duration="5044000" />
       <workItem from="1584288157640" duration="6799000" />
       <workItem from="1584303462340" duration="6719000" />
-      <workItem from="1584315846536" duration="22076000" />
+      <workItem from="1584315846536" duration="22677000" />
     </task>
     <servers />
   </component>

@@ -1,21 +1,14 @@
 const util = require("./dbUtil");
+const model = require("../../models");
 
-exports.user = async function (user) {
-    return await execute(util.table.USERS, user);
+exports.user = async function (username) {
+    return await util.query(util.build.delete(util.table.USERS, model.User.keyField()), [username]);
 };
 
-exports.groupData = async function (groupData) {
-    return await execute(util.table.GROUP_DATA, groupData);
+exports.allGroupData = async function () {
+    return await util.query(util.build.delete(util.table.GROUP_DATA));
 };
 
-exports.groupMetaData = async function (groupMetaData) {
-    return await execute(util.table.GROUP_META_DATA, groupMetaData);
+exports.allGroups = async function () {
+    return await util.query(util.build.delete(util.table.GROUPS));
 };
-
-exports.group = async function (group) {
-    return await execute(util.table.GROUPS, group);
-};
-
-async function execute(table, model) {
-    return await util.query(util.build.delete(table, model.keyField()), [model.keyValue()]);
-}

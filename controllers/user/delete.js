@@ -6,8 +6,7 @@ exports.one = async function (curUsername, toDeleteUsername) {
         if (curUsername === toDeleteUsername) {
             throw new Error("You can't delete yourself!");
         }
-        let queryString = "DELETE FROM users WHERE username=?";
-        await db.query(queryString, [toDeleteUsername]);
+        await db.delete.user(toDeleteUsername);
         let rows = await db.get.allUsers();
         if (!rows.length) {
             throw new Error("There are no users!");

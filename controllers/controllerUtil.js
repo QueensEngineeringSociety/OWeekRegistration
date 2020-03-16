@@ -1,6 +1,7 @@
 const logger = require("../server/logger")(__filename);
 exports.db = require("./database");
 exports.wufoo = require("./wufoo/wufooApi");
+const RenderObject = require("../models/renderObject");
 const wufooCon = require("./wufoo/wufooConstants");
 exports.con = wufooCon;
 const constants = require("../server/util");
@@ -13,23 +14,10 @@ exports.execute = async function (action, identifier, isView, target, executorFu
         if (!result) {
             result = {}
         }
-        let renderObject = {};
-        renderObject.target = target;
-        renderObject.isView = isView;
-        //TODO make model for render object?
-        renderObject.nav = {
-            nextPage: result.nextPage,
-            prevPage: result.prevPage,
-            actionPath: result.actionPath
-        };
-        renderObject.display = {
-            operators: wufooCon.operators,
-            headings: wufooCon.headings,
-            allFields: wufooCon.allFields,
-            generalFields: wufooCon.generalFields,
-            groupNumbers: result.groupNumbers
-        };
-        renderObject.info = result.data;
+        let renderObject = new RenderObject(result.groupNumbers);
+        renderObject.setNav(result.nextPage, result.prevPage, result.actionPath);
+        renderObject.setTarget(target, isView);
+        renderObject.setInfo(result.data);
         return renderObject;
     } catch (e) {
         //TODO improve error string shown to user

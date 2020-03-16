@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="" />
+    <list default="true" id="76b196c2-4ead-48f8-8c91-f6e94bb10aea" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/models/renderObject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/controllerUtil.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/controllerUtil.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -193,6 +196,7 @@
       <workItem from="1584288157640" duration="6799000" />
       <workItem from="1584303462340" duration="6719000" />
       <workItem from="1584315846536" duration="23036000" />
+      <workItem from="1584376387478" duration="461000" />
     </task>
     <servers />
   </component>
